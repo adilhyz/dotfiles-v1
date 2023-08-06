@@ -30,37 +30,8 @@ set_term_config() {
 		-e "s/family: .*/family: JetBrainsMono Nerd Font/g" \
 		-e "s/size: .*/size: 10/g"
 		
-		cat > "$HOME"/.config/alacritty/colors.yml <<- _EOF_
-				# Colors (Zombie-Night color scheme) Karla Rice
-				colors:
-				  primary:
-				    background: '#0E1113'
-				    foreground: '#afb1db'
-
-				  normal:
-				    black:   '#2d2b36'
-				    red:     '#e7034a'
-				    green:   '#61b33e'
-				    yellow:  '#ffb964'
-				    blue:    '#5884d4'
-				    magenta: '#7a44e3'
-				    cyan:    '#7df0f0'
-				    white:   '#faf7ff'
-
-				  bright:
-				    black:   '#373542'
-				    red:     '#e71c5b'
-				    green:   '#6fb352'
-				    yellow:  '#ffb964'
-				    blue:    '#5f90ea'
-				    magenta: '#8656e3'
-				    cyan:    '#97f0f0'
-				    white:   '#fdfcff'
-    
-				  cursor:
-				     cursor: '#8656e3'
-				     text:	'#0b0b12'
-_EOF_
+		sed -i "$HOME"/.config/alacritty/rice-colors.yml \
+		-e "s/colors: .*/colors: *karla_z0mbi3_night/"
 }
 
 # Set compositor configuration
@@ -101,6 +72,35 @@ set_dunst_config() {
 _EOF_
 }
 
+# Appearance
+set_appearance() {
+	XFILE="$PATH_BSPWM/xsettingsd"
+	GTK2FILE="$HOME/.gtkrc-2.0"
+	GTK3FILE="$HOME/.config/gtk-3.0/settings.ini"
+
+	# apply gtk theme, icons, cursor & fonts
+	if [[ `pidof xsettingsd` ]]; then
+		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"Kripton\"|g" ${XFILE}
+		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Nordzy-cyan-dark\"|g" ${XFILE}
+		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"Bibata-Rainbow-Original\"|g" ${XFILE}
+	else
+		sed -i -e "s/gtk-font-name=.*/gtk-font-name=\"Noto Sans 9\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"Kripton\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Nordzy-cyan-dark\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"Bibata-Rainbow-Original\"/g" ${GTK2FILE}
+		
+		sed -i -e "s/gtk-font-name=.*/gtk-font-name=Noto Sans 9/g" ${GTK3FILE}
+		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=Kripton/g" ${GTK3FILE}
+		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Nordzy-cyan-dark/g" ${GTK3FILE}
+		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=Bibata-Rainbow-Original/g" ${GTK3FILE}
+	fi
+	
+	# inherit cursor theme
+	if [[ -f "$HOME"/.icons/default/index.theme ]]; then
+		sed -i -e "s/Inherits=.*/Inherits=Bibata-Rainbow-Original/g" "$HOME"/.icons/default/index.theme
+	fi	
+}
+
 # Launch the bar
 launch_bars() {
 		polybar -q karla-bar -c ${rice_dir}/config.ini &
@@ -114,4 +114,5 @@ set_bspwm_config
 set_term_config
 set_picom_config
 set_dunst_config
+set_appearance
 launch_bars

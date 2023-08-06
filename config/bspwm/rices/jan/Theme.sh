@@ -30,37 +30,8 @@ set_term_config() {
 		-e "s/family: .*/family: JetBrainsMono Nerd Font/g" \
 		-e "s/size: .*/size: 10/g"
 		
-		cat > "$HOME"/.config/alacritty/colors.yml <<- _EOF_
-				# Colors (CyberPunk) Jan Rice
-				colors:
-				  primary:
-				    background: '#070219'
-				    foreground: '#c0caf5'
-
-				  normal:
-				    black:   '#626483'
-				    red:     '#fb007a'
-				    green:   '#a6e22e'
-				    yellow:  '#f3e430'
-				    blue:    '#58AFC2'
-				    magenta: '#583794'
-				    cyan:    '#926BCA'
-				    white:   '#d9d9d9'
-
-				  bright:
-				    black:   '#626483'
-				    red:     '#fb007a'
-				    green:   '#a6e22e'
-				    yellow:  '#f3e430'
-				    blue:    '#58AFC2'
-				    magenta: '#472575'
-				    cyan:    '#926BCA'
-				    white:   '#f1f1f1'
-   
-				  cursor:
-				    cursor: '#fb007a'
-				    text:	'#070219'
-_EOF_
+		sed -i "$HOME"/.config/alacritty/rice-colors.yml \
+		-e "s/colors: .*/colors: *jan_cyberpunk/"
 }
 
 # Set compositor configuration
@@ -117,22 +88,22 @@ set_appearance() {
 	if [[ `pidof xsettingsd` ]]; then
 		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"Cyberpunk\"|g" ${XFILE}
 		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Win11-Dark\"|g" ${XFILE}
-		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"phinger-cursors\"|g" ${XFILE}
+		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"capitaine-cursors\"|g" ${XFILE}
 	else
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=\"Noto Sans 9\"/g" ${GTK2FILE}
 		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"Cyberpunk\"/g" ${GTK2FILE}
 		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Win11-Dark\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"phinger-cursors\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"capitaine-cursors\"/g" ${GTK2FILE}
 		
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=Noto Sans 9/g" ${GTK3FILE}
 		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=Cyberpunk/g" ${GTK3FILE}
 		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Win11-Dark/g" ${GTK3FILE}
-		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=phinger-cursors/g" ${GTK3FILE}
+		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=capitaine-cursors/g" ${GTK3FILE}
 	fi
 	
 	# inherit cursor theme
 	if [[ -f "$HOME"/.icons/default/index.theme ]]; then
-		sed -i -e "s/Inherits=.*/Inherits=phinger-cursors/g" "$HOME"/.icons/default/index.theme
+		sed -i -e "s/Inherits=.*/Inherits=capitaine-cursors/g" "$HOME"/.icons/default/index.theme
 	fi	
 }
 
