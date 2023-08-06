@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+#  ╔╗ ╔═╗╔═╗╦ ╦╔╦╗  - modified by me
+#  ╠╩╗╚═╗╠═╝║║║║║║  - 
+#  ╚═╝╚═╝╩  ╚╩╝╩ ╩  - original z0mbi3
+
+
+#  ┬┌┬┐┌─┐┌─┐┬─┐┌┬┐┌─┐┌┐┌┌┬┐  ┬  ┬┌─┐┬─┐┬┌─┐┌┐ ┬  ┌─┐┌─┐
+#  ││││├─┘│ │├┬┘ │ ├─┤│││ │   └┐┌┘├─┤├┬┘│├─┤├┴┐│  ├┤ └─┐
+#  ┴┴ ┴┴  └─┘┴└─ ┴ ┴ ┴┘└┘ ┴    └┘ ┴ ┴┴└─┴┴ ┴└─┘┴─┘└─┘└─┘
+
+read -r RICETHEME < "$HOME"/.config/bspwm/.rice
+export RICETHEME
+PATH="$HOME/.config/bspwm/scripts:$PATH"
+rice_dir="$HOME/.config/bspwm/rices/$RICETHEME"
+
+## Fix java applications
+export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
+
+#  ┬ ┬┌─┐┬─┐┬┌─┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐
+#  ││││ │├┬┘├┴┐└─┐├─┘├─┤│  ├┤ └─┐
+#  └┴┘└─┘┴└─┴ ┴└─┘┴  ┴ ┴└─┘└─┘└─┘
+
+workspaces() {
+	name=1
+	for monitor in $(bspc query -M); do
+		bspc monitor "${monitor}" -n "$name" -d '1' '2' '3' '4' '5' '6'
+		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' ''
+		(( name++ ))
+	done
+}
+
+workspaces
+
+#  ┌┐ ┌─┐┌─┐┬ ┬┌┬┐  ┌─┐┌─┐┌┐┌┌─┐┬┌─┐
+#  ├┴┐└─┐├─┘││││││  │  │ ││││├┤ ││ ┬
+#  └─┘└─┘┴  └┴┘┴ ┴  └─┘└─┘┘└┘└  ┴└─┘
+
+#bspc config external_rules_command $HOME/.config/bspwm/scripts/ExternalRules
+
+bspc config split_ratio                   0.51
+bspc config single_monocle                true
+bspc config borderless_monocle            false
+bspc config gapless_monocle               false
+
+bspc config focus_follows_pointer         true
+bspc config pointer_follows_focus         false
+bspc config pointer_motion_interval       5
+bspc config pointer_modifier              mod4 
+bspc config pointer_action1               move 
+bspc config pointer_action2               resize_side 
+bspc config pointer_action3               resize_corner
+
+#bspc wm --adopt-orphans
+bspc rule -a scratch sticky=on state=floating focus=on
+bspc rule -a Subl desktop='^4' follow=on
+bspc rule -a brave desktop='^2' follow=on
+bspc rule -a firefox desktop='^2' follow=on
+bspc rule -a discord desktop='^6' follow=on
+bspc rule -a spotify desktop='^5' follow=on
+bspc rule -a Vlc state=fullscreen
+bspc rule -a VirtualBox Manager state=fullscreen
+bspc rule -a VirtualBox Machine state=fullscreen
+bspc rule -a inkscape state=fullscreen
+bspc rule -a Arandr state=floating
+bspc rule -a Galculator state=floating
+bspc rule -a Oblogout state=floating
+bspc rule -a Xfce4-terminal state=floating
+bspc rule -a Arcolinux-welcome-app.py state=floating
+bspc rule -a Arcolinux-calamares-tool.py state=floating
+bspc rule -a Gnome-disks state=tiled
+bspc rule -a Xfce4-settings-manager state=tiled
+bspc rule -a Sysfetch state=floating center=on rectangle=370x700+0+0
+
+#  ┬  ┌─┐┬ ┬┌┐┌┌─┐┬ ┬  ┌─┐┌─┐─┐ ┬┬ ┬  ┬─┐┬┌─┐┌─┐┌─┐
+#  │  ├─┤│ │││││  ├─┤  └─┐├┤ ┌┴┬┘└┬┘  ├┬┘││  ├┤ └─┐
+#  ┴─┘┴ ┴└─┘┘└┘└─┘┴ ┴  └─┘└─┘┴ └─ ┴   ┴└─┴└─┘└─┘└─┘
+
+# Set system vars for polybar
+. SetSysVars
+
+# Terminate already running polybar, eww, picom, sxhkd and dunst instances
+processes=("picom" "polybar" "eww" "sxhkd" "dunst")
+
+for process in "${processes[@]}"; do
+  if pidof -q "$process"; then
+    pkill -9 -x "$process" > /dev/null; sleep 0.1
+  fi
+done
+
+# Load colors, dunst, bars and/or eww widgets
+. ${rice_dir}/Theme.sh
+
+# Launch picom // If you have old hardware or encounter problems 
+# uncomment the picom "--legacy-backends" line and comment the current one.
+picom --config "$HOME"/.config/bspwm/picom.conf &
+#picom --legacy-backends --config "$HOME"/.config/bspwm/picom.conf &
+
+# Launch dunst notification daemon
+dunst -config "$HOME"/.config/bspwm/dunstrc &
+
+# Set random wallpaper for actual rice
+feh -z --no-fehbg --bg-fill ${rice_dir}/walls
+
+# Reload sxhkd daemon
+sxhkd -c "$HOME"/.config/bspwm/sxhkdrc &
+
+# Launch polkit
+pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & }
+
+# Fix cursor
+xsetroot -cursor_name left_ptr
+unclutter -idle 3 &
+
+# Teuingg
+numlockx on &
+
+# Internet
+nm-applet &
+
+# Bluetooth
+blueberry-tray &
+
+# Update
+#pamac-tray &
+
+# Parem
+xautolock -detectsleep -time 5 -locker "~/.config/bspwm/scripts/lock" &
+
+# Bruh
+#exec mpd &
+
+# Wall
+#variety &
+
+# Screen Saver
+redshift -c ~/.config/redshift.conf &

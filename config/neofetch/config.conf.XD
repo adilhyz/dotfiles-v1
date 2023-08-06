@@ -1,0 +1,118 @@
+# https://github.com/chick2d/neofetch-themes
+# Made by IdliDev (https://github.com/Idlidev)
+
+LC_ALL=C
+LANG=C
+
+print_info() {
+    info "​ ​ ​ " title
+    prin "${cl9}┌────────────────────────────┐"
+    info "​ ​ ${cl5} " distro
+    info "​ ​  " kernel
+    info "​ ​  " de
+    info "​ ​  " wm
+    info "​ ​ 嗀" wm_theme
+    info "​ ​   " shell
+    info "​ ​  " term
+    info "​ ​ 󰉼 " theme
+    info "​ ​  " icons
+    info "​ ​ ${cl5}󱎫 " uptime
+    info "​ ​  " packages
+    info "​ ​  " song
+    [[ "$player" ]] && prin "​ ​   " "$player"
+    prin "${cl9}└─────────── ${cl0} ${cl1} ${cl2} ${cl3} ${cl4} ${cl5} ${cl6} $(color 15) ${cl9}┘"
+    prin "\n"
+}
+
+reset="\033[0m"
+gray="\033[1;90m"
+red="\033[1;31m"
+green="\033[1;32m"
+yellow="\033[1;33m"
+blue="\033[1;34m"
+magenta="\033[1;35m"
+cyan="\033[1;36m"
+white="\033[1;37m"
+
+cl0="${gray}"
+cl1="${red}"
+cl2="${green}"
+cl3="${yellow}"
+cl4="${blue}"
+cl5="${magenta}"
+cl6="${cyan}"
+cl7="${white}"
+cl9="${reset}"
+
+title_fqdn="off"
+kernel_shorthand="on"
+distro_shorthand="off"
+os_arch="off"
+uptime_shorthand="on"
+memory_percent="on"
+memory_unit="mib"
+package_managers="on"
+shell_path="off"
+shell_version="on"
+#
+speed_type="bios_limit"
+speed_shorthand="off"
+cpu_brand="on"
+cpu_speed="on"
+cpu_cores="logical"
+cpu_temp="off"
+gpu_brand="on"
+gpu_type="all"
+refresh_rate="off"
+gtk_shorthand="on"
+gtk2="on"
+gtk3="on"
+public_ip_host="http://ident.me"
+public_ip_timeout=2
+de_version="on"
+#disk_show=('/')
+disk_show=('/storage/emulated' '/' '/server')
+#disk_subtitle="mount"
+disk_subtitle="none"
+disk_percent="on"
+music_player="auto"
+#song_format="%artist% - %album% - %title%"
+song_format="%artist% - %title%"
+song_shorthand="off"
+mpc_args=()
+colors=(5 4 7 7 7 7)
+# colors=(distro)
+bold="on"
+underline_enabled="on"
+underline_char="-"
+separator=" ●"
+block_range=(0 15)
+color_blocks="on"
+block_width=3
+block_height=1
+col_offset="auto"
+bar_char_elapsed="-"
+bar_char_total="="
+bar_border="on"
+bar_length=15
+bar_color_elapsed="distro"
+bar_color_total="distro"
+cpu_display="off"
+memory_display="off"
+battery_display="off"
+disk_display="off"
+image_backend="ascii"
+#image_source="$HOME/Pictures/medallion-silver.png"
+ascii_distro="arch_small"
+ascii_colors=('distro')
+ascii_bold="on"
+image_loop="off"
+thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
+crop_mode="normal"
+crop_offset="center"
+image_size="300px"
+gap=2
+yoffset=0
+xoffset=0
+background_color=
+stdout="off"
