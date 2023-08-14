@@ -10,6 +10,8 @@ export EDITOR='nvim'
 export TERMINAL='alacritty'
 export BROWSER='firefox'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+export PYTORCH_TRACING_MODE=TORCHFX
+export COMMANDLINE_ARGS='--skip-torch-cuda-test --precision full --no-half --listen --share --disable-safe-unpickle --no-half-vae --xformers --enable-insecure-extension --enable-insecure-extension-access --gradio-queue  --theme=dark'
 
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
@@ -130,7 +132,7 @@ alias vm-on="sudo systemctl start libvirtd.service"
 alias vm-off="sudo systemctl stop libvirtd.service"
 
 alias audio="pactl info | grep 'Server Name'"
-alias musica="ncmpcpp"
+alias musik="ncmpcpp"
 
 alias ls='lsd -a --group-directories-first'
 alias ll='lsd -la --group-directories-first'
