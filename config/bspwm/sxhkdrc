@@ -39,9 +39,9 @@ super + y
     polybar-msg cmd toggle
 
 # Lockscreen
-super + {l,x} 
-	{~/.config/bspwm/scripts/lock, \
-	 Powermenu}
+#~/.config/bspwm/scripts/lock
+super + {l} 
+	{physlock -d}
 
 # set the window state
 super + {t,shift + t,s}

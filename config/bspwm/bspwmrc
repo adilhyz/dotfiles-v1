@@ -121,17 +121,11 @@ nm-applet &
 # Bluetooth
 blueberry-tray &
 
+# Parem
+xautolock -detectsleep -time 1 physlock
+
 # Update
 #pamac-tray &
 
-# Parem
-xautolock -detectsleep -time 5 -locker "~/.config/bspwm/scripts/lock" &
-
-# Bruh
-#exec mpd &
-
-# Wall
-#variety &
-
 # Screen Saver
-redshift -c ~/.config/redshift.conf &
+#redshift -c ~/.config/redshift.conf &

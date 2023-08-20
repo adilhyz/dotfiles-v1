@@ -73,7 +73,7 @@ dependencias=(base-devel rustup pacman-contrib bspwm polybar sxhkd \
 			  ncmpcpp neofetch geany ranger mpc picom xdotool \
 			  feh ueberzug maim pamixer libwebp xdg-user-dirs blueberry \
 			  thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tumbler \
-			  webp-pixbuf-loader xorg-xprop xorg-xkill unclutter physlock papirus-icon-theme lxappearance-gtk3 kvantum qt5ct\
+			  webp-pixbuf-loader xorg-xprop xorg-xkill unclutter physlock papirus-icon-theme lxappearance-gtk3 \
 			  ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd ttf-inconsolata ttf-joypixels \
 			  zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting xclip xcolor xorg-xinit xorg-xsetroot xorg-xwininfo xorg-xrandr)
 
@@ -242,7 +242,7 @@ fc-cache -rv >/dev/null 2>&1
 printf "%s%sFiles copied succesfully!!%s\n" "${BLD}" "${CGR}" "${CNC}"
 sleep 3
 
-########## ---------- Installing Yay, Paru, i3lock, Cava & Eww from source ---------- ##########
+########## ---------- Installing Yay, Paru, Cava & Eww from source ---------- ##########
 
 logo "installing Yay"
 
@@ -266,11 +266,6 @@ if ! command -v paru >/dev/null 2>&1; then
 	cd
 else
 	printf "%s%sParu is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
-fi
-
-if ! command -v i3lock >/dev/null 2>&1; then 
-	printf "\n%s%sInstalling i3lock-color, for lockscreen.%s\n" "${BLD}" "${CBL}" "${CNC}"
-	yay -S i3lock-color --noconfirm
 fi
 
 if ! command -v cava >/dev/null 2>&1; then 
