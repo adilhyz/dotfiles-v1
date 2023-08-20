@@ -167,4 +167,4 @@ schemes:
       text: '#282828'
 
 # Set the color scheme for the actual rice.
-colors: *silvia_gruvbox
+colors: *esostrefis_rose_pine
