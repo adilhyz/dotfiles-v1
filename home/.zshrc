@@ -9,7 +9,7 @@ export VISUAL='geany'
 export EDITOR='nvim'
 export TERMINAL='alacritty'
 export BROWSER='firefox'
-export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..|ncmpcpp|musik)"
 
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
