@@ -77,7 +77,7 @@ _EOF_
 
 # Appearance
 set_appearance() {
-	XFILE="$PATH_BSPWM/xsettingsd"
+	XFILE="$BDIR/xsettingsd"
 	GTK2FILE="$HOME/.gtkrc-2.0"
 	GTK3FILE="$HOME/.config/gtk-3.0/settings.ini"
 

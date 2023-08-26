@@ -51,6 +51,9 @@ bspc config pointer_action1               move
 bspc config pointer_action2               resize_side 
 bspc config pointer_action3               resize_corner
 
+# remove all rules first
+bspc rule -r *:*
+
 #bspc wm --adopt-orphans
 bspc rule -a scratch sticky=on state=floating focus=on
 bspc rule -a Subl desktop='^4' follow=on
@@ -110,6 +113,9 @@ pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/polkit-gnome/polkit-g
 # Fix cursor
 xsetroot -cursor_name left_ptr
 unclutter -idle 3 &
+
+# Lauch xsettingsd daemon
+xsettingsd --config="$HOME"/.config/bspwm/xsettingsd &
 
 # Teuingg
 numlockx on &
