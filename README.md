@@ -5,11 +5,11 @@
 
 ## 🛠️ Tools Overview
 
-> - **WM**: **`bspwm`** https://github.com/baskerville/bspwm
+> - **WM**: **`Bspwm`** https://github.com/baskerville/bspwm
 > - **OS**: **`Archlinux`** https://archlinux.org
 > - **Terminal**: `Alacritty` https://alacritty.org
-> - **Shell**: **`zsh`** https://ohmyz.sh
-> - **Bar**: **`polybar`** https://github.com/polybar/polybar
+> - **Shell**: **`Zsh`** https://ohmyz.sh
+> - **Bar**: **`Polybar`** https://github.com/polybar/polybar
 > - **Browser**: `Chrome`/`Firefox`
 
 ## 📦 setup
