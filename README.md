@@ -5,13 +5,12 @@
 
 ## 🛠️ Tools Overview
 
-> - **WM**: [bspwm](https://github.com/baskerville/bspwm)
-> - **OS**: [Archlinux]([https://archlinux.org/])
-> - **Terminal**: alacritty
-> - **Shell**: zsh
-> - **Framework**: [oh-my-zsh](https://ohmyz.sh/)
-> - **Bar**: polybar
-> - **Browser**: Chrome/Firefox
+> - **WM**: **`bspwm`** https://github.com/baskerville/bspwm
+> - **OS**: **`Archlinux`** https://archlinux.org
+> - **Terminal**: `Alacritty` https://alacritty.org
+> - **Shell**: **`zsh`** https://ohmyz.sh
+> - **Bar**: **`polybar`** https://github.com/polybar/polybar
+> - **Browser**: `Chrome`/`Firefox`
 
 ## 📦 setup
 
@@ -35,6 +34,6 @@ chmod +x RiceInstaller
 ```
 </details>
 
-## Inspired by
+## 🌠 Inspired by
 
 https://github.com/gh0stzk/dotfiles
