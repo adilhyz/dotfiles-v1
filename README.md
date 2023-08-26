@@ -3,7 +3,7 @@
 
 ![rice](https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/preview/all.gif)
 
-## Tools Overview
+## 🛠️ Tools Overview
 
 > - **WM**: [bspwm](https://github.com/baskerville/bspwm)
 > - **OS**: [Archlinux]([https://archlinux.org/])
