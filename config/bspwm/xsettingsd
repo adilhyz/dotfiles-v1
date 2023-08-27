@@ -1,7 +1,7 @@
 ## Copyright (C) 2020-2022 Aditya Shakya <adi1090x@gmail.com>
 
-Net/ThemeName "Manhattan"
-Net/IconThemeName "Nordzy-purple-dark"
+Net/ThemeName "Gruvbox"
+Net/IconThemeName "Nordzy-pink-dark"
 Gtk/CursorThemeName "phinger-cursors"
 Net/EnableEventSounds "0"
 Net/EnableInputFeedbackSounds "0"

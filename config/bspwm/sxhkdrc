@@ -5,7 +5,7 @@
 
 #Picom Toggle
 ctrl + alt + p
-    ~/.config/bspwm/scripts/picom-toggle.sh
+    sh ~/.config/bspwm/scripts/picom-toggle
 
 ctrl + shift + Escape
     xfce4-taskmanager
@@ -34,6 +34,10 @@ super + d
 super + v
 	RiceSelector
 
+# Windows 
+super + w
+	sh ~/.config/bspwm/scripts/Windows
+
 #Hide polybar
 super + y
     polybar-msg cmd toggle
@@ -52,7 +56,7 @@ super + f
 	bspc node --state \~fullscreen
 
 # Apps
-super {w,e,p,m}
+super {z,e,p,m}
 	{firefox, \
 	 thunar, \
 	 ColorPicker, \

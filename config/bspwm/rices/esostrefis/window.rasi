@@ -1,0 +1,187 @@
+/* 
+    @author:                        adilhyz
+     GitHub:                       @adilhyz
+     Developer:                    Sanrei Adilhyz
+
+*/
+ 
+configuration {
+    show-icons:                     true;
+    display-window: 				"Windows :";
+    window-format: 					" {c}  󰇙  {t}";
+    disable-history:                false;
+	click-to-exit: 					true;
+}
+
+* {
+    font:                           "Terminess Nerd Font Mono Bold 10";
+    font-weight:                    bold;
+    background:                     #1f1d29;
+    background-alt:                 #1f1d29E0;
+    foreground:                     #eaeaea;
+    selected:                       #c3a5e6;
+    highlight:                      #9bced7;
+    urgent:                         #ea6f91;
+    on:                             #6D8895;
+    off:                            #ea6f91;
+}
+
+window {
+    transparency:                   "real";
+    location:                       center;
+    anchor:                         center;
+    fullscreen:                     false;
+    width:                          550px;
+    x-offset:                       0px;
+    y-offset:                       0px;
+
+    /* properties for all widgets */
+    enabled:                        true;
+    border-radius:                  6px;
+    cursor:                         "default";
+    background-color:               @background;
+}
+
+prompt {
+    enabled: 						true;
+	margin: 						0px 0px 0px 8px;
+    padding:    					6px 6px 6px 6px;
+	background-color: 				@selected;
+	text-color: 					@background;
+    border:                  		2px;
+    border-color:                  	@selected;
+    border-radius:                  5px;
+}
+
+textbox-prompt-colon {
+	expand: 						false;
+	str: 							"";
+    border-radius:                  5px;
+    background-color:               @selected;
+    text-color:                     @background-alt;
+    padding:    					6px 10px 6px 10px;
+	font:							"Iosevka Nerd Font 10";
+}
+
+entry {
+    background-color:               @selected;
+    text-color:                     @background-alt;
+    margin: 						0px 0px 0px 8px;
+    border:                  		2px;
+    border-radius:                  5px;
+    border-color:                  	@selected;
+    placeholder-color:              @background-alt;
+    placeholder:                    "  Find...  ";
+    expand:                         true;
+    horizontal-align:               0;
+    blink:                          true;
+    padding:                        6px;
+}
+
+inputbar {
+    enabled:                        true;
+    spacing:                        10px;
+    padding:                        40px 40px 45px;
+    background-color:               transparent;
+    background-image:               url("~/.config/bspwm/assets/cr-rofi.webp", width);
+    text-color:                     @foreground;
+    orientation:                    horizontal;
+    children:                       [ "textbox-prompt-colon", "entry" ];
+}
+
+case-indicator {
+    background-color:               @background;
+    text-color:                     @foreground;
+    spacing:                        0;
+}
+
+
+listview {
+    enabled:                        true;
+    columns:                        1;
+    lines:                          7;
+    cycle:                          true;
+    dynamic:                        true;
+    scrollbar:                      false;
+    layout:                         vertical;
+    reverse:                        false;
+    fixed-height:                   true;
+    fixed-columns:                  true;
+    
+    spacing:                        1px;
+    background-color:               transparent;
+    text-color:                     @foreground;
+    cursor:                         "default";
+}
+
+mainbox {
+    enabled:                        true;
+    spacing:                        0px;
+    background-color:               transparent;
+    orientation:                    vertical;
+    children:                       [ "inputbar", "listbox" ];
+}
+
+listbox {
+    spacing:                        10px;
+    padding:                        10px 5px 10px 5px;
+    background-color:               transparent;
+    orientation:                    vertical;
+    children:                       [ "message", "listview" ];
+}
+
+element {
+    background-color:               @background;
+    text-color:                     @foreground;
+    orientation:                    horizontal;
+    border-radius:                  5px;
+    padding:                        5px;
+}
+
+element-icon {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    size:                           17px;
+    border:                         0px;
+}
+
+element-text {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    expand:                         true;
+    horizontal-align:               0;
+    vertical-align:                 0;
+    margin:                         2px 0px 2px 2px;
+}
+
+element selected {
+    background-color:               @selected;
+    text-color:                     @background;
+    border:                  		0px;
+    border-radius:                  5px;
+    border-color:                  	@selected;
+}
+
+element.active,
+element.selected.urgent {
+    background-color:               @on;
+    text-color:                     @background;
+    border-color:                   @on;
+}
+
+element.selected.urgent {
+    border-color:                   @selected;
+}
+
+element.urgent,
+element.selected.active {
+    background-color:               @off;
+    text-color:                     @background;
+    border-color:                   @off;
+}
+
+element.selected.active {
+    border-color:                   @selected;
+}
