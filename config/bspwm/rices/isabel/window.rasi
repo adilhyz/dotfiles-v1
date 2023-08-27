@@ -4,13 +4,13 @@
      Developer:                    Sanrei Adilhyz
 
 */
- 
+
 configuration {
     show-icons:                     true;
-    display-window: 				"Windows :";
-    window-format: 					"  󰇙   {t}";
+    display-window:                 "Windows :";
+    window-format:                  "  󰇙   {t}";
     disable-history:                false;
-	click-to-exit: 					true;
+    click-to-exit:                  true;
 }
 
 * {
@@ -43,31 +43,31 @@ window {
 }
 
 prompt {
-    enabled: 						true;
-	margin: 						0px 0px 0px 8px;
-    padding:    					6px 6px 6px 6px;
-	background-color: 				@selected;
-	text-color: 					@background;
-    border:                  		2px;
+    enabled:                        true;
+    margin:                         0px 0px 0px 8px;
+    padding:                        6px 6px 6px 6px;
+    background-color:               @selected;
+    text-color:                     @background;
+    border:                         2px;
     border-color:                  	@selected;
     border-radius:                  5px;
 }
 
 textbox-prompt-colon {
-	expand: 						false;
-	str: 							"";
+    expand:                         false;
+    str:                            "";
     border-radius:                  5px;
     background-color:               @selected;
     text-color:                     @highlight;
-    padding:    					6px 10px 6px 10px;
-	font:							"Iosevka Nerd Font 10";
+    padding:                        6px 10px 6px 10px;
+    font:                           "Iosevka Nerd Font 10";
 }
 
 entry {
     background-color:               @selected;
     text-color:                     @highlight;
-    margin: 						0px 0px 0px 8px;
-    border:                  		2px;
+    margin:                         0px 0px 0px 8px;
+    border:                         2px;
     border-radius:                  5px;
     border-color:                  	@selected;
     placeholder-color:              @foreground;
@@ -139,8 +139,8 @@ element {
 }
 
 element-icon {
-    background-color: 				inherit;
-    text-color:       				inherit;
+    background-color:               inherit;
+    text-color:                     inherit;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
     size:                           17px;
@@ -148,8 +148,8 @@ element-icon {
 }
 
 element-text {
-    background-color: 				inherit;
-    text-color:       				inherit;
+    background-color:               inherit;
+    text-color:                     inherit;
     expand:                         true;
     horizontal-align:               0;
     vertical-align:                 0;
@@ -159,7 +159,7 @@ element-text {
 element selected {
     background-color:               @selected;
     text-color:                     @background;
-    border:                  		0px;
+    border:                         0px;
     border-radius:                  5px;
     border-color:                  	@selected;
 }
