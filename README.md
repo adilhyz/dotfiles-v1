@@ -3,16 +3,17 @@
 
 ![rice](https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/preview/all.gif)
 
-## 🛠️ Tools Overview
+## 🌏 Overview
 
-> - **WM**: **`Bspwm`** https://github.com/baskerville/bspwm
-> - **OS**: **`Archlinux`** https://archlinux.org
-> - **Terminal**: `Alacritty` https://alacritty.org
-> - **Shell**: **`Zsh`** https://ohmyz.sh
-> - **Bar**: **`Polybar`** https://github.com/polybar/polybar
-> - **Browser**: `Chrome`/`Firefox`
+> - **Operating System**: **[`Archlinux`](https://archlinux.org)**
+> - **Window Manager**: **[`Bspwm`](https://github.com/baskerville/bspwm)**
+> - **Terminal**: **[`Alacritty`](https://github.com/alacritty/alacritty)**
+> - **Shell**: **[`Zsh`](https://zsh.org)**
+> - **Launcher** : **[`Rofi`](https://github.com/davatorium/rofi)**
+> - **Status Bar**: **[`Polybar`](https://github.com/polybar/polybar)**
+> - **Browser**: [`Chrome`](https://chrome.google.com) / [`Firefox`](https://www.mozilla.org/en/firefox/)
 
-## 📦 setup
+## 📦 Setup
 
 <details>
 <summary><b>Installation:</b></summary>
