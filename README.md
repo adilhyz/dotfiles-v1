@@ -1,9 +1,11 @@
-# dotfiles v1
-⚕ - Personal Dotfiles
+# 🍚 dotfiles v1
+<b>⚕  Personal Dotfiles</b>
+- `🌠 Inspired/fork/edit from ` [`gh0stzk`](https://github.com/gh0stzk/dotfiles)
+- `💻 Linux Configuration by` [`adilhyz`](https://github.com/adilhyz).
 
-![rice](https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/preview/all.gif)
 
 ## 🌏 Overview
+<img align="right" src="https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/preview/all.gif" width="404"/>
 
 > - **Operating System**: **[`Archlinux`](https://archlinux.org)**
 > - **Window Manager**: **[`Bspwm`](https://github.com/baskerville/bspwm)**
@@ -34,7 +36,3 @@ chmod +x RiceInstaller
 ./RiceInstaller
 ```
 </details>
-
-## 🌠 Inspired by
-
-https://github.com/gh0stzk/dotfiles
