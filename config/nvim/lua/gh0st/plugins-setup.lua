@@ -45,6 +45,8 @@ use("nvim-lualine/lualine.nvim")
 -- Colorizer
 use("norcalli/nvim-colorizer.lua")
 
+-- Plugin Discord Rich Presence
+use("andweeb/presence.nvim")
 
  if packer_bootstrap then
     require("packer").sync()
