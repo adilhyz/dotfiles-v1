@@ -122,6 +122,9 @@ alias mirrors="sudo reflector --verbose --latest 5 --country 'Indonesia' --age 5
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
+#fs
+alias fixntfs="sudo ntfsfix -d"
+
 alias mantenimiento="yay -Sc && sudo pacman -Scc"
 alias purga="sudo pacman -Rns $(pacman -Qtdq) ; sudo fstrim -av"
 alias update="paru -Syu --nocombinedupgrade"

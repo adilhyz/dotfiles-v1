@@ -72,7 +72,7 @@ dependencias=(base-devel rustup pacman-contrib bspwm polybar sxhkd \
 			  jq polkit-gnome git playerctl mpd \
 			  ncmpcpp neofetch geany ranger mpc picom xdotool \
 			  feh ueberzug maim pamixer libwebp xdg-user-dirs blueberry \
-			  thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tumbler \
+			  thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tumbler ntfs-3g\
 			  webp-pixbuf-loader xorg-xprop xorg-xkill xsettingsd unclutter numlockx physlock papirus-icon-theme lxappearance-gtk3 \
 			  ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd ttf-inconsolata ttf-joypixels \
 			  zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting xclip xcolor xorg-xinit xorg-xsetroot xorg-xwininfo xorg-xrandr)
