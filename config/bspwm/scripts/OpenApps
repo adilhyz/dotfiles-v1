@@ -28,6 +28,8 @@ case "$1" in
     alacritty -e nvim & disown;;
   --music)
     alacritty --class MusicPlayer,Alacritty -e ncmpcpp & disown;;
+  --htop)
+    alacritty -e htop & disown;;
   --spot)
     spotify & disown;;
   --fetch)

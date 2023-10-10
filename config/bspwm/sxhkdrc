@@ -39,8 +39,18 @@ super + w
 	sh ~/.config/bspwm/scripts/Windows
 
 #Hide polybar
-super + y
-    polybar-msg cmd toggle
+#super + y
+#    polybar-msg cmd toggle
+
+# Hide/Show Bar (Polybar and/or eww)
+super + {y,u}
+	HideBar {-h,-u}
+
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
 
 # Lockscreen
 #~/.config/bspwm/scripts/lock
@@ -56,16 +66,14 @@ super + f
 	bspc node --state \~fullscreen
 
 # Apps
-super {z,e,p,m}
+super {z,e,p,h,r,m}
 	{firefox, \
 	 thunar, \
 	 ColorPicker, \
+	 OpenApps --htop, \
+	 OpenApps --ranger, \
 	 OpenApps --spot}
 	 		  #--music
-
-# Hide/Show Bar (Polybar and/or eww)
-super + {i,u}
-	HideBar {-h,-u}
 
 # Change transparency on focused window
 ctrl + alt {plus,minus,t}
@@ -105,11 +113,6 @@ super + {_,shift + }q
 	bspc node -{c,k}
 
 ####
-
-# rotate desktop
-super + r
-	bspc node @/ --rotate {90,-90}
-
 # Circulate the leaves of the tree
 super + a
 	bspc node @/ --circulate {backward,forward}
