@@ -121,6 +121,7 @@ alias mirrors="sudo reflector --verbose --latest 5 --country 'Indonesia' --age 5
 #grub
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias grub-entry="sudo ${EDITOR} /etc/grub.d/40_custom"
 
 #fs
 alias fixntfs="sudo ntfsfix -d"
