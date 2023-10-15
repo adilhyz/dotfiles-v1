@@ -1,0 +1,19 @@
+
+(defwidget cal []
+  (box :class "cal-box"
+       :orientation "v"
+       :space-evenly false
+    (calendar :class "cal"
+              :day {formattime(EWW_TIME, "%d")}
+              :month {formattime(EWW_TIME, "%m")}
+              :year {formattime(EWW_TIME, "%Y")}
+  ))
+)
+
+;; Windows ;;
+(defwindow date
+  :geometry (geometry :x "-6%"
+                      :y "-6.5%"
+                      :anchor "right bottom")
+  :wm-ignore true
+(cal))

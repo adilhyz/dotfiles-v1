@@ -34,6 +34,9 @@ super + d
 super + v
 	RiceSelector
 
+~button3
+  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
+
 # Windows 
 super + w
 	sh ~/.config/bspwm/scripts/Windows
@@ -66,10 +69,11 @@ super + f
 	bspc node --state \~fullscreen
 
 # Apps
-super {z,e,p,h,r,m}
+super {z,e,p,x,h,r,m}
 	{firefox, \
 	 thunar, \
 	 ColorPicker, \
+	 OpenApps --powermenu, \
 	 OpenApps --htop, \
 	 OpenApps --ranger, \
 	 OpenApps --spot}
@@ -158,8 +162,8 @@ super + {_,shift + }{Left,Down,Up,Right}
 	bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
-super + {p,b,comma,period}
-	bspc node -f @{parent,brother,first,second}
+#super + {p,b,comma,period}
+#	bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous node in the current desktop
 alt + {_,shift + }Tab

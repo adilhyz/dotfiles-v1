@@ -1,11 +1,6 @@
-// # Modification by    -  me
-// # Source             -  https://github.com/adilhyz/dotfiles-v1
-// # original           -  z0mbi3
+// # z0mbi3 - https://github.com/gh0stzk/dotfiles
 
-/** Original Work
- * Author : Aditya Shakya (adi1090x)
- * Github : https://github.com/adi1090x/rofi
- **/
+//----- Main Configuration -----//
 
 configuration {
 	modi: 						"drun";
@@ -21,16 +16,18 @@ configuration {
 	me-accept-entry:			"MousePrimary";
 }
 
-/*****----- Global Properties -----*****/
+//----- Global Properties -----//
+
 * {
-    font:                        "Terminess Nerd Font Mono Bold 10";
-    background:                  #1f1d29;
-    background-alt:              #1f1d29E0;
-    foreground:                  #eaeaea;
-    selected:                    #c3a5e6;
+font: "Terminess Nerd Font Mono Bold 10";
+background: #1f1d29;
+background-alt: #1f1d29E0;
+foreground: #eaeaea;
+selected: #c3a5e6;
 }
 
-/*****----- Main Window -----*****/
+//----- Main Window -----//
+
 window {
     /* properties for window widget */
     transparency:                "real";
@@ -48,7 +45,8 @@ window {
     background-color:            @background;
 }
 
-/*****----- Main Box -----*****/
+//----- Main Box -----//
+
 mainbox {
     enabled:                     true;
     spacing:                     0px;
@@ -65,7 +63,8 @@ listbox {
     children:                    [ "message", "listview" ];
 }
 
-/*****----- Inputbar -----*****/
+//----- Inputbar -----//
+
 inputbar {
     enabled:                     true;
     spacing:                     10px;
@@ -101,9 +100,8 @@ dummy {
     background-color:            transparent;
 }
 
+//----- Listview -----//
 
-
-/*****----- Listview -----*****/
 listview {
     enabled:                     true;
     columns:                     3;
@@ -122,7 +120,8 @@ listview {
     cursor:                      "default";
 }
 
-/*****----- Elements -----*****/
+//----- Elements -----//
+
 element {
     enabled:                     true;
     spacing:                     10px;
@@ -154,7 +153,8 @@ element-text {
     horizontal-align:            0.0;
 }
 
-/*****----- Message -----*****/
+//----- Message -----//
+
 message {
     background-color:            transparent;
 }
