@@ -232,7 +232,8 @@ alt + space
 	bspc node @/ --rotate {90,-90}
 
 # PowerOff
-#XF86PowerOff
+XF86PowerOff
+  OpenApps --powermenu
 
 # Manage brightness
 XF86MonBrightness{Up,Down}
