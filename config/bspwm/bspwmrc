@@ -22,29 +22,58 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 #	#bspc monitor "$monitor" -d '' '' '' '' '' ''
 #done
 
-# change these values according to your system
-# you can use `xrandr -q` to get the names of monitors
-#MONITOR_1="eDP"
-#MONITOR_2="HDMI-A-0"
-#MONITOR_3="HDMI-A-1"
-#bspc monitor "$MONITOR_1" -d '' ''
-#bspc monitor "$MONITOR_2" -d '' '' ''
-#bspc monitor "$MONITOR_3" -d '' '' ''
-#bspc wm -O "$MONITOR_2" "$MONITOR_1" "$MONITOR_3"
-
 #INTERNAL_MONITOR="eDP1"
 #EXTERNAL_MONITOR="HDMI-1"
-INTERNAL_MONITOR="$(xrandr -q | grep -w 'connected' | cut -d' ' -f1)";
-EXTERNAL_MONITOR="$(xrandr -q | grep -w 'connected' | cut -d' ' -f1)";
 
-if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-	#bspc monitor "$EXTERNAL_MONITOR" -d '' '' '' '
-	#bspc monitor "$INTERNAL_MONITOR" -d '' '' '' '''
-	bspc monitor "$EXTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-	bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-	bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
+#if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+#	#bspc monitor "$EXTERNAL_MONITOR" -d '' '' '' '
+#	#bspc monitor "$INTERNAL_MONITOR" -d '' '' '' '''
+#	bspc monitor "$EXTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+#	bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+#	bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
+#else
+#	bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+#fi
+
+#if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+#    # Monitor eksternal terdeteksi, aktifkan mode mirror
+#    xrandr --output "$INTERNAL_MONITOR" --same-as "$EXTERNAL_MONITOR"
+#    # Atur workspace sesuai kebutuhan Anda
+#    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'   
+#    # Jika Anda ingin menggunakan bspwm, Anda juga dapat menjalankan perintah ini
+#    bspc wm -O "$INTERNAL_MONITOR"
+#else
+#    # Tidak ada monitor eksternal, atur workspace pada monitor internal
+#    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+#fi
+
+# Presentations, both on my screen and on the projector (Mirror).
+EXTERNAL_MONITOR=""
+INTERNAL_MONITOR=""
+
+# Menggunakan perulangan for untuk mencari monitor internal dan eksternal
+for output in $(xrandr -q | grep -w 'connected' | cut -d' ' -f1); do
+    if [ "$output" != "connected" ]; then
+        INTERNAL_MONITOR="$output"
+    else
+        EXTERNAL_MONITOR="$output"
+    fi
+done
+
+# Konfigurasi layar
+if [ -n "$EXTERNAL_MONITOR" ]; then
+    xrandr --output "$INTERNAL_MONITOR" --auto --output "$EXTERNAL_MONITOR" --auto --same-as "$INTERNAL_MONITOR"
+    bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
 else
-	bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+    xrandr --output "$INTERNAL_MONITOR" --auto
+fi
+
+# Set workspace sesuai dengan preferensi Anda
+if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+    bspc monitor "$EXTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
+else
+    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
 fi
 
 workspaces
