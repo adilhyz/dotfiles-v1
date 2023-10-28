@@ -18,6 +18,10 @@ WIDGET_DIR="$HOME/.config/bspwm/eww"
     --rice)
       RiceSelector
       ;;
+    --clip)
+      #rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -theme $HOME/.config/bspwm/scripts/Clipboard.rasi
+      rofi -theme $HOME/.config/bspwm/scripts/Clipboard.rasi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; xdotool type "$(xclip -o -selection clipboard)"
+      ;;
     --terminal)
       alacritty
       ;;

@@ -180,11 +180,18 @@ nm-applet &
 # Bluetooth
 blueberry-tray &
 
-# Parem
+# Auto Lock
 xautolock -detectsleep -time 5 -locker physlock &
+
+# Clipboard
+greenclip daemon &
+
+# Typing repeat speed
+xset r rate 375 45 &
 
 # Update
 #pamac-tray &
 
-# Screen Saver
-#redshift -c ~/.config/redshift.conf &
+#Blue light filter
+#redshift -c ~/.config/redshift.conf & 
+

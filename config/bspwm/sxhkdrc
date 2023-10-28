@@ -34,6 +34,10 @@ super + d
 super + v
 	RiceSelector
 
+# Clipboard History
+super + c
+	OpenApps --clip
+
 ~button3
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
 

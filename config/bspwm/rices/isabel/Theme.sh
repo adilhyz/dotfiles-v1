@@ -126,6 +126,17 @@ set_launcher_config () {
 		-e 's/[^/]*-rofi/is-rofi/'
 }
 
+# Set Rofi Clipboard launcher config
+set_clipboard_config () {
+	sed -i "$HOME/.config/bspwm/scripts/Clipboard.rasi" \
+		-e 's/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
+		-e 's/\(background: \).*/\1#14171c;/' \
+		-e 's/\(background-alt: \).*/\1#14171cE0;/' \
+		-e 's/\(foreground: \).*/\1#b8bfe5;/' \
+		-e 's/\(selected: \).*/\1#7560d3;/' \
+		-e 's/[^/]*-rofi/is-rofi/'
+}
+
 # Appearance
 set_appearance() {
 	XFILE="$BDIR/xsettingsd"
@@ -176,4 +187,5 @@ set_dunst_config
 set_eww_colors
 set_jgmenu_colors
 set_launcher_config
+set_clipboard_config
 set_appearance
