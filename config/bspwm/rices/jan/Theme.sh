@@ -49,7 +49,7 @@ set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
 		-e "s/background .*/background \"#070219\"/" \
 		-e "s/vertical .*/vertical true/" \
-		-e "s/geometry .*/geometry 1x1-117+57/" \
+		-e "s/geometry .*/geometry 1x1-123+57/" \
 		-e "s/grow_gravity .*/grow_gravity NE/" \
 		-e "s/icon_gravity .*/icon_gravity NE/"
 }
