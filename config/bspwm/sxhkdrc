@@ -26,20 +26,16 @@ super + Return
 super + alt + Return
 	OpenApps --floating
 
-# Menu aplicaciones
-super + d
-	OpenApps --menu
-
-# Theme Selector
-super + v
-	RiceSelector
-
 ~button3
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
 
-# Windows 
-super + w
-	sh ~/.config/bspwm/scripts/Windows
+
+# Emoji, Windows, Theme Selector, & Menu aplikasi
+super + {period,w,v,d}
+	{sh ~/.config/bspwm/scripts/Emoji, \
+	sh ~/.config/bspwm/scripts/Windows, \
+	RiceSelector, \
+	OpenApps --menu}
 
 #Hide polybar
 #super + y

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+bspwm_dir="$HOME/.config/bspwm"
+STYLE=""
+
+# Mengecek apakah file .rice ada dan tidak kosong
+if [[ -f "$bspwm_dir/.rice" && -s "$bspwm_dir/.rice" ]]; then
+    read -r STYLE < "$bspwm_dir/.rice"
+fi
+
+RASI="$bspwm_dir/rices/$STYLE/window.rasi"
+rofi -no-lazy-grab -show emoji -modi emoji -theme ${RASI}
