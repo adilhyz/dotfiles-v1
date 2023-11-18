@@ -10,15 +10,15 @@ BDIR="$HOME/.config/bspwm"
 TDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 THEME="${TDIR##*/}"
 
-# Set bspwm configuration for esostrefis
+# Set bspwm configuration for aing
 set_bspwm_config() {
 	bspc config border_width 0
 	bspc config top_padding 2
 	bspc config bottom_padding 46
-	bspc config normal_border_color "#9bced7"
-	bspc config active_border_color "#9bced7"
-	bspc config focused_border_color "#c3a5e6"
-	bspc config presel_feedback_color "#c3a5e6"
+	bspc config normal_border_color "#6E91BA"
+	bspc config active_border_color "#6E91BA"
+	bspc config focused_border_color "#E3C4BA"
+	bspc config presel_feedback_color "#E3C4BA"
 	bspc config left_padding 2
 	bspc config right_padding 2
 	bspc config window_gap 6
@@ -31,7 +31,7 @@ set_term_config() {
 		-e "s/size: .*/size: 10/g"
 	
 	sed -i "$HOME"/.config/alacritty/rice-colors.yml \
-		-e "s/colors: .*/colors: *esostrefis_rose_pine/"
+		-e "s/colors: .*/colors: *aing_dark/"
 }
 
 # Set compositor configuration
@@ -51,7 +51,7 @@ set_picom_config() {
 # Set stalonetray config
 set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
-		-e "s/background .*/background \"#1F1D29\"/" \
+		-e "s/background .*/background \"#161a22\"/" \
 		-e "s/vertical .*/vertical true/" \
 		-e "s/geometry .*/geometry 1x1-50+690/" \
 		-e "s/grow_gravity .*/grow_gravity SE/" \
@@ -62,10 +62,10 @@ set_stalonetray_config() {
 set_dunst_config() {
 	sed -i "$HOME"/.config/bspwm/dunstrc \
 		-e "s/transparency = .*/transparency = 0/g" \
-		-e "s/frame_color = .*/frame_color = \"#1f1d29\"/g" \
-		-e "s/separator_color = .*/separator_color = \"#ea6f91\"/g" \
+		-e "s/frame_color = .*/frame_color = \"#161a22\"/g" \
+		-e "s/separator_color = .*/separator_color = \"#927887\"/g" \
 		-e "s/font = .*/font = JetBrainsMono Nerd Font Medium 9/g" \
-		-e "s/foreground='.*'/foreground='#9bced7'/g" \
+		-e "s/foreground='.*'/foreground='#6E91BA'/g" \
 		-e "s/origin = .*/origin = bottom-right/g" \
 		-e "s/offset = .*/offset = 8x52/g" \
 		-e "s/icon_position = .*/icon_position = left/g" \
@@ -77,18 +77,18 @@ set_dunst_config() {
 	cat >> "$HOME"/.config/bspwm/dunstrc <<- _EOF_
 		[urgency_low]
 		timeout = 3
-		background = "#1f1d29"
-		foreground = "#eaeaea"
+		background = "#161a22"
+		foreground = "#cadee7"
 
 		[urgency_normal]
 		timeout = 6
-		background = "#1f1d29"
-		foreground = "#eaeaea"
+		background = "#161a22"
+		foreground = "#cadee7"
 
 		[urgency_critical]
 		timeout = 0
-		background = "#1f1d29"
-		foreground = "#eaeaea"
+		background = "#161a22"
+		foreground = "#cadee7"
 _EOF_
 }
 
@@ -96,39 +96,39 @@ _EOF_
 set_eww_colors() {
 	cat > "$HOME"/.config/bspwm/eww/colors.scss << EOF
 // Eww colors for Cristina rice
-\$bg: #1f1d29;
-\$bg-alt: #272433;
-\$fg: #eaeaea;
-\$black: #6f6e85;
-\$lightblack: #262831;
-\$red: #ea6f91;
-\$blue: #34738e;
-\$cyan: #eabbb9;
-\$magenta: #c3a5e6;
-\$green: #9bced7;
-\$yellow: #f1ca93;
-\$archicon: #0f94d2;
+\$bg: #161a22;
+\$bg-alt: #262c3a;
+\$fg: #cadee7;
+\$black: #1e232e;
+\$lightblack: #2d3546;
+\$red: #927887;
+\$blue: #D2ACA9;
+\$cyan: #99A9CC;
+\$magenta: #E3C4BA;
+\$green: #6E91BA;
+\$yellow: #A393A2;
+\$archicon: #0f1116;
 EOF
 }
 
 # Set jgmenu colors for Cristina
 set_jgmenu_colors() {
 	sed -i "$HOME"/.config/bspwm/jgmenurc \
-		-e 's/color_menu_bg = .*/color_menu_bg = #1f1d29/' \
-		-e 's/color_norm_fg = .*/color_norm_fg = #eaeaea/' \
-		-e 's/color_sel_bg = .*/color_sel_bg = #272433/' \
-		-e 's/color_sel_fg = .*/color_sel_fg = #eaeaea/' \
-		-e 's/color_sep_fg = .*/color_sep_fg = #6f6e85/'
+		-e 's/color_menu_bg = .*/color_menu_bg = #161a22/' \
+		-e 's/color_norm_fg = .*/color_norm_fg = #cadee7/' \
+		-e 's/color_sel_bg = .*/color_sel_bg = #262c3a/' \
+		-e 's/color_sel_fg = .*/color_sel_fg = #cadee7/' \
+		-e 's/color_sep_fg = .*/color_sep_fg = #1e232e/'
 }
 
 # Set Rofi launcher config
 set_launcher_config () {
 	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
 		-e 's/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
-		-e 's/\(background: \).*/\1#1f1d29;/' \
-		-e 's/\(background-alt: \).*/\1#1f1d29E0;/' \
-		-e 's/\(foreground: \).*/\1#eaeaea;/' \
-		-e 's/\(selected: \).*/\1#c3a5e6;/' \
+		-e 's/\(background: \).*/\1#161a22;/' \
+		-e 's/\(background-alt: \).*/\1#161a22E0;/' \
+		-e 's/\(foreground: \).*/\1#cadee7;/' \
+		-e 's/\(selected: \).*/\1#E3C4BA;/' \
 		-e 's/[^/]*-rofi/es-rofi/'
 }
 
@@ -165,7 +165,7 @@ set_appearance() {
 launch_bars() {
 
 	for mon in $(polybar --list-monitors | cut -d":" -f1); do
-		MONITOR=$mon polybar -q esostrefis-bar -c ${rice_dir}/config.ini &
+		MONITOR=$mon polybar -q aing-bar -c ${rice_dir}/config.ini &
 	done
 
 }

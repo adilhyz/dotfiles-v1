@@ -9,6 +9,32 @@
 #  Info     : Alacritty Colorschemes for the 6 rices.
 
 schemes:
+# Colors (Aing) Aing Rice
+  aing_dark: &aing_dark
+    primary:
+      background: '#161a22'
+      foreground: '#cadee7'
+    normal:
+      black:   '#1e232e'
+      red:     '#927887'
+      green:   '#6E91BA'
+      yellow:  '#A393A2'
+      blue:    '#D2ACA9'
+      magenta: '#E3C4BA'
+      cyan:    '#99A9CC'
+      white:   '#edf4f7'
+    bright:
+      black:   '#8d9ba1'
+      red:     '#927887'
+      green:   '#6E91BA'
+      yellow:  '#A393A2'
+      blue:    '#D2ACA9'
+      magenta: '#E3C4BA'
+      cyan:    '#99A9CC'
+      white:   '#cadee7'
+    cursor:
+      cursor: '#cadee7'
+      text: '#cadee7'
 # Colors (Rose-Pine Moon) Esostrefis Rice
   esostrefis_rose_pine: &esostrefis_rose_pine
     primary:
@@ -35,32 +61,6 @@ schemes:
     cursor:
       cursor: '#c3a5e6'
       text: '#1f1d29'
-# Colors (Onedark) Isabel Rice
-  isabel_onedark: &isabel_onedark
-    primary:
-      background: '#14171c'
-      foreground: '#b8bfe5'
-    normal:
-      black:   '#5c6370'
-      red:     '#be5046'
-      green:   '#81ae5f'
-      yellow:  '#d19a66'
-      blue:    '#4889be'
-      magenta: '#7560d3'
-      cyan:    '#49919a'
-      white:   '#c5cddb'
-    bright:
-      black:   '#5c6370'
-      red:     '#e06c75'
-      green:   '#98c379'
-      yellow:  '#e5c07b'
-      blue:    '#61afef'
-      magenta: '#8677cf'
-      cyan:    '#56b6c2'
-      white:   '#abb2bf'
-    cursor:
-      cursor: '#abb2bf'
-      text: '#14171c'
 # Colors (CyberPunk) Jan Rice
   jan_cyberpunk: &jan_cyberpunk
     primary:
@@ -167,4 +167,4 @@ schemes:
       text: '#282828'
 
 # Set the color scheme for the actual rice.
-colors: *esostrefis_rose_pine
+colors: *aing_dark

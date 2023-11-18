@@ -8,7 +8,7 @@
 configuration {
     show-icons:                     true;
     display-window:                 "Windows :";
-    window-format:                  "  󰇙   {t}";
+    window-format:                  " {c}  󰇙  {t}";
     disable-history:                false;
     click-to-exit:                  true;
 }
@@ -16,14 +16,14 @@ configuration {
 * {
     font:                           "Terminess Nerd Font Mono Bold 10";
     font-weight:                    bold;
-    background:                     #14171c;
-    background-alt:                 #14171cE0;
-    foreground:                     #b8bfe5;
-    selected:                       #7560d3;
-    highlight:                      #B9C244;
-    urgent:                         #be5046;
-    on:                             #de8658;
-    off:                            #be5046;
+    background:                     #161a22;
+    background-alt:                 #161a22E0;
+    foreground:                     #cadee7;
+    selected:                       #a399cc;
+    highlight:                      #9bced7;
+    urgent:                         #ea6f91;
+    on:                             #6D8895;
+    off:                            #ea6f91;
 }
 
 window {
@@ -58,19 +58,19 @@ textbox-prompt-colon {
     str:                            "";
     border-radius:                  5px;
     background-color:               @selected;
-    text-color:                     @highlight;
+    text-color:                     @background-alt;
     padding:                        6px 10px 6px 10px;
     font:                           "Iosevka Nerd Font 10";
 }
 
 entry {
     background-color:               @selected;
-    text-color:                     @highlight;
+    text-color:                     @background-alt;
     margin:                         0px 0px 0px 8px;
     border:                         2px;
     border-radius:                  5px;
     border-color:                   @selected;
-    placeholder-color:              @foreground;
+    placeholder-color:              @background-alt;
     placeholder:                    "  Find...  ";
     expand:                         true;
     horizontal-align:               0;
@@ -83,7 +83,7 @@ inputbar {
     spacing:                        10px;
     padding:                        40px 40px 45px;
     background-color:               transparent;
-    background-image:               url("~/.config/bspwm/assets/is-rofi.webp", width);
+    background-image:               url("~/.config/bspwm/assets/fallback.webp", width);
     text-color:                     @foreground;
     orientation:                    horizontal;
     children:                       [ "textbox-prompt-colon", "entry" ];
