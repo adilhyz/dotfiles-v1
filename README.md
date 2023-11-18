@@ -6,7 +6,7 @@
 
 
 ## 🌏 Overview
-<img align="right" src="https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/preview/all.gif" width="404"/>
+<img align="right" src="https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/preview/z.gif" width="404"/>
 
 - **Operating System**: **[`Archlinux`](https://archlinux.org)**
 - **Window Manager**: **[`Bspwm`](https://github.com/baskerville/bspwm)**
