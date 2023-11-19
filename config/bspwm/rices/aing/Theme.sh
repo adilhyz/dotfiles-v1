@@ -14,7 +14,7 @@ THEME="${TDIR##*/}"
 set_bspwm_config() {
 	bspc config border_width 0
 	bspc config top_padding 2
-	bspc config bottom_padding 46
+	bspc config bottom_padding 30
 	bspc config normal_border_color "#6E91BA"
 	bspc config active_border_color "#6E91BA"
 	bspc config focused_border_color "#E3C4BA"
@@ -53,7 +53,7 @@ set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
 		-e "s/background .*/background \"#161a22\"/" \
 		-e "s/vertical .*/vertical true/" \
-		-e "s/geometry .*/geometry 1x1-50+690/" \
+		-e "s/geometry .*/geometry 1x1-36+690/" \
 		-e "s/grow_gravity .*/grow_gravity SE/" \
 		-e "s/icon_gravity .*/icon_gravity SE/"
 }
@@ -67,7 +67,7 @@ set_dunst_config() {
 		-e "s/font = .*/font = JetBrainsMono Nerd Font Medium 9/g" \
 		-e "s/foreground='.*'/foreground='#6E91BA'/g" \
 		-e "s/origin = .*/origin = bottom-right/g" \
-		-e "s/offset = .*/offset = 8x52/g" \
+		-e "s/offset = .*/offset = 8x36/g" \
 		-e "s/icon_position = .*/icon_position = left/g" \
 		-e "s/max_icon_size = .*/max_icon_size = 50/g" \
 		-e "s/corner_radius = .*/corner_radius = 0/g"

@@ -1,11 +1,4 @@
-// # Modification by    -  me
-// # Source             -  https://github.com/adilhyz/dotfiles-v1
-// # Original           -  z0mbi3
-
-/** Original Work
- * Author : Aditya Shakya (adi1090x)
- * Github : https://github.com/adi1090x/rofi
- **/
+// # adilhyz -  https://github.com/adilhyz/dotfiles-v1
 
 configuration {
     show-icons:                 false;
@@ -18,16 +11,16 @@ configuration {
 	me-accept-entry:			"MousePrimary";
 }
 
-/*****----- Global Properties -----*****/
+//----- Global Properties -----//
 * {
-    font:                        "JetBrainsMono Nerd Font Bold 12";
+    font:                        "JetBrainsMono Nerd Font Bold 11";
     background:                  #14171c;
     background-alt:              #14171cE0;
     foreground:                  #b8bfe5;
     selected:                    #81ae5f;
 }
 
-/*****----- Main Window -----*****/
+//----- Main Window -----//
 window {
     /* properties for window widget */
     transparency:                "real";
@@ -47,7 +40,7 @@ window {
     background-color:            @background;
 }
 
-/*****----- Main Box -----*****/
+//----- Main Box -----//
 mainbox {
     enabled:                     true;
     spacing:                     0px;
@@ -58,17 +51,17 @@ mainbox {
 
 listbox {
     spacing:                     7px;
-    padding:                     35px;
+    padding:                     30px 40px;
     background-color:            transparent;
     orientation:                 vertical;
     children:                    [ "message", "listview" ];
 }
 
-/*****----- Inputbar -----*****/
+//----- Inputbar -----//
 inputbar {
     enabled:                     true;
     spacing:                     10px;
-    padding:                     30px 30px 35px;
+    padding:                     40px 40px 40px;
     background-color:            transparent;
     background-image:            url("~/.config/bspwm/assets/rs.webp", width);
     text-color:                  @foreground;
@@ -79,7 +72,7 @@ textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
     str:                         " ";
-    padding:                     12px 15px;
+    padding:                     10px 15px 10px 15px;
     border-radius:               8px;
     background-color:            @background-alt;
     text-color:                  inherit;
@@ -87,7 +80,7 @@ textbox-prompt-colon {
 entry {
     enabled:                     true;
     expand:                      true;
-    padding:                     14px 15px;
+    padding:                     11px 15px;
     border-radius:               8px;
     background-color:            @background-alt;
     text-color:                  inherit;
@@ -103,12 +96,12 @@ dummy {
 
 
 
-/*****----- Listview -----*****/
+//----- Listview -----//
 listview {
     enabled:                     true;
     columns:                     3;
     lines:                       2;
-    cycle:                       true;
+    cycle:                       false;
     dynamic:                     true;
     scrollbar:                   false;
     layout:                      vertical;
@@ -116,13 +109,13 @@ listview {
     fixed-height:                true;
     fixed-columns:               true;
     
-    spacing:                     15px;
+    spacing:                     8px;
     background-color:            transparent;
     text-color:                  @foreground;
     cursor:                      "default";
 }
 
-/*****----- Elements -----*****/
+//----- Elements -----//
 element {
     enabled:                     true;
     spacing:                     10px;
@@ -146,23 +139,4 @@ element-text {
     cursor:                      inherit;
     vertical-align:              0.5;
     horizontal-align:            0.0;
-}
-
-/*****----- Message -----*****/
-message {
-    background-color:            transparent;
-}
-textbox {
-    padding:                     12px;
-    border-radius:               5px;
-    background-color:            @background-alt;
-    text-color:                  @foreground;
-    vertical-align:              0.5;
-    horizontal-align:            0.0;
-}
-error-message {
-    padding:                     12px;
-    border-radius:               5px;
-    background-color:            @background;
-    text-color:                  @foreground;
 }

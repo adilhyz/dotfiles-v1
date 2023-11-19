@@ -1,6 +1,6 @@
 background "#161a22"
 vertical true
-geometry 1x1-50+690
+geometry 1x1-36+690
 grow_gravity SE
 icon_gravity SE
 icon_size 18
