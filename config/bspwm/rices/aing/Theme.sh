@@ -140,18 +140,18 @@ set_appearance() {
 
 	# apply gtk theme, icons, cursor & fonts
 	if [[ `pidof xsettingsd` ]]; then
-		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"Manhattan\"|g" ${XFILE}
-		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Nordzy-purple-dark\"|g" ${XFILE}
+		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"amarena\"|g" ${XFILE}
+		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Nordzy-pink-dark\"|g" ${XFILE}
 		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"phinger-cursors\"|g" ${XFILE}
 	else
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=\"Noto Sans 9\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"Manhattan\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Nordzy-purple-dark\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"amarena\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Nordzy-pink-dark\"/g" ${GTK2FILE}
 		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"phinger-cursors\"/g" ${GTK2FILE}
 		
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=Noto Sans 9/g" ${GTK3FILE}
-		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=Manhattan/g" ${GTK3FILE}
-		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Nordzy-purple-dark/g" ${GTK3FILE}
+		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=amarena/g" ${GTK3FILE}
+		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Nordzy-pink-dark/g" ${GTK3FILE}
 		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=phinger-cursors/g" ${GTK3FILE}
 	fi
 	
