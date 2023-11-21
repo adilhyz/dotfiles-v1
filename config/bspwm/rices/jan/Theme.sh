@@ -157,6 +157,11 @@ set_appearance() {
 	fi	
 }
 
+# Set color cava
+set_cava() {
+	sed -i "$HOME/.config/cava/config" \
+		-e "s/foreground = .*/foreground = magenta/g"
+}
 
 # Launch the bar
 launch_bars() {
@@ -177,4 +182,5 @@ set_dunst_config
 set_eww_colors
 set_jgmenu_colors
 set_launcher_config
+set_cava
 set_appearance

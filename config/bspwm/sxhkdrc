@@ -29,7 +29,6 @@ super + alt + Return
 ~button3
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
 
-
 # Emoji, Windows, Theme Selector, & Menu aplikasi
 super + {period,w,v,d}
 	{sh ~/.config/bspwm/scripts/Emoji, \
@@ -90,7 +89,6 @@ super + Print
 # Screenshot in 10s
 alt + Print
 	ScreenShoTer --in10
-
 
 # Random wallpaper
 super + alt + w

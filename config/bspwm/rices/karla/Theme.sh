@@ -139,6 +139,12 @@ set_appearance() {
 	fi	
 }
 
+# Set color cava
+set_cava() {
+	sed -i "$HOME/.config/cava/config" \
+		-e "s/foreground = .*/foreground = blue/g"
+}
+
 # Set Rofi launcher config
 set_launcher_config () {
 	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
@@ -174,4 +180,5 @@ set_dunst_config
 set_eww_colors
 set_jgmenu_colors
 set_launcher_config
+set_cava
 set_appearance
