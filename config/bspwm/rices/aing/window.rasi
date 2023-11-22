@@ -18,8 +18,8 @@ configuration {
     font-weight:                    bold;
     background:                     #161a22;
     background-alt:                 #161a22E0;
-    foreground:                     #cadee7;
-    selected:                       #a399cc;
+    foreground:                     #eaeaea;
+    selected:                       #c3a5e6;
     highlight:                      #9bced7;
     urgent:                         #ea6f91;
     on:                             #6D8895;

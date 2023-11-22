@@ -27,7 +27,7 @@ set_bspwm_config() {
 # Reload terminal colors
 set_term_config() {
 	sed -i "$HOME"/.config/alacritty/fonts.yml \
-		-e "s/family: .*/family: JetBrainsMono Nerd Font/g" \
+		-e "s/family: .*/family: JetBrainsMono NF/g" \
 		-e "s/size: .*/size: 10/g"
 	
 	sed -i "$HOME"/.config/alacritty/rice-colors.yml \
@@ -53,7 +53,7 @@ set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
 		-e "s/background .*/background \"#161a22\"/" \
 		-e "s/vertical .*/vertical true/" \
-		-e "s/geometry .*/geometry 1x1-36+690/" \
+		-e "s/geometry .*/geometry 1x1-36+705/" \
 		-e "s/grow_gravity .*/grow_gravity SE/" \
 		-e "s/icon_gravity .*/icon_gravity SE/"
 }
@@ -64,7 +64,7 @@ set_dunst_config() {
 		-e "s/transparency = .*/transparency = 0/g" \
 		-e "s/frame_color = .*/frame_color = \"#161a22\"/g" \
 		-e "s/separator_color = .*/separator_color = \"#927887\"/g" \
-		-e "s/font = .*/font = JetBrainsMono Nerd Font Medium 9/g" \
+		-e "s/font = .*/font = JetBrainsMono NF Medium 9/g" \
 		-e "s/foreground='.*'/foreground='#6E91BA'/g" \
 		-e "s/origin = .*/origin = bottom-right/g" \
 		-e "s/offset = .*/offset = 8x36/g" \
@@ -124,8 +124,8 @@ set_jgmenu_colors() {
 # Set Rofi launcher config
 set_launcher_config () {
 	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
 		-e 's/\(background: \).*/\1#161a22;/' \
+		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
 		-e 's/\(background-alt: \).*/\1#161a22E0;/' \
 		-e 's/\(foreground: \).*/\1#cadee7;/' \
 		-e 's/\(selected: \).*/\1#E3C4BA;/' \

@@ -78,6 +78,7 @@ inputbar {
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
+    font:                        "JetBrainsMono NF Bold 9";
     str:                         "";
     padding:                     12px 15px;
     border-radius:               8px;
