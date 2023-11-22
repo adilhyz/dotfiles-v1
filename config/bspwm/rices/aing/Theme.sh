@@ -95,7 +95,7 @@ _EOF_
 # Set eww colors
 set_eww_colors() {
 	cat > "$HOME"/.config/bspwm/eww/colors.scss << EOF
-// Eww colors for Cristina rice
+// Eww colors for Aing rice
 \$bg: #161a22;
 \$bg-alt: #262c3a;
 \$fg: #cadee7;
@@ -111,7 +111,7 @@ set_eww_colors() {
 EOF
 }
 
-# Set jgmenu colors for Cristina
+# Set jgmenu colors for Aing
 set_jgmenu_colors() {
 	sed -i "$HOME"/.config/bspwm/jgmenurc \
 		-e 's/color_menu_bg = .*/color_menu_bg = #161a22/' \
@@ -124,18 +124,18 @@ set_jgmenu_colors() {
 # Set Rofi launcher config
 set_launcher_config () {
 	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e 's/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
+		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
 		-e 's/\(background: \).*/\1#161a22;/' \
 		-e 's/\(background-alt: \).*/\1#161a22E0;/' \
 		-e 's/\(foreground: \).*/\1#cadee7;/' \
 		-e 's/\(selected: \).*/\1#E3C4BA;/' \
-		-e 's/[^/]*-rofi/es-rofi/'
+		-e 's/[^/]*-rofi/ai-rofi/'
 }
 
-# Set color cava
+# Set color cava #bak-e "78s/gradient_color_1 = .*/gradient_color_1 = '#D2ACA9'/g"
 set_cava() {
 	sed -i "$HOME/.config/cava/config" \
-		-e "s/foreground = .*/foreground = cyan/g"
+		-e "s/foreground = .*/foreground = 'cyan'/g"
 }
 
 # Appearance

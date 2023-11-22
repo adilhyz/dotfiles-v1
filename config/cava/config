@@ -71,8 +71,29 @@ style = mono
 
 # supported colors are: red, green, yellow, magenta, cyan, white, blue, black.
 ; background = black
-foreground = cyan
+foreground = 'cyan'
 
+;gradient = 1
+;gradient_count = 6
+;foreground = 'cyan'
+;gradient_color_2 = '#a1b2d8'
+;gradient_color_3 = '#87cfde'
+;gradient_color_4 = '#ebbcba'
+;gradient_color_5 = '#f6c177'
+;gradient_color_6 = '#eb6f92'
+
+;[color]
+
+;gradient = 1
+
+;foreground = 'cyan'
+;gradient_color_2 = '#76daef'
+;gradient_color_3 = '#7bd6ea'
+;gradient_color_4 = '#89b4fa'
+;gradient_color_5 = '#cba6f7'
+;gradient_color_6 = '#f5c2e7'
+;gradient_color_7 = '#eba0ac'
+;gradient_color_8 = '#f38ba8'
 
 [smoothing]
 

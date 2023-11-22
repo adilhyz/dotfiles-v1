@@ -143,7 +143,7 @@ set_appearance() {
 # Set Rofi launcher config
 set_launcher_config () {
 	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e 's/\(font: \).*/\1"scientifica 12";/' \
+		-e '22s/\(font: \).*/\1"scientifica 12";/' \
 		-e 's/\(background: \).*/\1#282828;/' \
 		-e 's/\(background-alt: \).*/\1#282828E0;/' \
 		-e 's/\(foreground: \).*/\1#fbf1c7;/' \

@@ -95,7 +95,7 @@ _EOF_
 # Set eww colors
 set_eww_colors() {
 	cat > "$HOME"/.config/bspwm/eww/colors.scss << EOF
-// Eww colors for Cristina rice
+// Eww colors for Esostrefis rice
 \$bg: #1f1d29;
 \$bg-alt: #272433;
 \$fg: #eaeaea;
@@ -111,7 +111,7 @@ set_eww_colors() {
 EOF
 }
 
-# Set jgmenu colors for Cristina
+# Set jgmenu colors for Esostrefis
 set_jgmenu_colors() {
 	sed -i "$HOME"/.config/bspwm/jgmenurc \
 		-e 's/color_menu_bg = .*/color_menu_bg = #1f1d29/' \
