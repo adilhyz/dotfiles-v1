@@ -71,7 +71,7 @@ dependencias=(base-devel rustup pacman-contrib bspwm polybar sxhkd \
 			  alacritty brightnessctl dunst rofi rofi-emoji lsd stalonetray\
 			  jq polkit-gnome git playerctl mpd \
 			  ncmpcpp neofetch geany ranger mpc picom xdo xdotool jgmenu \
-			  feh ueberzug maim pamixer libwebp xdg-user-dirs blueberry \
+			  feh ueberzug maim pamixer libwebp xdg-user-dirs blueberry copyq \
 			  thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tumbler ffmpegthumbnailer ntfs-3g\
 			  webp-pixbuf-loader xorg-xprop xorg-xkill xsettingsd xautolock unclutter numlockx physlock papirus-icon-theme lxappearance-gtk3 \
 			  ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd ttf-inconsolata ttf-joypixels \

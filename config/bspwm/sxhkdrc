@@ -30,11 +30,12 @@ super + alt + Return
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
 
 # Emoji, Windows, Theme Selector, & Menu aplikasi
-super + {period,w,v,d}
+super + {period,w,v,d,c}
 	{sh ~/.config/bspwm/scripts/Emoji, \
 	sh ~/.config/bspwm/scripts/Windows, \
 	RiceSelector, \
-	OpenApps --menu}
+	OpenApps --menu, \
+	copyq show}
 
 #Hide polybar
 #super + y

@@ -186,6 +186,9 @@ xautolock -detectsleep -time 5 -locker physlock &
 # Typing repeat speed
 xset r rate 375 45 &
 
+# Copy history
+copyq &
+
 # Update
 #pamac-tray &
 
