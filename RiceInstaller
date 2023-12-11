@@ -6,12 +6,12 @@
 #   Author: z0mbi3
 #	Modified by me
 
-CRE=$(tput setaf 1)
-CYE=$(tput setaf 3)
-CGR=$(tput setaf 2)
-CBL=$(tput setaf 4)
+MER=$(tput setaf 1)
+KUN=$(tput setaf 3)
+HIJ=$(tput setaf 2)
+BRU=$(tput setaf 4)
 BLD=$(tput bold)
-CNC=$(tput sgr0)
+RST=$(tput sgr0)
 
 backup_folder=~/.RiceBackup
 date=$(date +%Y%m%d-%H%M%S)
@@ -38,7 +38,7 @@ logo () {
  //.......  #...   ................   ,.
 ((.. .....  . ................         /                
 			  adilhyz Dotfiles\n\n"
-    printf ' %s [%s%s %s%s %s]%s\n\n' "${CRE}" "${CNC}" "${CYE}" "${text}" "${CNC}" "${CRE}" "${CNC}"
+    printf ' %s [%s%s %s%s %s]%s\n\n' "${MER}" "${RST}" "${KUN}" "${text}" "${RST}" "${MER}" "${RST}"
 }
 
 ########## ---------- You must not run this as root ---------- ##########
@@ -51,7 +51,7 @@ fi
 ########## ---------- Welcome ---------- ##########
 
 logo "Welcome!"
-printf '%s%sThis script will check if you have the necessary dependencies, and if not, it will install them. Then, it will clone the RICE in your HOME directory.\nAfter that, it will create a secure backup of your files, and then copy the new files to your computer.\n\nMy dotfiles DO NOT modify any of your system configurations.\nYou will be prompted for your root password to install missing dependencies and/or to switch to zsh shell if its not your default.\n\nThis script doesnt have the potential power to break your system, it only copies files from my repository to your HOME directory.%s\n\n' "${BLD}" "${CRE}" "${CNC}"
+printf '%s%sThis script will check if you have the necessary dependencies, and if not, it will install them. Then, it will clone the RICE in your HOME directory.\nAfter that, it will create a secure backup of your files, and then copy the new files to your computer.\n\nMy dotfiles DO NOT modify any of your system configurations.\nYou will be prompted for your root password to install missing dependencies and/or to switch to zsh shell if its not your default.\n\nThis script doesnt have the potential power to break your system, it only copies files from my repository to your HOME directory.%s\n\n' "${BLD}" "${MER}" "${RST}"
 
 while true; do
 	read -rp " Do you wish to continue? [y/N]: " yn
@@ -63,7 +63,7 @@ while true; do
     done
 clear
 
-########## ---------- Install packages ---------- ##########
+########## ---------- Install packages & needs ---------- ##########
 
 logo "Installing needed packages.."
 
@@ -73,7 +73,7 @@ dependencias=(base-devel rustup pacman-contrib bspwm polybar sxhkd \
 			  ncmpcpp neofetch geany ranger mpc picom xdo xdotool jgmenu \
 			  feh ueberzug maim pamixer libwebp xdg-user-dirs blueberry \
 			  thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tumbler ffmpegthumbnailer ntfs-3g\
-			  webp-pixbuf-loader xorg-xprop xorg-xkill xsettingsd xautolock unclutter numlockx physlock papirus-icon-theme lxappearance-gtk3 \
+			  webp-pixbuf-loader xorg-xprop xorg-xkill xsettingsd xautolock unclutter numlockx physlock lxappearance-gtk3 \
 			  ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd ttf-inconsolata ttf-joypixels \
 			  zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting xclip xcolor xorg-xinit xorg-xsetroot xorg-xwininfo xorg-xrandr)
 
@@ -82,18 +82,50 @@ is_installed() {
   return $?
 }
 
-printf "%s%sChecking for required packages...%s\n" "${BLD}" "${CBL}" "${CNC}"
+printf "%s%sChecking for required packages...%s\n" "${BLD}" "${BRU}" "${RST}"
 for paquete in "${dependencias[@]}"
 do
   if ! is_installed "$paquete"; then
     sudo pacman -S "$paquete" --noconfirm
     printf "\n"
   else
-    printf '%s%s is already installed on your system!%s\n' "${CGR}" "$paquete" "${CNC}"
+    printf '%s%s is already installed on your system!%s\n' "${HIJ}" "$paquete" "${RST}"
     sleep 1
   fi
 done
-sleep 3
+sleep 2
+
+repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
+iconsu=("adilhyz-icons")
+themesu=("adilhyz-themes")
+cursorsu=("adilhyz-cursors")
+piles=("-1.0-1-any.pkg.tar.zst")
+
+icons=("${iconsu[@]/%/$piles}")
+themes=("${themesu[@]/%/$piles}")
+cursors=("${cursorsu[@]/%/$piles}")
+
+cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
+
+is_needs() {
+  pacman -Qi "$cekpkg" &>/dev/null
+  return $?
+}
+
+# Memeriksa apakah paket berada dalam daftar yang diizinkan
+for pkgs in "${icons[@]}" "${themes[@]}" "${cursors[@]}"; do
+  printf '%s%s Downloading and installing: %s\n' "$pkgs"
+  if ! is_needs "$pkgs"; then
+    curl -LO "$repo/$pkgs" && sudo pacman -U "$pkgs" --noconfirm
+    rm -rf "$pkgs"
+    printf "\n"
+  else
+    printf '%s%s Package %s is already installed!\n' "${HIJ}" "$pkg" "${RST}"
+    sleep 1
+  fi
+done
+
+sleep 2
 clear
 
 ########## ---------- Preparing Folders ---------- ##########
@@ -127,7 +159,7 @@ clear
 ########## ---------- Backup files ---------- ##########
 
 logo "Backup files"
-printf "Backup files will be stored in %s%s%s/.RiceBackup%s \n\n" "${BLD}" "${CRE}" "$HOME" "${CNC}"
+printf "Backup files will be stored in %s%s%s/.RiceBackup%s \n\n" "${BLD}" "${MER}" "$HOME" "${RST}"
 sleep 10
 
 if [ ! -d "$backup_folder" ]; then
@@ -163,7 +195,7 @@ done
 
 [ -f ~/.zshrc ] && mv ~/.zshrc ~/.RiceBackup/.zshrc-backup-"$(date +%Y.%m.%d-%H.%M.%S)"
 
-printf "%s%sDone!!%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+printf "%s%sDone!!%s\n\n" "${BLD}" "${HIJ}" "${RST}"
 sleep 5
 
 ########## ---------- Copy the Rice! ---------- ##########
@@ -180,10 +212,10 @@ printf "Copying files to respective directories..\n"
 for archivos in ~/dotfiles-v1/config/*; do
   cp -R "${archivos}" ~/.config/
   if [ $? -eq 0 ]; then
-	printf "%s%s%s folder copied succesfully!%s\n" "${BLD}" "${CGR}" "${archivos}" "${CNC}"
+	printf "%s%s%s folder copied succesfully!%s\n" "${BLD}" "${HIJ}" "${archivos}" "${RST}"
 	sleep 1
   else
-	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${CRE}" "${archivos}" "${CNC}"
+	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${MER}" "${archivos}" "${RST}"
 	sleep 1
   fi
 done
@@ -191,10 +223,10 @@ done
 for archivos in ~/dotfiles-v1/misc/bin/*; do
   cp -R "${archivos}" ~/.local/bin/
   if [ $? -eq 0 ]; then
-	printf "%s%s%s file copied succesfully!%s\n" "${BLD}" "${CGR}" "${archivos}" "${CNC}"
+	printf "%s%s%s file copied succesfully!%s\n" "${BLD}" "${HIJ}" "${archivos}" "${RST}"
 	sleep 1
   else
-	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${CRE}" "${archivos}" "${CNC}"
+	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${MER}" "${archivos}" "${RST}"
 	sleep 1
   fi
 done
@@ -202,10 +234,10 @@ done
 for archivos in ~/dotfiles-v1/misc/applications/*; do
   cp -R "${archivos}" ~/.local/share/applications/
   if [ $? -eq 0 ]; then
-	printf "%s%s%s file copied succesfully!%s\n" "${BLD}" "${CGR}" "${archivos}" "${CNC}"
+	printf "%s%s%s file copied succesfully!%s\n" "${BLD}" "${HIJ}" "${archivos}" "${RST}"
 	sleep 1
   else
-	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${CRE}" "${archivos}" "${CNC}"
+	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${MER}" "${archivos}" "${RST}"
 	sleep 1
   fi
 done
@@ -213,10 +245,10 @@ done
 for archivos in ~/dotfiles-v1/misc/fonts/*; do
   cp -R "${archivos}" ~/.local/share/fonts/
   if [ $? -eq 0 ]; then
-	printf "%s%s%s copied succesfully!%s\n" "${BLD}" "${CGR}" "${archivos}" "${CNC}"
+	printf "%s%s%s copied succesfully!%s\n" "${BLD}" "${HIJ}" "${archivos}" "${RST}"
 	sleep 1
   else
-	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${CRE}" "${archivos}" "${CNC}"
+	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${MER}" "${archivos}" "${RST}"
 	sleep 1
   fi
 done
@@ -224,10 +256,10 @@ done
 for archivos in ~/dotfiles-v1/misc/asciiart/*; do
   cp -R "${archivos}" ~/.local/share/asciiart/
   if [ $? -eq 0 ]; then
-	printf "%s%s%s file copied succesfully!%s\n" "${BLD}" "${CGR}" "${archivos}" "${CNC}"
+	printf "%s%s%s file copied succesfully!%s\n" "${BLD}" "${HIJ}" "${archivos}" "${RST}"
 	sleep 1
   else
-	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${CRE}" "${archivos}" "${CNC}"
+	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${MER}" "${archivos}" "${RST}"
 	sleep 1
   fi
 done
@@ -235,17 +267,17 @@ done
 for archivos in ~/dotfiles-v1/misc/firefox/*; do
   cp -R "${archivos}" ~/.mozilla/firefox/*.default-release/
   if [ $? -eq 0 ]; then
-	printf "%s%s%s folder copied succesfully!%s\n" "${BLD}" "${CGR}" "${archivos}" "${CNC}"
+	printf "%s%s%s folder copied succesfully!%s\n" "${BLD}" "${HIJ}" "${archivos}" "${RST}"
 	sleep 1
   else
-	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${CRE}" "${archivos}" "${CNC}"
+	printf "%s%s%s failed to been copied, you must copy it manually%s\n" "${BLD}" "${MER}" "${archivos}" "${RST}"
 	sleep 1
   fi
 done
 
 cp -f "$HOME"/dotfiles-v1/home/.zshrc "$HOME"
 fc-cache -rv >/dev/null 2>&1
-printf "%s%sFiles copied succesfully!!%s\n" "${BLD}" "${CGR}" "${CNC}"
+printf "%s%sFiles copied succesfully!!%s\n" "${BLD}" "${HIJ}" "${RST}"
 sleep 3
 
 ########## ---------- Installing Yay, Paru, Cava & Eww from source ---------- ##########
@@ -253,53 +285,53 @@ sleep 3
 logo "installing Yay, Paru, Eww, tdrop & xqp"
 
 if ! command -v yay >/dev/null 2>&1; then
-	printf "%s%sInstalling yay%s\n" "${BLD}" "${CBL}" "${CNC}"
+	printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
 	cd
 	git clone https://aur.archlinux.org/yay.git
 	cd yay
 	makepkg -si --noconfirm
 	cd
 else
-	printf "%s%Yay is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+	printf "%s%Yay is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
 fi
 
 if ! command -v paru >/dev/null 2>&1; then
-	printf "%s%sInstalling paru%s\n" "${BLD}" "${CBL}" "${CNC}"
+	printf "%s%sInstalling paru%s\n" "${BLD}" "${BRU}" "${RST}"
 	cd
 	git clone https://aur.archlinux.org/paru-bin.git
 	cd paru-bin
 	makepkg -si --noconfirm
 	cd
 else
-	printf "%s%sParu is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+	printf "%s%sParu is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
 fi
 
 if ! command -v cava >/dev/null 2>&1; then 
-	printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${CBL}" "${CNC}"
+	printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${BRU}" "${RST}"
 	yay -S cava --noconfirm
 fi
 
 # Intalling tdrop for scratchpads
 	if command -v tdrop >/dev/null 2>&1; then
-		printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+		printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
 	else
-		printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${CBL}" "${CNC}"
+		printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
 		paru -S tdrop-git --skipreview --noconfirm
 	fi
 
 # Intalling xqpp
 	if command -v xqp >/dev/null 2>&1; then
-		printf "\n%s%sxqp is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+		printf "\n%s%sxqp is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
 	else
-		printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${CBL}" "${CNC}"
+		printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
 		paru -S xqp --skipreview --noconfirm
 	fi
 
 # Installing Eww
 	if command -v eww >/dev/null 2>&1; then 
-		printf "\n%s%sEww is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+		printf "\n%s%sEww is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
 	else
-		printf "\n%s%sInstalling Eww, this could take 10 mins or more.%s\n" "${BLD}" "${CBL}" "${CNC}"
+		printf "\n%s%sInstalling Eww, this could take 10 mins or more.%s\n" "${BLD}" "${BRU}" "${RST}"
 		{
 			sudo pacman -S rustup --noconfirm
 			cd "$HOME" || exit
@@ -311,7 +343,7 @@ fi
 			cd "$HOME" || exit
 			rm -rf {paru-bin,.cargo,.rustup,eww}
 		} || {
-        printf "\n%s%sFailed to install Eww. You may need to install it manually%s\n" "${BLD}" "${CRE}" "${CNC}"
+        printf "\n%s%sFailed to install Eww. You may need to install it manually%s\n" "${BLD}" "${MER}" "${RST}"
     }
 fi
 
@@ -320,25 +352,25 @@ fi
 logo "Enabling mpd service"
 
 	if systemctl is-enabled --quiet mpd.service; then
-		printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${CBL}" "${CNC}"
+		printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${BRU}" "${RST}"
 		sudo systemctl stop mpd.service
 		sudo systemctl disable mpd.service
 	fi
 
-printf "\n%s%sEnabling and starting the user-level mpd service%s\n" "${BLD}" "${CYE}" "${CNC}"
+printf "\n%s%sEnabling and starting the user-level mpd service%s\n" "${BLD}" "${KUN}" "${RST}"
 systemctl --user enable --now mpd.service
-printf "%s%sDone!!%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+printf "%s%sDone!!%s\n\n" "${BLD}" "${HIJ}" "${RST}"
 sleep 2
 
 ########## --------- Changing shell to zsh ---------- ##########
 
 logo "Changing default shell to zsh"
 	if [[ $SHELL != "/usr/bin/zsh" ]]; then
-		printf "\n%s%sChanging your shell to zsh. Your root password is needed.%s\n\n" "${BLD}" "${CYE}" "${CNC}"
+		printf "\n%s%sChanging your shell to zsh. Your root password is needed.%s\n\n" "${BLD}" "${KUN}" "${RST}"
 		# Cambia la shell a zsh
 		chsh -s /usr/bin/zsh
-		printf "%s%sShell changed to zsh. Please reboot.%s\n\n" "${BLD}" "${CGR}" "${CNC}"
+		printf "%s%sShell changed to zsh. Please reboot.%s\n\n" "${BLD}" "${HIJ}" "${RST}"
 	else
-		printf "%s%sYour shell is already zsh\nGood bye! installation finished, now reboot%s\n" "${BLD}" "${CGR}" "${CNC}"
+		printf "%s%sYour shell is already zsh\nGood bye! installation finished, now reboot%s\n" "${BLD}" "${HIJ}" "${RST}"
 	fi
 zsh
