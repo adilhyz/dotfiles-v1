@@ -93,7 +93,7 @@ do
     sleep 1
   fi
 done
-sleep 2
+sleep 1
 
 repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
 iconsu=("adilhyz-icons")
@@ -105,10 +105,10 @@ icons=("${iconsu[@]/%/$piles}")
 themes=("${themesu[@]/%/$piles}")
 cursors=("${cursorsu[@]/%/$piles}")
 
-cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
+#cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
 
 is_needs() {
-  pacman -Qi "$cekpkg" &>/dev/null
+  pacman -Qi "$iconsu" "$themesu" "$cursorsu" &>/dev/null
   return $?
 }
 
