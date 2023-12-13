@@ -120,22 +120,22 @@ set_appearance() {
 	if [[ `pidof xsettingsd` ]]; then
 		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"Groot\"|g" ${XFILE}
 		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Nordzy-cyan-dark\"|g" ${XFILE}
-		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"Bibata-Rainbow-Original\"|g" ${XFILE}
+		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"broodwar\"|g" ${XFILE}
 	else
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=\"Noto Sans 9\"/g" ${GTK2FILE}
 		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"GrootL\"/g" ${GTK2FILE}
 		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Nordzy-cyan-dark\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"Bibata-Rainbow-Original\"/g" ${GTK2FILE}
+		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"broodwar\"/g" ${GTK2FILE}
 		
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=Noto Sans 9/g" ${GTK3FILE}
 		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=GrootL/g" ${GTK3FILE}
 		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Nordzy-cyan-dark/g" ${GTK3FILE}
-		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=Bibata-Rainbow-Original/g" ${GTK3FILE}
+		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=broodwar/g" ${GTK3FILE}
 	fi
 	
 	# inherit cursor theme
 	if [[ -f "$HOME"/.icons/default/index.theme ]]; then
-		sed -i -e "s/Inherits=.*/Inherits=Bibata-Rainbow-Original/g" "$HOME"/.icons/default/index.theme
+		sed -i -e "s/Inherits=.*/Inherits=broodwar/g" "$HOME"/.icons/default/index.theme
 	fi	
 }
 

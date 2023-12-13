@@ -99,7 +99,7 @@ repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
 iconsu=("adilhyz-icons")
 themesu=("adilhyz-themes")
 cursorsu=("adilhyz-cursors")
-piles=("-1.0-1-any.pkg.tar.zst")
+piles=("-1.0-2-any.pkg.tar.zst")
 
 icons=("${iconsu[@]/%/$piles}")
 themes=("${themesu[@]/%/$piles}")
