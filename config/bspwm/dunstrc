@@ -10,7 +10,7 @@ follow = mouse
 width = 300
 height = 300
 origin = bottom-right
-offset = 8x36
+offset = 237x40
 indicate_hidden = yes
 shrink = yes
 
@@ -18,15 +18,15 @@ transparency = 0
 separator_height = 2
 padding = 8
 horizontal_padding = 11
-frame_width = "1"
-frame_color = "#161a22"
-separator_color = "#927887"
+frame_width = "2"
+frame_color = "#e9eae3"
+separator_color = "#838382"
 
 font = JetBrainsMono NF Medium 9
 
 line_height = 0
 markup = full
-format = "<span size='large' font_desc='Cantarell 9' weight='bold' foreground='#6E91BA'>%s</span>\n%b"
+format = "<span size='large' font_desc='Cantarell 9' weight='bold' foreground='#A29E9D'>%s</span>\n%b"
 alignment = center
 
 idle_threshold = 120
@@ -41,7 +41,7 @@ sticky_history = no
 history_length = 20
 always_run_script = true
 corner_radius = 0
-icon_position = left
+icon_position = right
 max_icon_size = 50
 
 icon_path = /usr/share/icons/Papirus-Dark/48x48/actions/:/usr/share/icons/Papirus-Dark/48x48/apps/:/usr/share/icons/Papirus-Dark/48x48/devices/:/usr/share/icons/Papirus-Dark/48x48/emblems/:/usr/share/icons/Papirus-Dark/48x48/emotes/:/usr/share/icons/Papirus-Dark/48x48/mimetypes/:/usr/share/icons/Papirus-Dark/48x48/places/:/usr/share/icons/Papirus-Dark/48x48/status/
@@ -54,15 +54,15 @@ mouse_right_click = close_all
 
 [urgency_low]
 timeout = 3
-background = "#161a22"
-foreground = "#cadee7"
+background = "#e9eae3"
+foreground = "#0c0e1a"
 
 [urgency_normal]
 timeout = 6
-background = "#161a22"
-foreground = "#cadee7"
+background = "#e9eae3"
+foreground = "#0c0e1a"
 
 [urgency_critical]
 timeout = 0
-background = "#161a22"
-foreground = "#cadee7"
+background = "#e9eae3"
+foreground = "#0c0e1a"

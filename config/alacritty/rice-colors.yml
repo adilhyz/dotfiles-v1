@@ -87,32 +87,6 @@ schemes:
     cursor:
       cursor: '#fb007a'
       text: '#070219'
-# Colors (Zombie-Night color scheme) Karla Rice
-  karla_z0mbi3_night: &karla_z0mbi3_night
-    primary:
-      background: '#0E1113'
-      foreground: '#afb1db'
-    normal:
-      black:   '#2d2b36'
-      red:     '#e7034a'
-      green:   '#61b33e'
-      yellow:  '#ffb964'
-      blue:    '#5884d4'
-      magenta: '#7a44e3'
-      cyan:    '#7df0f0'
-      white:   '#faf7ff'
-    bright:
-      black:   '#373542'
-      red:     '#e71c5b'
-      green:   '#6fb352'
-      yellow:  '#ffb964'
-      blue:    '#5f90ea'
-      magenta: '#8656e3'
-      cyan:    '#97f0f0'
-      white:   '#fdfcff'
-    cursor:
-      cursor: '#8656e3'
-      text: '#0b0b12'
 # Colors (Elenapan) Pamela Rice
   pamela_color_scheme: &pamela_color_scheme
     primary:
@@ -139,6 +113,32 @@ schemes:
     cursor:
       cursor: '#FF4971'
       text: '#1D1F28'
+# Colors (Dina-Hawu color scheme) Siduru Rice
+  siduru_dinahawu: &siduru_dinahawu
+    primary:
+      background: '#e9eae3'
+      foreground: '#0c0e1a'
+    normal:
+      black:   '#f3e9dc'
+      red:     '#838382'
+      green:   '#A29E9D'
+      yellow:  '#BEB7B2'
+      blue:    '#EAD4BA'
+      magenta: '#97D4E1'
+      cyan:    '#ECDDC1'
+      white:   '#181e1c'
+    bright:
+      black:   '#f3e9dc'
+      red:     '#838382'
+      green:   '#A29E9D'
+      yellow:  '#BEB7B2'
+      blue:    '#EAD4BA'
+      magenta: '#97D4E1'
+      cyan:    '#ECDDC1'
+      white:   '#aaa39a'
+    cursor:
+      cursor: '#bed5e5'
+      text: '#bed5e5'
 # Colors (Gruvbox) Silvia Rice
   silvia_gruvbox: &silvia_gruvbox
     primary:
@@ -167,4 +167,4 @@ schemes:
       text: '#282828'
 
 # Set the color scheme for the actual rice.
-colors: *aing_dark
+colors: *siduru_dinahawu

@@ -8,22 +8,22 @@
 configuration {
     show-icons:                     true;
     display-window:                 "Windows :";
-    window-format:                  "  {c} ";
+    window-format:                  " {c}  |  {t}";
     disable-history:                false;
     click-to-exit:                  true;
 }
 
 * {
-    font:                           "JetBrainsMono Nerd Font Bold 9";
+    font:                           "Terminess Nerd Font Mono Bold 10";
     font-weight:                    bold;
-    background:                     #0E1113F7;
-    background-alt:                 #0E1113;
-    foreground:                     #afb1db;
-    selected:                       #3d7fea;
-    highlight:                      #9bced7;
-    urgent:                         #e7034a;
-    on:                             #f98860;
-    off:                            #e7034a;
+    background:                     #f3e9dc;
+    background-alt:                 #161a22E0;
+    foreground:                     #0c0e1a;
+    selected:                       #6C77BB;
+    highlight:                      #ECDDC1;
+    urgent:                         #e57569;
+    on:                             #ff927a;
+    off:                            #8C8C8C;
 }
 
 window {
@@ -46,7 +46,7 @@ prompt {
     enabled:                        true;
     margin:                         0px 0px 0px 8px;
     padding:                        6px 6px 6px 6px;
-    background-color:               @selected;
+    background-color:               @foreground;
     text-color:                     @background;
     border:                         2px;
     border-color:                   @selected;
@@ -58,19 +58,19 @@ textbox-prompt-colon {
     str:                            "";
     border-radius:                  5px;
     background-color:               @selected;
-    text-color:                     @foreground;
+    text-color:                     @background-alt;
     padding:                        6px 10px 6px 10px;
     font:                           "Iosevka Nerd Font 10";
 }
 
 entry {
-    background-color:               @selected;
-    text-color:                     @foreground;
+    background-color:               @background;
+    text-color:                     @background-alt;
     margin:                         0px 0px 0px 8px;
     border:                         2px;
     border-radius:                  5px;
     border-color:                   @selected;
-    placeholder-color:              @background;
+    placeholder-color:              @background-alt;
     placeholder:                    "  Find...  ";
     expand:                         true;
     horizontal-align:               0;
@@ -83,7 +83,7 @@ inputbar {
     spacing:                        10px;
     padding:                        40px 40px 45px;
     background-color:               transparent;
-    background-image:               url("~/.config/bspwm/assets/ka-rofi.webp", width);
+    background-image:               url("~/.config/bspwm/assets/sd-rofi.webp", width);
     text-color:                     @foreground;
     orientation:                    horizontal;
     children:                       [ "textbox-prompt-colon", "entry" ];
