@@ -39,12 +39,16 @@ set_picom_config() {
 	sed -i "$HOME"/.config/bspwm/picom.conf \
 		-e "s/normal = .*/normal =  { fade = true; shadow = true; }/g" \
 		-e "s/shadow-color = .*/shadow-color = \"#000000\"/g" \
+		-e "s/method = .*/method = \"dual_kawase\"/g" \
+		-e "s/background = .*/background = \"true\"/g" \
+		-e "s/background-frame = .*/background-frame = \"true\"/g" \
+		-e "s/background-fixed = .*/background-fixed = \"true\"/g" \
 		-e "s/corner-radius = .*/corner-radius = 6/g" \
-		-e "s/\".*:class_g = 'Alacritty'\"/\"100:class_g = 'Alacritty'\"/g" \
-		-e "s/\".*:class_g = 'FloaTerm'\"/\"100:class_g = 'FloaTerm'\"/g" \
-		-e "s/\".*:class_g = 'Updating'\"/\"100:class_g = 'Updating'\"/g" \
-		-e "s/\".*:class_g = 'MusicPlayer'\"/\"100:class_g = 'MusicPlayer'\"/g" \
-		-e "s/\".*:class_g = 'Sysfetch'\"/\"100:class_g = 'Sysfetch'\"/g" \
+		-e "s/\".*:class_g = 'Alacritty'\"/\"90:class_g = 'Alacritty'\"/g" \
+		-e "s/\".*:class_g = 'FloaTerm'\"/\"90:class_g = 'FloaTerm'\"/g" \
+		-e "s/\".*:class_g = 'Updating'\"/\"90:class_g = 'Updating'\"/g" \
+		-e "s/\".*:class_g = 'MusicPlayer'\"/\"90:class_g = 'MusicPlayer'\"/g" \
+		-e "s/\".*:class_g = 'Sysfetch'\"/\"90:class_g = 'Sysfetch'\"/g" \
 		-e "s/\".*:class_g = 'scratch'\"/\"90:class_g = 'scratch'\"/g"
 }
 
