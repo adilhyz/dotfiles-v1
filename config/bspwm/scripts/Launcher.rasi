@@ -20,10 +20,10 @@ configuration {
 
 * {
 font: "Terminess Nerd Font Mono Bold 10";
-background: #161a22;
-background-alt: #161a22E0;
-foreground: #cadee7;
-selected: #E3C4BA;
+background: #070219F0;
+background-alt: #070219E0;
+foreground: #c0caf5;
+selected: #fb007af0;
 }
 
 //----- Main Window -----//
@@ -70,7 +70,7 @@ inputbar {
     spacing:                     10px;
     padding:                     40px 40px 45px;
     background-color:            transparent;
-    background-image:            url("~/.config/bspwm/assets/ai-rofi.webp", width);
+    background-image:            url("~/.config/bspwm/assets/ja-rofi.webp", width);
     text-color:                  @foreground;
     orientation:                 horizontal;
     children:                    [ "textbox-prompt-colon", "entry" ];

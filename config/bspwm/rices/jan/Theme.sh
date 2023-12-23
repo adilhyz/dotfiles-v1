@@ -38,8 +38,13 @@ set_term_config() {
 set_picom_config() {
 	sed -i "$HOME"/.config/bspwm/picom.conf \
 		-e "s/normal = .*/normal = { fade = true; shadow = false; }/g" \
+		-e "s/inactive-opacity = .*/inactive-opacity = 1.0;/g" \
+		-e "s/active-opacity = .*/active-opacity = 1.0;/g" \
 		-e "s/shadow-color = .*/shadow-color = \"#000000\"/g" \
 		-e "s/method = .*/method = \"none\"/g" \
+		-e "s/background = .*/background = false/g" \
+		-e "s/background-frame = .*/background-frame = false/g" \
+		-e "s/background-fixed = .*/background-fixed = false/g" \
 		-e "s/corner-radius = .*/corner-radius = 0/g" \
 		-e "s/\".*:class_g = 'Alacritty'\"/\"96:class_g = 'Alacritty'\"/g" \
 		-e "s/\".*:class_g = 'FloaTerm'\"/\"96:class_g = 'FloaTerm'\"/g"
