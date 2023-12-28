@@ -1,5 +1,5 @@
 <!-- # 🍚 dotfiles v1 -->
-![img](/preview/bspwm.png)
+![img](preview/bspwm.png)
 
 ## :thinking: Information
 
@@ -13,7 +13,7 @@
 
 ## 🌏 Overview
 
-![counter](/preview/z.gif)
+![counter](preview/z.gif)
 
 
 ## Information
@@ -31,7 +31,7 @@
 The installer only works for **ARCH** Linux, and based distros.
 
 <b>Open a terminal in HOME</b>
-First download the [installer](/RiceInstaller)
+First download the [installer](RiceInstaller)
 ```sh
 curl https://raw.githubusercontent.com/adilhyz/dotfiles-v1/master/RiceInstaller -o $HOME/RiceInstaller
 ```
@@ -39,7 +39,7 @@ Now give it execute permissions
 ```sh
 chmod +x RiceInstaller
 ```
-Finally run the [installer](/RiceInstaller)
+Finally run the [installer](RiceInstaller)
 ```sh
 ./RiceInstaller
 ```
