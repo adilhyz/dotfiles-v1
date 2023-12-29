@@ -26,12 +26,41 @@ set_bspwm_config() {
 
 # Reload terminal colors
 set_term_config() {
-	sed -i "$HOME"/.config/alacritty/fonts.yml \
-		-e "s/family: .*/family: JetBrainsMono NF/g" \
-		-e "s/size: .*/size: 10/g"
-	
-	sed -i "$HOME"/.config/alacritty/rice-colors.yml \
-		-e "s/colors: .*/colors: *aing_dark/"
+	cat > "$HOME"/.config/alacritty/rice-colors.toml << EOF
+# (Aing) Aing Rice
+
+# Default colors
+[colors.primary]
+background = "#161a22"
+foreground = "#cadee7"
+
+# Cursor colors
+[colors.cursor]
+cursor = "#cadee7"
+text = "#cadee7"
+
+# Normal colors
+[colors.normal]
+black = "#1e232e"
+blue = "#D2ACA9"
+cyan = "#99A9CC"
+green = "#6E91BA"
+magenta = "#E3C4BA"
+red = "#927887"
+white = "#edf4f7"
+yellow = "#A393A2"
+
+# Bright colors
+[colors.bright]
+black = "#8d9ba1"
+blue = "#D2ACA9"
+cyan = "#99A9CC"
+green = "#6E91BA"
+magenta = "#E3C4BA"
+red = "#927887"
+white = "#cadee7"
+yellow = "#A393A2"
+EOF
 }
 
 # Set compositor configuration

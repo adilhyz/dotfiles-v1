@@ -1,0 +1,15 @@
+#  Font configuration
+[font]
+size = 10
+
+[font.bold]
+family = "JetBrainsMono NF"
+
+[font.bold_italic]
+family = "JetBrainsMono NF"
+
+[font.italic]
+family = "JetBrainsMono NF"
+
+[font.normal]
+family = "JetBrainsMono NF"

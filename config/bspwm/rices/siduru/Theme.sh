@@ -26,12 +26,37 @@ set_bspwm_config() {
 
 # Reload terminal colors
 set_term_config() {
-	sed -i "$HOME"/.config/alacritty/fonts.yml \
-		-e "s/family: .*/family: JetBrainsMono NF/g" \
-		-e "s/size: .*/size: 10/g"
-	
-	sed -i "$HOME"/.config/alacritty/rice-colors.yml \
-		-e "s/colors: .*/colors: *siduru_dinahawu/"
+	cat > "$HOME"/.config/alacritty/rice-colors.toml << EOF
+# Colors (Dina-Hawu color scheme) Siduru Rice
+# Default colors
+[colors.primary]
+background = "#e9eae3"
+foreground = "#0c0e1a"
+# Cursor colors
+[colors.cursor]
+cursor = "#bed5e5"
+text = "#bed5e5"
+# Normal colors
+[colors.normal]
+black = "#f3e9dc"
+blue = "#EAD4BA"
+cyan = "#ECDDC1"
+green = "#A29E9D"
+magenta = "#97D4E1"
+red = "#838382"
+white = "#181e1c"
+yellow = "#BEB7B2"
+# Bright colors
+[colors.bright]
+black = "#f3e9dc"
+blue = "#EAD4BA"
+cyan = "#ECDDC1"
+green = "#A29E9D"
+magenta = "#97D4E1"
+red = "#838382"
+white = "#aaa39a"
+yellow = "#BEB7B2"
+EOF
 }
 
 # Set compositor configuration
