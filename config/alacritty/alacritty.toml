@@ -10,13 +10,14 @@ live_config_reload = true
 [cursor]
 blink_interval = 550
 unfocused_hollow = false
+thickness = 0.15
 
 [cursor.style]
 blinking = "On"
 shape = "Block"
 
 [selection]
-save_to_clipboard = false
+save_to_clipboard = true
 
 [window]
 decorations = "none"
@@ -26,3 +27,12 @@ opacity = 1.0
 [window.padding]
 x = 15
 y = 15
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[bell]
+animation = "Linear"
+duration = 0
+command = { program = "paplay", args = ["/usr/share/sounds/freedesktop/stereo/dialog-error.oga"] }
