@@ -5,7 +5,7 @@
 #	Original by z0mbi3/gh0stzk
 #	Modified by adilhyz https://github.com/adilhyz
 
-timestamp=$(date +%m_%d_%Y-%H"."%M"."%S)
+timestamp=$(date +%Y_%m_%d-%H"."%M"."%S)
 geometry=`xrandr | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current'`
 dir="$(xdg-user-dir PICTURES)/ScreenShots"
 filename="$dir/Screenshot-${timestamp}-${geometry}.png"
