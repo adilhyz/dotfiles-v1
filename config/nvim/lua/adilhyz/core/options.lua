@@ -1,5 +1,8 @@
 local opt = vim.opt -- for conciseness
 
+--Start split resizable cuy
+opt.mouse = "a"
+
 -- Numeracion de las lineas
 opt.relativenumber = true
 opt.number = true

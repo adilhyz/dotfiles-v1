@@ -33,6 +33,9 @@ use("wbthomason/packer.nvim")
 
 use("navarasu/onedark.nvim")
 
+-- comment code
+use("numToStr/Comment.nvim")
+
 -- file explorer
 use("nvim-tree/nvim-tree.lua")
 
@@ -44,6 +47,9 @@ use("nvim-lualine/lualine.nvim")
 
 -- Colorizer
 use("norcalli/nvim-colorizer.lua")
+
+-- Git wrapper so awesome
+use("tpope/vim-fugitive")
 
 -- Plugin Discord Rich Presence
 use("andweeb/presence.nvim")
