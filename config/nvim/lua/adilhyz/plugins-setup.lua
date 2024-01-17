@@ -36,6 +36,17 @@ use("navarasu/onedark.nvim")
 -- comment code
 use("numToStr/Comment.nvim")
 
+-- snippets
+use("neovim/nvim-lspconfig")
+use("hrsh7th/cmp-nvim-lsp")
+use("hrsh7th/cmp-path")
+use("hrsh7th/cmp-cmdline")
+use("hrsh7th/cmp-buffer")
+use("hrsh7th/cmp-vsnip")
+use("hrsh7th/vim-vsnip")
+use("hrsh7th/vim-vsnip-integ")
+use("hrsh7th/nvim-cmp")
+
 -- file explorer
 use("nvim-tree/nvim-tree.lua")
 
