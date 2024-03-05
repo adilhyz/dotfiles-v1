@@ -165,6 +165,13 @@ set_launcher_config () {
 		-e 's/\(foreground: \).*/\1#cadee7;/' \
 		-e 's/\(selected: \).*/\1#E3C4BA;/' \
 		-e 's/[^/]*-rofi/ai-rofi/'
+
+	# WallSelect menu colors	
+	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
+		-e 's/\(main-bg: \).*/\1#161a22E0;/' \
+		-e 's/\(main-fg: \).*/\1#cadee7;/' \
+		-e 's/\(select-bg: \).*/\1#E3C4BA;/' \
+		-e 's/\(select-fg: \).*/\1#161a22;/'
 }
 
 # Set color cava #bak-e "78s/gradient_color_1 = .*/gradient_color_1 = '#D2ACA9'/g"

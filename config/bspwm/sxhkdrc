@@ -1,7 +1,8 @@
-#  ╔═╗═╗ ╦╦ ╦╦╔═╔╦╗╦═╗╔═╗  - modified by sanrei
 #  ╚═╗╔╩╦╝╠═╣╠╩╗ ║║╠╦╝║    -
 #  ╚═╝╩ ╚═╩ ╩╩ ╩═╩╝╩╚═╚═╝  - original z0mbi3
 #			
+super + shi
+  ╔═╗═╗ ╦╦ ╦╦╔═╔╦╗╦═╗╔═╗  - modified by sanrei
 
 #Picom Toggle
 ctrl + alt + p
@@ -92,6 +93,10 @@ alt + Print
 
 # Random wallpaper
 super + alt + w
+	WallSelect
+
+# Random wallpaperWW
+super + shift + w
 	feh -z --no-fehbg --bg-fill ~/.config/bspwm/rices/$RICETHEME/walls/
 
 #

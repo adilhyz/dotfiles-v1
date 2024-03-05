@@ -39,18 +39,18 @@ text = "#070219"
 # Normal colors
 [colors.normal]
 black = "#626483"
-blue = "#58AFC2"
-cyan = "#926BCA"
+blue = "#19bffe"
+cyan = "#43fbff"
 green = "#a6e22e"
-magenta = "#583794"
+magenta = "#6800d2"
 red = "#fb007a"
 white = "#d9d9d9"
 yellow = "#f3e430"
 # Bright colors
 [colors.bright]
 black = "#626483"
-blue = "#58AFC2"
-cyan = "#926BCA"
+blue = "#19bffe"
+cyan = "#43fbff"
 green = "#a6e22e"
 magenta = "#472575"
 red = "#fb007a"
@@ -80,7 +80,7 @@ set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
 		-e "s/background .*/background \"#070219\"/" \
 		-e "s/vertical .*/vertical true/" \
-		-e "s/geometry .*/geometry 1x1-123+57/" \
+		-e "s/geometry .*/geometry 1x1-133+57/" \
 		-e "s/grow_gravity .*/grow_gravity NE/" \
 		-e "s/icon_gravity .*/icon_gravity NE/"
 }
@@ -129,9 +129,9 @@ set_eww_colors() {
 \$black: #626483;
 \$lightblack: #262831;
 \$red: #fb007a;
-\$blue: #58AFC2;
-\$cyan: #926BCA;
-\$magenta: #583794;
+\$blue: #19bffe;
+\$cyan: #43fbff;
+\$magenta: #6800d2;
 \$green: #a6e22e;
 \$yellow: #f3e430;
 \$archicon: #0f94d2;
@@ -157,6 +157,13 @@ set_launcher_config () {
 		-e 's/\(foreground: \).*/\1#c0caf5;/' \
 		-e 's/\(selected: \).*/\1#fb007af0;/' \
 		-e 's/[^/]*-rofi/ja-rofi/'
+
+	# WallSelect menu colors	
+	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
+		-e 's/\(main-bg: \).*/\1#070219F0;/' \
+		-e 's/\(main-fg: \).*/\1#c0caf5;/' \
+		-e 's/\(select-bg: \).*/\1#fb007a;/' \
+		-e 's/\(select-fg: \).*/\1#070219;/'
 }
 
 # Appearance

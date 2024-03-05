@@ -180,12 +180,19 @@ set_launcher_config () {
 		-e 's/\(foreground: \).*/\1#fbf1c7;/' \
 		-e 's/\(selected: \).*/\1#d79921;/' \
 		-e 's/[^/]*-rofi/si-rofi/'
+
+	# WallSelect menu colors	
+	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
+		-e 's/\(main-bg: \).*/\1#282828E6;/' \
+		-e 's/\(main-fg: \).*/\1#fbf1c7;/' \
+		-e 's/\(select-bg: \).*/\1#d79921;/' \
+		-e 's/\(select-fg: \).*/\1#282828;/'
 }
 
 # Set color cava
 set_cava() {
 	sed -i "$HOME/.config/cava/config" \
-		-e "s/foreground = .*/foreground = cyan/g"
+		-e "s/foreground = .*/foreground = magenta/g"
 }
 
 # Launch the bar

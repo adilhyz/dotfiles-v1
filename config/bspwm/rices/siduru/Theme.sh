@@ -15,10 +15,10 @@ set_bspwm_config() {
 	bspc config border_width 0
 	bspc config top_padding 2
 	bspc config bottom_padding 33
-	bspc config normal_border_color "#A29E9D"
-	bspc config active_border_color "#A29E9D"
-	bspc config focused_border_color "#97D4E1"
-	bspc config presel_feedback_color "#97D4E1"
+	bspc config normal_border_color "#337073"
+	bspc config active_border_color "#337073"
+	bspc config focused_border_color "#db9fcc"
+	bspc config presel_feedback_color "#db9fcc"
 	bspc config left_padding 2
 	bspc config right_padding 2
 	bspc config window_gap 6
@@ -30,7 +30,7 @@ set_term_config() {
 # Colors (Dina-Hawu color scheme) Siduru Rice
 # Default colors
 [colors.primary]
-background = "#e9eae3"
+background = "#dcd5b8"
 foreground = "#0c0e1a"
 # Cursor colors
 [colors.cursor]
@@ -39,23 +39,23 @@ text = "#bed5e5"
 # Normal colors
 [colors.normal]
 black = "#f3e9dc"
-blue = "#EAD4BA"
-cyan = "#ECDDC1"
-green = "#A29E9D"
-magenta = "#97D4E1"
-red = "#838382"
+blue = "#3d6a99"
+cyan = "#a7aafb"
+green = "#337073"
+magenta = "#db9fcc"
+red = "#3e111a"
 white = "#181e1c"
-yellow = "#BEB7B2"
+yellow = "#9a5652"
 # Bright colors
 [colors.bright]
 black = "#f3e9dc"
-blue = "#EAD4BA"
-cyan = "#ECDDC1"
-green = "#A29E9D"
-magenta = "#97D4E1"
-red = "#838382"
+blue = "#3d6a99"
+cyan = "#a7aafb"
+green = "#337073"
+magenta = "#db9fcc"
+red = "#3e111a"
 white = "#aaa39a"
-yellow = "#BEB7B2"
+yellow = "#9a5652"
 EOF
 }
 
@@ -63,10 +63,10 @@ EOF
 set_picom_config() {
 	sed -i "$HOME"/.config/bspwm/picom.conf \
 		-e "s/normal = .*/normal =  { fade = true; shadow = false; }/g" \
-		-e "s/inactive-opacity = .*/inactive-opacity = 0.8;/g" \
-		-e "s/active-opacity = .*/active-opacity = 0.8;/g" \
+		-e "s/inactive-opacity = .*/inactive-opacity = 1;/g" \
+		-e "s/active-opacity = .*/active-opacity = 1;/g" \
 		-e "s/shadow-color = .*/shadow-color = \"#000000\"/g" \
-		-e "s/method = .*/method = \"dual_kawase\"/g" \
+		-e "s/method = .*/method = \"none\"/g" \
 		-e "s/background = .*/background = true/g" \
 		-e "s/background-frame = .*/background-frame = true/g" \
 		-e "s/background-fixed = .*/background-fixed = true/g" \
@@ -82,7 +82,7 @@ set_picom_config() {
 # Set stalonetray config
 set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
-		-e "s/background .*/background \"#e9eae3\"/" \
+		-e "s/background .*/background \"#dcd5b8\"/" \
 		-e "s/vertical .*/vertical true/" \
 		-e "s/geometry .*/geometry 1x1-283+700/" \
 		-e "s/grow_gravity .*/grow_gravity SE/" \
@@ -93,10 +93,10 @@ set_stalonetray_config() {
 set_dunst_config() {
 	sed -i "$HOME"/.config/bspwm/dunstrc \
 		-e "s/transparency = .*/transparency = 22/g" \
-		-e "s/frame_color = .*/frame_color = \"#e9eae3\"/g" \
-		-e "s/separator_color = .*/separator_color = \"#838382\"/g" \
+		-e "s/frame_color = .*/frame_color = \"#dcd5b8\"/g" \
+		-e "s/separator_color = .*/separator_color = \"#3e111a\"/g" \
 		-e "s/font = .*/font = JetBrainsMono NF Medium 9/g" \
-		-e "s/foreground='.*'/foreground='#A29E9D'/g" \
+		-e "s/foreground='.*'/foreground='#337073'/g" \
 		-e "s/origin = .*/origin = bottom-right/g" \
 		-e "s/offset = .*/offset = 237x40/g" \
 		-e "s/icon_position = .*/icon_position = right/g" \
@@ -108,17 +108,17 @@ set_dunst_config() {
 	cat >> "$HOME"/.config/bspwm/dunstrc <<- _EOF_
 		[urgency_low]
 		timeout = 3
-		background = "#e9eae3"
+		background = "#dcd5b8"
 		foreground = "#0c0e1a"
 
 		[urgency_normal]
 		timeout = 6
-		background = "#e9eae3"
+		background = "#dcd5b8"
 		foreground = "#0c0e1a"
 
 		[urgency_critical]
 		timeout = 0
-		background = "#e9eae3"
+		background = "#dcd5b8"
 		foreground = "#0c0e1a"
 _EOF_
 }
@@ -127,17 +127,17 @@ _EOF_
 set_eww_colors() {
 	cat > "$HOME"/.config/bspwm/eww/colors.scss << EOF
 // Eww colors for Siduru rice
-\$bg: #e9eae3;
+\$bg: #dcd5b8;
 \$bg-alt: #eac6a9;
 \$fg: #0c0e1a;
 \$black: #181e1c;
 \$lightblack: #aaa39a;
-\$red: #838382;
-\$blue: #EAD4BA;
-\$cyan: #ECDDC1;
-\$magenta: #97D4E1;
-\$green: #A29E9D;
-\$yellow: #BEB7B2;
+\$red: #3e111a;
+\$blue: #3d6a99;
+\$cyan: #a7aafb;
+\$magenta: #db9fcc;
+\$green: #337073;
+\$yellow: #9a5652;
 \$archicon: #0A9CF5;
 EOF
 }
@@ -145,7 +145,7 @@ EOF
 # Set jgmenu colors for Siduru
 set_jgmenu_colors() {
 	sed -i "$HOME"/.config/bspwm/jgmenurc \
-		-e 's/color_menu_bg = .*/color_menu_bg = #e9eae3/' \
+		-e 's/color_menu_bg = .*/color_menu_bg = #dcd5b8/' \
 		-e 's/color_norm_fg = .*/color_norm_fg = #0c0e1a/' \
 		-e 's/color_sel_bg = .*/color_sel_bg = #eac6a9/' \
 		-e 's/color_sel_fg = .*/color_sel_fg = #0c0e1a/' \
@@ -155,15 +155,22 @@ set_jgmenu_colors() {
 # Set Rofi launcher config
 set_launcher_config () {
 	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e 's/\(background: \).*/\1#e9eae3;/' \
+		-e 's/\(background: \).*/\1#dcd5b8;/' \
 		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
-		-e 's/\(background-alt: \).*/\1#e9eae3E0;/' \
+		-e 's/\(background-alt: \).*/\1#dcd5b8E0;/' \
 		-e 's/\(foreground: \).*/\1#0c0e1a;/' \
-		-e 's/\(selected: \).*/\1#97D4E1;/' \
+		-e 's/\(selected: \).*/\1#db9fcc;/' \
 		-e 's/[^/]*-rofi/sd-rofi/'
+
+	# WallSelect menu colors	
+	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
+		-e 's/\(main-bg: \).*/\1#dcd5b8E0;/' \
+		-e 's/\(main-fg: \).*/\1#0c0e1a;/' \
+		-e 's/\(select-bg: \).*/\1#db9fcc;/' \
+		-e 's/\(select-fg: \).*/\1#dcd5b8;/'
 }
 
-# Set color cava #bak-e "78s/gradient_color_1 = .*/gradient_color_1 = '#EAD4BA'/g"
+# Set color cava #bak-e "78s/gradient_color_1 = .*/gradient_color_1 = '#3d6a99'/g"
 set_cava() {
 	sed -i "$HOME/.config/cava/config" \
 		-e "s/foreground = .*/foreground = 'cyan'/g"

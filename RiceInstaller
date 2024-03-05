@@ -48,19 +48,27 @@ if [ "$(id -u)" = 0 ]; then
     exit 1
 fi
 
+home_dir=$HOME
+current_dir=$(pwd)
+
+if [ "$current_dir" != "$home_dir" ]; then
+    printf "%s%sThe script must be executed from the HOME directory.%s\n" "${BLD}" "${KUN}" "${RST}"
+    exit 1
+fi
+
 ########## ---------- Welcome ---------- ##########
 
 logo "Welcome!"
 printf '%s%sThis script will check if you have the necessary dependencies, and if not, it will install them. Then, it will clone the RICE in your HOME directory.\nAfter that, it will create a secure backup of your files, and then copy the new files to your computer.\n\nMy dotfiles DO NOT modify any of your system configurations.\nYou will be prompted for your root password to install missing dependencies and/or to switch to zsh shell if its not your default.\n\nThis script doesnt have the potential power to break your system, it only copies files from my repository to your HOME directory.%s\n\n' "${BLD}" "${MER}" "${RST}"
 
 while true; do
-	read -rp " Do you wish to continue? [y/N]: " yn
-		case $yn in
-			[Yy]* ) break;;
-			[Nn]* ) exit;;
-			* ) printf " Error: just write 'y' or 'n'\n\n";;
-		esac
-    done
+    read -rp " Do you wish to continue? [y/N]: " yn
+    case $yn in
+        [Yy]* ) break ;;
+        [Nn]* ) exit ;;
+        * ) printf " Error: just write 'y' or 'n'\n\n" ;;
+    esac
+done
 clear
 
 ########## ---------- Install packages & needs ---------- ##########
@@ -83,17 +91,22 @@ is_installed() {
 }
 
 printf "%s%sChecking for required packages...%s\n" "${BLD}" "${BRU}" "${RST}"
-for paquete in "${dependencias[@]}"
-do
-  if ! is_installed "$paquete"; then
-    sudo pacman -S "$paquete" --noconfirm
-    printf "\n"
-  else
-    printf '%s%s is already installed on your system!%s\n' "${HIJ}" "$paquete" "${RST}"
-    sleep 1
-  fi
+for paquete in "${dependencias[@]}"; do
+    if ! is_installed "$paquete"; then
+        if sudo pacman -S "$paquete" --noconfirm >/dev/null 2>> RiceError.log; then
+            printf "%s%s%s %shas been installed succesfully.%s\n" "${BLD}" "${KUN}" "$paquete" "${BRU}" "${RST}"
+            sleep 1
+        else
+            printf "%s%s%s %shas not been installed correctly. See %sRiceError.log %sfor more details.%s\n" "${BLD}" "${KUN}" "$paquete" "${MER}" "${BRU}" "${MER}" "${RST}"
+            sleep 1
+        fi
+    else
+        printf '%s%s%s %sis already installed on your system!%s\n' "${BLD}" "${KUN}" "$paquete" "${HIJ}" "${RST}"
+        sleep 1
+    fi
 done
-sleep 1
+sleep 5
+clear
 
 repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
 iconsu=("adilhyz-icons")
@@ -131,10 +144,9 @@ clear
 ########## ---------- Preparing Folders ---------- ##########
 
 logo "Preparing Folders"
-	if [ ! -e "$HOME/.config/user-dirs.dirs" ]; then
-		xdg-user-dirs-update
-		echo "Creating xdg-user-dirs"
-	fi
+if [ ! -e "$HOME/.config/user-dirs.dirs" ]; then
+    xdg-user-dirs-update
+fi
 sleep 2 
 clear
 
@@ -162,18 +174,21 @@ logo "Backup files"
 printf "Backup files will be stored in %s%s%s/.RiceBackup%s \n\n" "${BLD}" "${MER}" "$HOME" "${RST}"
 sleep 10
 
-if [ ! -d "$backup_folder" ]; then
-  mkdir -p "$backup_folder"
-fi
+[ ! -d "$backup_folder" ] && mkdir -p "$backup_folder"
 
 for folder in bspwm alacritty picom rofi eww sxhkd dunst polybar cava ncmpcpp nvim neofetch ranger Thunar zsh mpd paru; do
-  if [ -d "$HOME/.config/$folder" ]; then
-    mv "$HOME/.config/$folder" "$backup_folder/${folder}_$date"
-    echo "$folder folder backed up successfully at $backup_folder/${folder}_$date"
-  else
-    echo "The folder $folder does not exist in $HOME/.config/"
-  fi
-done
+    if [ -d "$HOME/.config/$folder" ]; then
+        if mv "$HOME/.config/$folder" "$backup_folder/${folder}_$date" 2>> RiceError.log; then
+            printf "%s%s%s folder backed up successfully at %s%s/%s_%s%s\n" "${BLD}" "${HIJ}" "$folder" "${BIR}" "$backup_folder" "$folder" "$date" "${RST}"
+            sleep 1
+        else
+            printf "%s%sFailed to backup %s folder. See %sRiceError.log%s\n" "${BLD}" "${MER}" "$folder" "${BIR}" "${RST}"
+            sleep 1
+        fi
+    else
+        printf "%s%s%s folder does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "$folder" "${HIJ}" "${RST}"
+        sleep 1
+    fi
 
 for folder in chrome; do
   if [ -d "$HOME"/.mozilla/firefox/*.default-release/$folder ]; then
@@ -241,6 +256,12 @@ for archivos in ~/dotfiles-v1/misc/applications/*; do
 	sleep 1
   fi
 done
+
+sed -i "s/user_pref(\"browser.startup.homepage\", \"file:\/\/\/home\/sanrei\/.local\/share\/startup-page\/index.html\")/user_pref(\"browser.startup.homepage\", \"file:\/\/\/home\/$USER\/.local\/share\/startup-page\/index.html\")/" "$HOME"/.mozilla/firefox/*.default-release/user.js
+cp -r "$HOME"/dotfiles-v1/misc/startup-page "$HOME"/.local/share
+sed -i "s/name: 'gh0stzk'/name: '$USER'/" "$HOME"/.local/share/startup-page/config.js
+cp -f "$HOME"/dotfiles-v1/home/.zshrc "$HOME"
+fc-cache -rv >/dev/null 2>&1
 
 for archivos in ~/dotfiles-v1/misc/fonts/*; do
   cp -R "${archivos}" ~/.local/share/fonts/
