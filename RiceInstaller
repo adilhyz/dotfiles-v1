@@ -189,6 +189,7 @@ for folder in bspwm alacritty picom rofi eww sxhkd dunst polybar cava ncmpcpp nv
         printf "%s%s%s folder does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "$folder" "${HIJ}" "${RST}"
         sleep 1
     fi
+done
 
 for folder in chrome; do
   if [ -d "$HOME"/.mozilla/firefox/*.default-release/$folder ]; then
