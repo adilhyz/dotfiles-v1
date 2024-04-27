@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#  ╔═╗╔═╗╔═╗╔═╗╔╦╗╦═╗╔═╗╔═╗╦╔═╗  ╦═╗╦╔═╗╔═╗
-#  ║╣ ╚═╗║ ║╚═╗ ║ ╠╦╝║╣ ╠╣ ║╚═╗  ╠╦╝║║  ║╣
-#  ╚═╝╚═╝╚═╝╚═╝ ╩ ╩╚═╚═╝╚  ╩╚═╝  ╩╚═╩╚═╝╚═╝
+## ┏━┓╻╺┳┓╻ ╻┏━┓╻ ╻   ┏━┓╻┏━╸┏━╸
+## ┗━┓┃ ┃┃┃ ┃┣┳┛┃ ┃   ┣┳┛┃┃  ┣╸ 
+## ┗━┛╹╺┻┛┗━┛╹┗╸┗━┛   ╹┗╸╹┗━╸┗━╸ by adilhyz
 ## This file will configure the options
 ## and launch the bars corresponding to each theme.
 
@@ -84,7 +84,7 @@ set_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
 		-e "s/background .*/background \"#dcd5b8\"/" \
 		-e "s/vertical .*/vertical true/" \
-		-e "s/geometry .*/geometry 1x1-283+700/" \
+		-e "s/geometry .*/geometry 1x1-295+700/" \
 		-e "s/grow_gravity .*/grow_gravity SE/" \
 		-e "s/icon_gravity .*/icon_gravity SE/"
 }

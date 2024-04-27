@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-#  ╦ ╦╦╔╦╗╔═╗  ╔╗ ╔═╗╦═╗
-#  ╠═╣║ ║║║╣   ╠╩╗╠═╣╠╦╝
-#  ╩ ╩╩═╩╝╚═╝  ╚═╝╩ ╩╩╚═
-#	Simple script to hide/show polybar
-#   Author: z0mbi3
-#	Modified : me
+## ╻ ╻╻╺┳┓┏━╸   ┏┓ ┏━┓┏━┓
+## ┣━┫┃ ┃┃┣╸    ┣┻┓┣━┫┣┳┛
+## ╹ ╹╹╺┻┛┗━╸   ┗━┛╹ ╹╹┗╸ by adilhyz
 
 function hide() {
 	
@@ -16,7 +13,7 @@ case "${RICETHEME}" in
         polybar-msg cmd hide | bspc config bottom_padding 2
         ;;
     siduru)
-        polybar-msg cmd hide | bspc config top_padding 2 | bspc config bottom_padding 2
+        polybar-msg cmd hide | bspc config top_padding 2 && bspc config bottom_padding 2
         ;;
     *)
         echo "Error: Something fails dud.."
@@ -41,7 +38,7 @@ case "${RICETHEME}" in
 		polybar-msg cmd show | bspc config top_padding 0
 		;;
 	siduru)
-		polybar-msg cmd show | bspc config top_padding 40 | bspc config bottom_padding 33
+		polybar-msg cmd show | bspc config top_padding 40 && bspc config bottom_padding 33
 		;;
 	silvia)
 		polybar-msg cmd show | bspc config top_padding 52

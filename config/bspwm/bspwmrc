@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#  ╔╗ ╔═╗╔═╗╦ ╦╔╦╗  - modified by me
-#  ╠╩╗╚═╗╠═╝║║║║║║  - 
-#  ╚═╝╚═╝╩  ╚╩╝╩ ╩  - original z0mbi3
+## ┏┓ ┏━┓┏━┓╻ ╻┏┳┓
+## ┣┻┓┗━┓┣━┛┃╻┃┃┃┃
+## ┗━┛┗━┛╹  ┗┻┛╹ ╹ by adilhyz
 
 read -r RICETHEME < "$HOME"/.config/bspwm/.rice
 export RICETHEME
@@ -13,16 +13,17 @@ export XDG_CURRENT_DESKTOP='bspwm'
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 
-#  ╦ ╦╔═╗╦═╗╦╔═╔═╗╔═╗╔═╗╔═╗╔═╗╔═╗
-#  ║║║║ ║╠╦╝╠╩╗╚═╗╠═╝╠═╣║  ║╣ ╚═╗
-#  ╚╩╝╚═╝╩╚═╩ ╩╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
+#  ╻ ╻┏━┓┏━┓╻┏ ┏━┓┏━┓┏━┓┏━╸┏━╸┏━┓
+#  ┃╻┃┃ ┃┣┳┛┣┻┓┗━┓┣━┛┣━┫┃  ┣╸ ┗━┓
+#  ┗┻┛┗━┛╹┗╸╹ ╹┗━┛╹  ╹ ╹┗━╸┗━╸┗━┛
 
-# Default 1 monitor with 6 workspaces
+## Default 1 monitor with 6 workspaces
 #for monitor in "$(xrandr -q | grep -w 'connected' | cut -d' ' -f1)"; do
 #	bspc monitor "$monitor" -d '1' '2' '3' '4' '5' '6'
 #	#bspc monitor "$monitor" -d '' '' '' '' '' ''
 #done
 
+## Other
 #INTERNAL_MONITOR="eDP1"
 #EXTERNAL_MONITOR="HDMI-1"
 
@@ -37,18 +38,14 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 #fi
 
 #if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-#    # Monitor eksternal terdeteksi, aktifkan mode mirror
 #    xrandr --output "$INTERNAL_MONITOR" --same-as "$EXTERNAL_MONITOR"
-#    # Atur workspace sesuai kebutuhan Anda
 #    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'   
-#    # Jika Anda ingin menggunakan bspwm, Anda juga dapat menjalankan perintah ini
 #    bspc wm -O "$INTERNAL_MONITOR"
 #else
-#    # Tidak ada monitor eksternal, atur workspace pada monitor internal
 #    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
 #fi
 
-# Presentations, both on my screen and on the projector (Mirror).
+# Presentations, both on my screen & projector (Mirror).
 EXTERNAL_MONITOR=""
 INTERNAL_MONITOR=""
 
@@ -79,11 +76,11 @@ fi
 
 workspaces
 
-#  ╔╗ ╔═╗╔═╗╦ ╦╔╦╗  ╔═╗╔═╗╔╗╔╔═╗╦╔═╗
-#  ╠╩╗╚═╗╠═╝║║║║║║  ║  ║ ║║║║╠╣ ║║ ╦
-#  ╚═╝╚═╝╩  ╚╩╝╩ ╩  ╚═╝╚═╝╝╚╝╚  ╩╚═╝
+#  ┏┓ ┏━┓┏━┓╻ ╻┏┳┓   ┏━╸┏━┓┏┓╻┏━╸╻┏━╸
+#  ┣┻┓┗━┓┣━┛┃╻┃┃┃┃   ┃  ┃ ┃┃┗┫┣╸ ┃┃╺┓
+#  ┗━┛┗━┛╹  ┗┻┛╹ ╹   ┗━╸┗━┛╹ ╹╹  ╹┗━┛
 
-bspc config external_rules_command $HOME/.config/bspwm/scripts/ExternalRules
+#bspc config external_rules_command $HOME/.config/bspwm/scripts/ExternalRules
 
 bspc config window_gap                  6
 bspc config split_ratio                 0.51
@@ -106,12 +103,17 @@ bspc rule -r *:*
 bspc rule -a scratch sticky=on state=floating focus=on
 bspc rule -a Subl desktop='^4' follow=on
 bspc rule -a brave desktop='^2' follow=on
+bspc rule -a google-chrome-stable desktop='^2' follow=on
 bspc rule -a firefox desktop='^2' follow=on
+bspc rule -a waterfox desktop='^2' follow=on
 bspc rule -a discord desktop='^6' follow=on
 bspc rule -a spotify desktop='^5' follow=on
+bspc rule -a whatsdesk desktop='^5' follow=on
+bspc rule -a TelegramDesktop desktop='^5' follow=on
 bspc rule -a Vlc state=fullscreen
 bspc rule -a VirtualBox Manager state=fullscreen
 bspc rule -a VirtualBox Machine state=fullscreen
+bspc rule -a Virt-manager state=fullscreen
 bspc rule -a inkscape state=fullscreen
 bspc rule -a Arandr state=floating
 bspc rule -a Galculator state=floating
@@ -124,9 +126,9 @@ bspc rule -a Sysfetch state=floating center=on rectangle=370x700+0+0
 bspc rule -a FloaTerm state=floating center=on 
 bspc rule -a Updating state=floating sticky=on center=on
 
-#  ╔═╗╦ ╦╔╦╗╔═╗╔═╗╔╦╗╔═╗╦═╗╔╦╗
-#  ╠═╣║ ║ ║ ║ ║╚═╗ ║ ╠═╣╠╦╝ ║ 
-#  ╩ ╩╚═╝ ╩ ╚═╝╚═╝ ╩ ╩ ╩╩╚═ ╩
+## ┏━┓╻ ╻╺┳╸┏━┓┏━┓╺┳╸┏━┓┏━┓╺┳╸
+## ┣━┫┃ ┃ ┃ ┃ ┃┗━┓ ┃ ┣━┫┣┳┛ ┃ 
+## ╹ ╹┗━┛ ╹ ┗━┛┗━┛ ╹ ╹ ╹╹┗╸ ╹ 
 
 # Set system vars for polybar
 . SetSysVars
@@ -143,11 +145,9 @@ done
 # Load bspwm conf, colors, dunst, bars and/or eww widgets
 . ${rice_dir}/Theme.sh
 
+
 # Reload sxhkd daemon
 sxhkd -c "$HOME"/.config/bspwm/sxhkdrc &
-
-# Set random wallpaper for actual rice
-feh -z --no-fehbg --bg-fill "${rice_dir}"/walls
 
 # Launch picom // If you have old hardware or encounter problems
 # uncomment the picom "--legacy-backends" line and comment the current one.
@@ -162,6 +162,9 @@ stalonetray -c "$HOME"/.config/bspwm/stalonetrayrc & sleep 0.1 && xdo hide -N st
 
 # Launch eww daemon
 pidof -q eww || { eww -c "$HOME"/.config/bspwm/eww daemon & }
+
+# Set random wallpaper for actual rice
+feh -z --no-fehbg --bg-fill "${rice_dir}"/walls
 
 # Launch polkit
 pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & }
@@ -191,6 +194,30 @@ xset r rate 375 45 &
 # Update
 #pamac-tray &
 
-#Blue light filter
+#Night filter
 #redshift -c ~/.config/redshift.conf & 
 
+# rs=$HOME/.cache/$(whoami)/redshift_state
+
+# if [[ $rs == "on" ]]; then
+#     redshift -x >/dev/null 2>&1
+#     redshift -O 3350 >/dev/null 2>&1
+#     # saving new state
+#     echo on >"$rs"
+# else
+#     redshift -x >/dev/null 2>&1
+#     # saving state
+#     echo off >"$rs"
+# fi
+
+# get_state() {
+#     # check if redshift is running
+#     cat "$rs"
+# }
+
+# if [ ! -d "$(dirname "$rs")" ]; then
+#         mkdir -p "$(dirname "$rs")"
+#     fi
+#     if [ ! -f "$rs" ]; then
+#         echo off >"$rs"
+#     fi

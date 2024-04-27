@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#  ╔═╗╔═╗╔╦╗╔═╗╦  ╔═╗  ╦═╗╦╔═╗╔═╗
-#  ╠═╝╠═╣║║║║╣ ║  ╠═╣  ╠╦╝║║  ║╣  
-#  ╩  ╩ ╩╩ ╩╚═╝╩═╝╩ ╩  ╩╚═╩╚═╝╚═╝
+## ┏━┓┏━┓┏┳┓┏━╸╻  ┏━┓   ┏━┓╻┏━╸┏━╸
+## ┣━┛┣━┫┃┃┃┣╸ ┃  ┣━┫   ┣┳┛┃┃  ┣╸ 
+## ╹  ╹ ╹╹ ╹┗━╸┗━╸╹ ╹   ╹┗╸╹┗━╸┗━╸ by adilhyz
 ## This file will configure the options
 ## and launch the bars corresponding to each theme.
 

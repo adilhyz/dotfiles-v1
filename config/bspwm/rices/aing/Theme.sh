@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-#  ╔═╗╔═╗╔═╗╔═╗╔╦╗╦═╗╔═╗╔═╗╦╔═╗  ╦═╗╦╔═╗╔═╗
-#  ║╣ ╚═╗║ ║╚═╗ ║ ╠╦╝║╣ ╠╣ ║╚═╗  ╠╦╝║║  ║╣
-#  ╚═╝╚═╝╚═╝╚═╝ ╩ ╩╚═╚═╝╚  ╩╚═╝  ╩╚═╩╚═╝╚═╝
+#!/usr/bin/env bash
+## ┏━┓╻┏┓╻┏━╸   ┏━┓╻┏━╸┏━╸
+## ┣━┫┃┃┗┫┃╺┓   ┣┳┛┃┃  ┣╸ 
+## ╹ ╹╹╹ ╹┗━┛   ╹┗╸╹┗━╸┗━╸ by adilhyz
 ## This file will configure the options
 ## and launch the bars corresponding to each theme.
 
@@ -142,7 +143,7 @@ set_eww_colors() {
 \$magenta: #E3C4BA;
 \$green: #6E91BA;
 \$yellow: #A393A2;
-\$archicon: #0f1116;
+\$archicon: #667eb3;
 EOF
 }
 

@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-#  ╦═╗╦╔═╗╔═╗  ╦╔╗╔╔═╗╔╦╗╔═╗╦  ╦  ╔═╗╦═╗
-#  ╠╦╝║║  ║╣   ║║║║╚═╗ ║ ╠═╣║  ║  ║╣ ╠╦╝
-#  ╩╚═╩╚═╝╚═╝  ╩╝╚╝╚═╝ ╩ ╩ ╩╩═╝╩═╝╚═╝╩╚═
+## ┏━┃┃┏━┛┏━┛  ┃┏━ ┏━┛━┏┛┏━┃┃  ┃  ┏━┛┏━┃
+## ┏┏┛┃┃  ┏━┛  ┃┃ ┃━━┃ ┃ ┏━┃┃  ┃  ┏━┛┏┏┛
+## ┛ ┛┛━━┛━━┛  ┛┛ ┛━━┛ ┛ ┛ ┛━━┛━━┛━━┛┛ ┛
 #	Script to install my dotfiles
-#   Author: z0mbi3
-#	Modified by me
 
 MER=$(tput setaf 1)
 KUN=$(tput setaf 3)
@@ -75,15 +73,14 @@ clear
 
 logo "Installing needed packages.."
 
-dependencias=(base-devel rustup pacman-contrib bspwm polybar sxhkd \
-			  alacritty brightnessctl dunst rofi rofi-emoji lsd stalonetray\
-			  jq polkit-gnome git playerctl mpd \
-			  ncmpcpp neofetch geany ranger mpc picom xdo xdotool jgmenu \
-			  feh ueberzug maim pamixer libwebp xdg-user-dirs blueberry \
-			  thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tumbler ffmpegthumbnailer ntfs-3g\
-			  webp-pixbuf-loader xorg-xprop xorg-xkill xsettingsd xautolock unclutter numlockx physlock lxappearance-gtk3 papirus-icon-theme epapirus-icon-theme \
-			  ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd ttf-inconsolata ttf-joypixels \
-			  zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting xclip xcolor xorg-xinit xorg-xsetroot xorg-xwininfo xorg-xdpyinfo xorg-xrandr)
+dependencias=(alacritty base-devel bspwm blueberry brightnessctl dunst epapirus-icon-theme feh ffmpegthumbnailer geany git jgmenu jq \
+					libwebp lsd lxappearance-gtk3 maim mpd ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
+					papirus-icon-theme physlock picom playerctl polybar polkit-gnome ranger \
+					redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman \
+					ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-joypixels ttf-terminus-nerd \
+					tumbler ueberzug unclutter webp-pixbuf-loader xautolock xclip xcolor xdg-user-dirs \
+					xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot \
+					xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
 is_installed() {
   pacman -Qi "$1" &> /dev/null

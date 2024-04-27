@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#  ╔═╗╦╦  ╦  ╦╦╔═╗  ╦═╗╦╔═╗╔═╗
-#  ╚═╗║║  ╚╗╔╝║╠═╣  ╠╦╝║║  ║╣ 
-#  ╚═╝╩╩═╝ ╚╝ ╩╩ ╩  ╩╚═╩╚═╝╚═╝
+## ┏━┓╻╻  ╻ ╻╻┏━┓   ┏━┓╻┏━╸┏━╸
+## ┗━┓┃┃  ┃┏┛┃┣━┫   ┣┳┛┃┃  ┣╸ 
+## ┗━┛╹┗━╸┗┛ ╹╹ ╹   ╹┗╸╹┗━╸┗━╸ by adilhyz
 ## This file will configure the options
 ## and launch the bars corresponding to each theme.
 
@@ -92,7 +92,12 @@ set_dunst_config() {
 		-e "s/frame_color = .*/frame_color = \"#282828\"/g" \
 		-e "s/separator_color = .*/separator_color = \"#d3869b\"/g" \
 		-e "s/font = .*/font = JetBrainsMono NF Medium 9/g" \
-		-e "s/foreground='.*'/foreground='#d3869b'/g"
+		-e "s/foreground='.*'/foreground='#d3869b'/g" \
+		-e "s/origin = .*/origin = top-right/g" \
+		-e "s/offset = .*/offset = 8x42/g" \
+		-e "s/icon_position = .*/icon_position = left/g" \
+		-e "s/max_icon_size = .*/max_icon_size = 50/g" \
+		-e "s/corner_radius = .*/corner_radius = 0/g"
 		
 	sed -i '/urgency_low/Q' "$HOME"/.config/bspwm/dunstrc
 	cat >> "$HOME"/.config/bspwm/dunstrc <<- _EOF_

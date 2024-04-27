@@ -1,4 +1,7 @@
 #!/bin/bash
+## ┏━╸┏┳┓┏━┓ ┏┓╻
+## ┣╸ ┃┃┃┃ ┃  ┃┃
+## ┗━╸╹ ╹┗━┛┗━┛╹ by adilhyz
 
 bspwm_dir="$HOME/.config/bspwm"
 STYLE=""

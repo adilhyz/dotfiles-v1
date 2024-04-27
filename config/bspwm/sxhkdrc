@@ -1,24 +1,31 @@
-#  ╚═╗╔╩╦╝╠═╣╠╩╗ ║║╠╦╝║    -
-#  ╚═╝╩ ╚═╩ ╩╩ ╩═╩╝╩╚═╚═╝  - original z0mbi3
-#			
-super + shi
-  ╔═╗═╗ ╦╦ ╦╦╔═╔╦╗╦═╗╔═╗  - modified by sanrei
+## ┏━┓╻ ╻╻ ╻╻┏ ╺┳┓┏━┓┏━╸
+## ┗━┓┏╋┛┣━┫┣┻┓ ┃┃┣┳┛┃  
+## ┗━┛╹ ╹╹ ╹╹ ╹╺┻┛╹┗╸┗━╸ by adilhyz
 
-#Picom Toggle
-ctrl + alt + p
-    sh ~/.config/bspwm/scripts/picom-toggle
+# Show help (Eww)
+F1
+	OpenApps --KeyHelp
 
-ctrl + shift + Escape
-    xfce4-taskmanager
+# Show keybinfdings help (Rofi)
+alt + F1
+	KeybindingsHelp
 
-#Xkill
+######################
+
+# Xkill
 super + Escape
     xkill
 
-# Show keybinfdings help
-alt + F1
-	KeybindingsHelp
-	
+# Picom Toggle
+ctrl + alt + p
+    sh ~/.config/bspwm/scripts/picom-toggle
+
+#|||----- Applications -----|||#
+
+# Task Manager
+ctrl + shift + Escape
+    xfce4-taskmanager
+
 # Open Terminal (alacritty)
 super + Return
 	OpenApps --terminal
@@ -27,6 +34,7 @@ super + Return
 super + alt + Return
 	OpenApps --floating
 
+# Right click
 ~button3
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
 
@@ -52,15 +60,15 @@ super + {o,i}
 	bspc wm -h on
 
 # Lockscreen
-#~/.config/bspwm/scripts/lock
 super + {l} 
 	{physlock -d}
+#~/.config/bspwm/scripts/lock
 
-# set the window state
+# Set the window state
 super + {t,shift + t,s}
 	bspc node -t {tiled,pseudo_tiled,floating}
 
-#Toggle fullscreen of window
+# Toggle fullscreen of window
 super + f
 	bspc node --state \~fullscreen
 
@@ -99,23 +107,22 @@ super + alt + w
 super + shift + w
 	feh -z --no-fehbg --bg-fill ~/.config/bspwm/rices/$RICETHEME/walls/
 
-#
-# bspwm hotkeys
-#
+## bspwm hotkeys ##
 
-# Reload BSPWM
+# Reload BSPWM:
 super + shift + r
-	bspc wm -r
+	bspc wm -r; dunstify -u low -i ~/.config/bspwm/assets/screenshot.svg 'Bspwm' 'Will be reloading...'
 
-#reload sxhkd:
+# Reload sxhkd:
 super + shift + s
-	pkill -USR1 -x sxhkd
+	pkill -USR1 -x sxhkd; dunstify -u low -i ~/.config/bspwm/assets/reload.svg 'sxhkd' 'The configuration file has been reloaded successfully!'
 
 # close and kill
 super + {_,shift + }q
 	bspc node -{c,k}
 
-####
+######################
+
 # Circulate the leaves of the tree
 super + a
 	bspc node @/ --circulate {backward,forward}
@@ -145,7 +152,7 @@ super + {t,shift + t,s}
 	bspc node -t {tiled,pseudo_tiled,floating}
 
 # set the node flags
-#ctrl + alt {m,x,s,p,i}
+#ctrl + alt + {m,x,s,p,i}
 #	bspc node -g {marked,locked,sticky,private,hidden}
 
 # Focused desktop window gaps scroll
@@ -153,7 +160,7 @@ super + button{4,5}
 	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
 
 # Global window gaps scroll
-super + alt + button{4,5}
+super + shift + button{4,5}
 	bspc config window_gap $(( $(bspc config window_gap) {-,+} 5 ))
 
 # focus the node in the given direction
@@ -168,13 +175,13 @@ super + {_,shift + }{Left,Down,Up,Right}
 alt + {_,shift + }Tab
 	bspc node -f {next,prev}.local
 
-# focus the next/previous desktop in the current monitor
-#super + alt + {Left,Right}
-#	bspc desktop -f {prev,next}.local
-
 # focus the last node/desktop
 super + {grave,Tab}
 	bspc {node,desktop} -f last
+
+# focus the next/previous desktop in the current monitor
+#super + alt + {Left,Right}
+#	bspc desktop -f {prev,next}.local
 
 # focus the older or newer node in the focus history
 super + {o,i}
@@ -223,10 +230,10 @@ super + ctrl + shift + {Left,Down,Up,Right}
 	bspc node -z {right -10 0,top 0 10,bottom 0 -10,left 10 0}
 
 # move a floating window
-alt + shift {Left,Down,Up,Right}
+alt + shift + {Left,Down,Up,Right}
 	bspc node -v {-10 0,0 10,0 -10,10 0}
 
-#Rotate desktop
+# Rotate desktop
 alt + space
 	bspc node @/ --rotate {90,-90}
 

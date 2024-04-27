@@ -2,7 +2,9 @@
 
 # sysfetch
 # Thanks to u/x_ero for his sysinfo script
-# Modified by gh0stzk https://github.com/gh0stzk/dotfiles
+#  : https://github.com/gh0stzk/dotfiles
+#  : adilhyz
+#  : github.com/adilhyz/dotfiles-v1
 
 # color escapes
 CBK=$(tput setaf 0)

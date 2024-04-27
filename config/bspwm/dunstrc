@@ -1,6 +1,6 @@
-#  ╔╦╗╦ ╦╔╗╔╔═╗╔╦╗  ╔═╗╔═╗╔╗╔╔═╗╦╔═╗	- Dunst config file for the rices
-#   ║║║ ║║║║╚═╗ ║   ║  ║ ║║║║╠╣ ║║ ╦	- modified by me
-#  ═╩╝╚═╝╝╚╝╚═╝ ╩   ╚═╝╚═╝╝╚╝╚  ╩╚═╝	- original z0mbi3
+##╺┳┓╻ ╻┏┓╻┏━┓╺┳╸   ┏━╸┏━┓┏┓╻┏━╸╻┏━╸
+## ┃┃┃ ┃┃┗┫┗━┓ ┃    ┃  ┃ ┃┃┗┫┣╸ ┃┃╺┓
+##╺┻┛┗━┛╹ ╹┗━┛ ╹    ┗━╸┗━┛╹ ╹╹  ╹┗━┛ by adilhyz
 
 [global]
 title = Dunst
@@ -18,7 +18,7 @@ transparency = 0
 separator_height = 2
 padding = 8
 horizontal_padding = 11
-frame_width = "2"
+frame_width = "1"
 frame_color = "#161a22"
 separator_color = "#927887"
 

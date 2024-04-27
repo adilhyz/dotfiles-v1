@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#   ╦╔═╗╔╗╔  ╦═╗╦╔═╗╔═╗ - modified by me
-#   ║╠═╣║║║  ╠╦╝║║  ║╣ 	
-#  ╚╝╩ ╩╝╚╝  ╩╚═╩╚═╝╚═╝ - original zombi3
+##  ┏┓┏━┓┏┓╻   ┏━┓╻┏━╸┏━╸
+##   ┃┣━┫┃┗┫   ┣┳┛┃┃  ┣╸ 
+## ┗━┛╹ ╹╹ ╹   ╹┗╸╹┗━╸┗━╸ by adilhyz
 ## This file will configure the options
 ## and launch the bars corresponding to each theme.
 
