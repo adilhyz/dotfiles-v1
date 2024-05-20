@@ -188,22 +188,28 @@ for folder in bspwm alacritty picom rofi eww sxhkd dunst kitty polybar cava ncmp
     fi
 done
 
-for folder in chrome; do
-  if [ -d "$HOME"/.mozilla/firefox/*.default-release/$folder ]; then
-    mv "$HOME"/.mozilla/firefox/*.default-release/$folder "$backup_folder"/${folder}_$date
-    echo "$folder folder backed up successfully at $backup_folder/${folder}_$date"
-  else
-    echo "The folder $folder does not exist in $HOME/.mozilla/firefox/"
-  fi
+for folder in "$HOME"/.mozilla/firefox/*.default-release/chrome; do
+    if [ -d "$folder" ]; then
+        if mv "$folder" "$backup_folder"/chrome_"$date" 2>> RiceError.log; then
+            printf "%s%sChrome folder backed up successfully at %s%s/chrome_%s%s\n" "${BLD}" "${HIJ}" "${BRU}" "$backup_folder" "${date}" "${RST}"
+        else
+            printf "%s%sFailed to backup Chrome folder. See %sRiceError.log%s\n" "${BLD}" "${MER}" "${BRU}" "${RST}"
+        fi
+    else
+        printf "%s%sThe folder Chrome does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "${KUN}" "${RST}"
+    fi
 done
 
-for file in user.js; do
-  if [ -e "$HOME"/.mozilla/firefox/*.default-release/$file ]; then
-    mv "$HOME"/.mozilla/firefox/*.default-release/$file "$backup_folder"/${file}_$date
-    echo "$file file backed up successfully at $backup_folder/${file}_$date"
-  else
-    echo "The file $file does not exist in $HOME/.mozilla/firefox/"
-  fi
+for file in "$HOME"/.mozilla/firefox/*.default-release/user.js; do
+    if [ -f "$file" ]; then
+        if mv "$file" "$backup_folder"/user.js_"$date" 2>> RiceError.log; then
+            printf "%s%suser.js file backed up successfully at %s%s/user.js_%s%s\n" "${BLD}" "${HIJ}" "${BRU}" "$backup_folder" "${date}" "${RST}"
+        else
+            printf "%s%sFailed to backup user.js file. See %sRiceError.log%s\n" "${BLD}" "${MER}" "${BRU}" "${RST}"
+        fi
+    else
+        printf "%s%sThe file user.js does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "${KUN}" "${RST}"
+    fi
 done
 
 if [ -f ~/.zshrc ]; then
@@ -228,7 +234,7 @@ printf "Copying files to respective directories..\n"
 [ ! -d ~/.local/bin ] && mkdir -p ~/.local/bin
 [ ! -d ~/.local/share ] && mkdir -p ~/.local/share
 
-for dirs in ~/dotfiles/config/*; do
+for dirs in ~/dotfiles-v1/config/*; do
     dir_name=$(basename "$dirs")
     if cp -R "${dirs}" ~/.config/ 2>> RiceError.log; then
         printf "%s%s%s %sconfiguration installed succesfully%s\n" "${BLD}" "${KUN}" "${dir_name}" "${HIJ}" "${RST}"
@@ -239,8 +245,9 @@ for dirs in ~/dotfiles/config/*; do
     fi
 done
 
-for folder in applications asciiart fonts startup-page; do
-    if cp -R ~/dotfiles/misc/$folder ~/.local/share/ 2>> RiceError.log; then
+##starto
+for folder in applications asciiart fonts; do
+    if cp -R ~/dotfiles-v1/misc/$folder ~/.local/share/ 2>> RiceError.log; then
         printf "%s%s%s %sfolder copied succesfully!%s\n" "${BLD}" "${KUN}" "$folder" "${HIJ}" "${RST}"
         sleep 1
     else
@@ -249,7 +256,7 @@ for folder in applications asciiart fonts startup-page; do
     fi
 done
 
-if cp -R ~/dotfiles/misc/bin ~/.local/ 2>> RiceError.log; then
+if cp -R ~/dotfiles-v1/misc/bin ~/.local/ 2>> RiceError.log; then
     printf "%s%sbin %sfolder copied succesfully!%s\n" "${BLD}" "${KUN}" "${HIJ}" "${RST}"
     sleep 1
 else
@@ -257,7 +264,7 @@ else
     sleep 1
 fi
 
-if cp -R ~/dotfiles/misc/firefox/* ~/.mozilla/firefox/*.default-release/ 2>> RiceError.log; then
+if cp -R ~/dotfiles-v1/misc/firefox/* ~/.mozilla/firefox/*.default-release/ 2>> RiceError.log; then
     printf "%s%sFirefox theme %scopied succesfully!%s\n" "${BLD}" "${KUN}" "${HIJ}" "${RST}"
     sleep 1
 else
@@ -341,9 +348,9 @@ fi
 logo "Enabling mpd service"
 
 if systemctl is-enabled --quiet mpd.service; then
-	printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${BRU}" "${RST}"
-	sudo systemctl stop mpd.service
-	sudo systemctl disable mpd.service
+    printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${BRU}" "${RST}"
+    sudo systemctl stop mpd.service
+    sudo systemctl disable mpd.service
 fi
 
 printf "\n%s%sEnabling and starting the user-level mpd service%s\n" "${BLD}" "${KUN}" "${RST}"
