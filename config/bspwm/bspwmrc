@@ -107,7 +107,7 @@ bspc rule -a google-chrome-stable desktop='^2' follow=on
 bspc rule -a firefox desktop='^2' follow=on
 bspc rule -a waterfox desktop='^2' follow=on
 bspc rule -a discord desktop='^6' follow=on
-bspc rule -a spotify desktop='^5' follow=on
+bspc rule -a Spotify desktop='^5' follow=on
 bspc rule -a whatsdesk desktop='^5' follow=on
 bspc rule -a TelegramDesktop desktop='^5' follow=on
 bspc rule -a Vlc state=fullscreen

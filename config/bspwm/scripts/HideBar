@@ -26,7 +26,7 @@ function unhide() {
 	
 case "${RICETHEME}" in
 	aing)
-		polybar-msg cmd show | bspc config bottom_padding 48
+		polybar-msg cmd show | bspc config bottom_padding 30
 		;;
 	esostrefis)
 		polybar-msg cmd show | bspc config top_padding 0

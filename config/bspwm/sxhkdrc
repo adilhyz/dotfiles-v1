@@ -26,32 +26,30 @@ ctrl + alt + p
 ctrl + shift + Escape
     xfce4-taskmanager
 
-# Open Terminal (alacritty)
-super + Return
-	OpenApps --terminal
-	
-# Open floating Terminal
-super + alt + Return
-	OpenApps --floating
+# Open floating Terminal & floating 
+super + {_,alt + } Return 
+	OpenApps --{terminal,floating}
 
 # Right click
 ~button3
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
 
-# Emoji, Windows, Theme Selector, & Menu aplikasi
+# Emoji, Windows, Theme Selector, & Menu App
 super + {period,w,v,d}
 	{sh ~/.config/bspwm/scripts/Emoji, \
 	sh ~/.config/bspwm/scripts/Windows, \
 	RiceSelector, \
 	OpenApps --menu}
 
-#Hide polybar
-#super + y
-#    polybar-msg cmd toggle
+# Scratchpad
+super + k
+	tdrop -a -w 70% -h 35% -y 0 -x 15%  --class scratch alacritty --class=scratch
+
+#Hide polybar \ super + y \ polybar-msg cmd toggle
 
 # Hide/Show Bar (Polybar and/or eww)
 super + {y,u}
-	HideBar {-h,-u}
+	HideBar -{h,u}
 
 # focus the older or newer node in the focus history
 super + {o,i}
@@ -61,8 +59,7 @@ super + {o,i}
 
 # Lockscreen
 super + {l} 
-	{physlock -d}
-#~/.config/bspwm/scripts/lock
+	{physlock -d} #~/.config/bspwm/scripts/lock
 
 # Set the window state
 super + {t,shift + t,s}
@@ -80,8 +77,7 @@ super {z,e,p,x,h,r,m}
 	 OpenApps --powermenu, \
 	 OpenApps --htop, \
 	 OpenApps --ranger, \
-	 OpenApps --spot}
-	 		  #--music
+	 OpenApps --spot||--music}
 
 # Change transparency on focused window
 ctrl + alt {plus,minus,t}
@@ -98,6 +94,10 @@ super + Print
 # Screenshot in 10s
 alt + Print
 	ScreenShoTer --in10
+
+# Screenshot active window
+shift + Print
+	ScreenShoTer --active
 
 # Random wallpaper
 super + alt + w
@@ -123,6 +123,34 @@ super + {_,shift + }q
 
 ######################
 
+# Switch workspace
+super + alt + ctrl + {Left,Right}
+	bspc desktop -f {prev,next}.local
+
+# focus or send to the given desktop
+super + {_,alt + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Send focused Node to workspace directionally
+super + alt + {Left,Right}
+	bspc node -d {prev,next} '--follow'
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Focused desktop window gaps scroll
+super + button{4,5}
+	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
+
+# Global window gaps scroll
+super + shift + button{4,5}
+	bspc config window_gap $(( $(bspc config window_gap) {-,+} 5 ))
+
+# focus the node in the given direction
+super + {_,shift + }{Left,Down,Up,Right}
+	bspc node -{f,s} {west,south,north,east}
+
 # Circulate the leaves of the tree
 super + a
 	bspc node @/ --circulate {backward,forward}
@@ -147,29 +175,11 @@ super + g
 super + j
     bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
 
-# set the window state
-super + {t,shift + t,s}
-	bspc node -t {tiled,pseudo_tiled,floating}
-
-# set the node flags
-#ctrl + alt + {m,x,s,p,i}
-#	bspc node -g {marked,locked,sticky,private,hidden}
-
-# Focused desktop window gaps scroll
-super + button{4,5}
-	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
-
-# Global window gaps scroll
-super + shift + button{4,5}
-	bspc config window_gap $(( $(bspc config window_gap) {-,+} 5 ))
-
-# focus the node in the given direction
-super + {_,shift + }{Left,Down,Up,Right}
-	bspc node -{f,s} {west,south,north,east}
-
-# focus the node for the given path jump
-#super + {p,b,comma,period}
-#	bspc node -f @{parent,brother,first,second}
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
 
 # focus the next/previous node in the current desktop
 alt + {_,shift + }Tab
@@ -179,19 +189,17 @@ alt + {_,shift + }Tab
 super + {grave,Tab}
 	bspc {node,desktop} -f last
 
-# focus the next/previous desktop in the current monitor
-#super + alt + {Left,Right}
-#	bspc desktop -f {prev,next}.local
+# focus the node for the given path jump
+#super + {p,b,comma,period}
+#	bspc node -f @{parent,brother,first,second}
 
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
+# set the node flags
+super + alt + {m,l,s,p}
+	bspc node -g {marked,locked,sticky,private}
 
-# focus or send to the given desktop
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+# Hide/Unhide Window
+super + alt + y
+	BspHideNode
 
 #
 # preselect
