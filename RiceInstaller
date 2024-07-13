@@ -73,8 +73,8 @@ clear
 
 logo "Installing needed packages.."
 
-dependencias=(alacritty base-devel bspwm blueberry brightnessctl dunst epapirus-icon-theme feh ffmpegthumbnailer geany git jgmenu jq kitty \
-					libwebp lsd lxappearance-gtk3 maim mpc mpd ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
+dependencias=(alacritty base-devel bspwm bat blueberry brightnessctl dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty \
+					libwebp lxappearance-gtk3 maim mpc mpd ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
 					papirus-icon-theme physlock picom playerctl polybar polkit-gnome ranger \
 					redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux \
 					ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-joypixels ttf-terminus-nerd \
