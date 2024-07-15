@@ -254,20 +254,43 @@ set_jgmenu_colors() {
 
 # Set Rofi launcher config
 set_launcher_config () {
-	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
-		-e 's/\(background: \).*/\1#1D1F28;/' \
-		-e 's/\(background-alt: \).*/\1#1D1F28E0;/' \
-		-e 's/\(foreground: \).*/\1#c0caf5;/' \
-		-e 's/\(selected: \).*/\1#6C77BB;/' \
-		-e 's/[^/]*-rofi/pa-rofi/'
+	cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
+// Rofi colors for Pamela
+* {
+    font: "Terminess Nerd Font Mono Bold 10";
+    background: #1D1F28;
+    background-alt: #1D1F28E0;
+    foreground: #c0caf5;
+    selected: #6C77BB;
+    active: #18E3C8;
+    urgent: #FF4971;
+    img-background: url("~/.config/bspwm/rices/pamela/rofi.webp", width);
+    main-bg: #1D1F28BF;
+    main-fg: #c0caf5;
+    main-fg-alt: #1D1F28BF;
+    select-bg: #6C77BB;
+    select-fg: #1D1F28;
+}
+EOF
 
-	# WallSelect menu colors	
-	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
-		-e 's/\(main-bg: \).*/\1#1D1F28BF;/' \
-		-e 's/\(main-fg: \).*/\1#c0caf5;/' \
-		-e 's/\(select-bg: \).*/\1#6C77BB;/' \
-		-e 's/\(select-fg: \).*/\1#1D1F28;/'
+sed -i "$HOME/.config/bspwm/src/rofi-themes/Window.rasi" \
+    -e '17s|\(font:\s*\).*|\1"Terminess Nerd Font Mono Bold 10";|' \
+    -e 's|\(font-weight:\s*\).*|\1bold;|' \
+    -e 's|\(background:\s*\).*|\1#1D1F28;|' \
+    -e 's|\(background-alt:\s*\).*|\1#1D1F28E0;|' \
+    -e 's|\(foreground:\s*\).*|\1#c0caf5;|' \
+    -e 's|\(selected:\s*\).*|\1#6C77BB;|' \
+    -e 's|\(highlight:\s*\).*|\1#FDFDFD;|' \
+    -e 's|\(urgent:\s*\).*|\1#8C8C8C;|' \
+    -e 's|\(window-format:\s*\).*|\1"  {c}  󱂬  {t}";|' \
+    -e '25s|\(on:\s*\).*|\1#E57C46;|' \
+    -e '26s|\(off:\s*\).*|\1#8C8C8C;|' \
+    -e '60s|\(background-color:\s*\).*|\1@background-alt;|' \
+    -e '61s|\(text-color:\s*\).*|\1@foreground;|' \
+    -e '67s|\(background-color:\s*\).*|\1@background-alt;|' \
+    -e '68s|\(text-color:\s*\).*|\1@foreground;|' \
+    -e '72s|\(border-color:\s*\).*|\1@background-alt;|' \
+    -e 's|\(background-image:.*rices/\)[^/]*|\1pamela|'
 }
 
 # Set color cava

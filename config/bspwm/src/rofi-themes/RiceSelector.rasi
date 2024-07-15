@@ -12,15 +12,7 @@ configuration {
     //me-accept-entry:           "MousePrimary";
 }
 
-* {
-main-bg: #14171c;
-main-fg: #b8bfe5;
-main-fg-alt: #14171cE0;
-select-bg: #7560d3;
-select-fg: #14171c;
-selected: #81ae5f;
-}
-
+@import "shared.rasi"
 
 // Main //
 window {

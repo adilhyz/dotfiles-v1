@@ -13,7 +13,7 @@ WIDGET_DIR="$HOME/.config/bspwm/eww"
 case "$1" in
   --menu)
     #rofi -show drun -theme $HOME/.config/bspwm/rices/${RICETHEME}/launcher.rasi
-    rofi -show drun -theme $HOME/.config/bspwm/scripts/Launcher.rasi
+    rofi -show drun -theme $HOME/.config/bspwm/src/rofi-themes/Launcher.rasi
     ;;
   --rice)
     RiceSelector
@@ -69,8 +69,8 @@ case "$1" in
     ;;
   # Eww Widgets
   --KeyHelp)
-  eww -c "$WIDGET_DIR" open --toggle csheet
-  ;;
+    eww -c "$WIDGET_DIR" open --toggle csheet
+    ;;
   --powermenu)
     eww -c "$WIDGET_DIR" open --toggle powermenu
     ;;

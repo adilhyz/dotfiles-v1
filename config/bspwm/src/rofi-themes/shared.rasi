@@ -1,0 +1,17 @@
+// Rofi colors for Esostrefis
+* {
+    font: "Terminess Nerd Font Mono Bold 10";
+    background: #070219;
+    background-alt: #070219F0;
+    foreground: #c0caf5;
+    selected: #fb007af0;
+    active: #4C3A6D;
+    urgent: #fb007a;
+    img-background: url("~/.config/bspwm/rices/jan/rofi.webp", width);
+    main-bg: #070219F0;
+    main-fg: #c0caf5;
+    main-fg-alt: #070219F0;
+    select-bg: #fb007a;
+    select-fg: #070219;
+}
+

@@ -248,21 +248,59 @@ set_appearance() {
 
 # Set Rofi launcher config
 set_launcher_config () {
-	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e '22s/\(font: \).*/\1"scientifica 12";/' \
-		-e 's/\(background: \).*/\1#282828;/' \
-		-e 's/\(background-alt: \).*/\1#282828E0;/' \
-		-e 's/\(foreground: \).*/\1#fbf1c7;/' \
-		-e 's/\(selected: \).*/\1#d79921;/' \
-		-e 's/[^/]*-rofi/si-rofi/'
-
-	# WallSelect menu colors	
-	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
-		-e 's/\(main-bg: \).*/\1#282828E6;/' \
-		-e 's/\(main-fg: \).*/\1#fbf1c7;/' \
-		-e 's/\(select-bg: \).*/\1#d79921;/' \
-		-e 's/\(select-fg: \).*/\1#282828;/'
+	cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
+// Rofi colors for Siduru
+* {
+    font: "scientifica 12";
+    background: #282828;
+    background-alt: #282828E0;
+    foreground: #fbf1c7;
+    selected: #d79921;
+    active: #d3869b;
+    urgent: #fb4934;
+    img-background: url("~/.config/bspwm/rices/silvia/rofi.webp", width);
+    main-bg: #282828E6;
+    main-fg: #fbf1c7;
+    main-fg-alt: #282828E6;
+    select-bg: #d79921;
+    select-fg: #282828;
 }
+EOF
+
+sed -i "$HOME/.config/bspwm/src/rofi-themes/Window.rasi" \
+    -e '17s|\(font:\s*\).*|\1"scientifica 12";|' \
+    -e 's|\(font-weight:\s*\).*|\1bold;|' \
+    -e 's|\(background:\s*\).*|\1#282828;|' \
+    -e 's|\(background-alt:\s*\).*|\1#282828E0;|' \
+    -e 's|\(foreground:\s*\).*|\1#fbf1c7;|' \
+    -e 's|\(selected:\s*\).*|\1#ebdbb2;|' \
+    -e 's|\(highlight:\s*\).*|\1#d79921;|' \
+    -e 's|\(urgent:\s*\).*|\1#928374;|' \
+    -e 's|\(window-format:\s*\).*|\1"󰇙  {c}   {w} 󰇙 {t}";|' \
+    -e '25s|\(on:\s*\).*|\1#98971a;|' \
+    -e '26s|\(off:\s*\).*|\1#689d6a;|' \
+    -e '60s|\(background-color:\s*\).*|\1@background-alt;|' \
+    -e '61s|\(text-color:\s*\).*|\1@foreground;|' \
+    -e '67s|\(background-color:\s*\).*|\1@background-alt;|' \
+    -e '68s|\(text-color:\s*\).*|\1@highlight;|' \
+    -e '72s|\(border-color:\s*\).*|\1@background-alt;|' \
+    -e 's|\(background-image:.*rices/\)[^/]*|\1silvia|'
+}
+
+# sed -i "$HOME/.config/bspwm/src/Launcher.rasi" \
+# 	-e '22s/\(font: \).*/\1"scientifica 12";/' \
+# 	-e 's/\(background: \).*/\1#282828;/' \
+# 	-e 's/\(background-alt: \).*/\1#282828E0;/' \
+# 	-e 's/\(foreground: \).*/\1#fbf1c7;/' \
+# 	-e 's/\(selected: \).*/\1#d79921;/' \
+# 	-e 's/[^/]*-rofi/si-rofi/'
+
+# # WallSelect menu colors	
+# sed -i "$HOME/.config/bspwm/src/WallSelect.rasi" \
+# 	-e 's/\(main-bg: \).*/\1#282828E6;/' \
+# 	-e 's/\(main-fg: \).*/\1#fbf1c7;/' \
+# 	-e 's/\(select-bg: \).*/\1#d79921;/' \
+# 	-e 's/\(select-fg: \).*/\1#282828;/'
 
 # Set color cava
 set_cava() {

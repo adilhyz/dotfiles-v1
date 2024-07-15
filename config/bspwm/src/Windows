@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#    @author:                        adilhyz
+#     GitHub:                       @adilhyz
+#     Developer:                    Sanrei Adilhyz
+
+# Variables to try to define the correct size of the images for your resolution
+monitor_res=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)
+monitor_scale=$(xdpyinfo | awk '/resolution/{print $2}' | cut -d 'x' -f1)
+monitor_res=$(( monitor_res * 1 / monitor_scale ))
+rofi_override="element-icon{size:${monitor_res}px;}"
+
+# Verify if xdpyinfo is installed
+if ! command -v xdpyinfo > /dev/null 2>&1; then
+    dunstify "Missing package" "Please install the xorg-xdpyinfo package to continue" -u critical
+    exit 1
+fi
+
+# Set some variables
+bspwm_dir="$HOME/.config/bspwm"
+#rofi_command="rofi -no-lazy-grab -show window -theme ${window}"
+window="$bspwm_dir/src/rofi-themes/Window.rasi"
+
+rofi -no-lazy-grab -show window -theme ${window} -theme-str $rofi_override

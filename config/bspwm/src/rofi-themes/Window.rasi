@@ -8,7 +8,7 @@
 configuration {
     show-icons:                     true;
     display-window:                 "Windows :";
-    window-format:                  " {c}  {w}  {t}";
+    window-format:                  "{c}  {w}  {t}";
     disable-history:                false;
     click-to-exit:                  true;
 }
@@ -17,7 +17,7 @@ configuration {
     font:                           "Terminess Nerd Font Mono Bold 10";
     font-weight:                    bold;
     background:                     #070219;
-    background-alt:                 #708491;
+    background-alt:                 #070219F0;
     foreground:                     #00c9fe;
     selected:                       #6800d2;
     highlight:                      #BE00CD;
@@ -47,7 +47,7 @@ prompt {
     margin:                         0px 0px 0px 8px;
     padding:                        6px 6px 6px 6px;
     background-color:               @selected;
-    text-color:                     @foreground;
+    text-color:                     @background;
     border:                         2px;
     border-color:                   @selected;
     border-radius:                  5px;
@@ -83,7 +83,7 @@ inputbar {
     spacing:                        10px;
     padding:                        40px 40px 45px;
     background-color:               transparent;
-    background-image:               url("~/.config/bspwm/assets/ja-rofi.webp", width);
+    background-image:               url("~/.config/bspwm/rices/jan/rofi.webp", width);
     text-color:                     @foreground;
     orientation:                    horizontal;
     children:                       [ "textbox-prompt-colon", "entry" ];

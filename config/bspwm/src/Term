@@ -4,7 +4,7 @@
 # Author: z0mbi3
 #	url: https://github.com/gh0stzk/dotfiles
 
-cfg_term="$HOME/.config/bspwm/scripts/.term"
+cfg_term="$HOME/.config/bspwm/src/.term"
 
 if [ ! -e "$cfg_term" ]; then
     touch "$cfg_term"
@@ -22,7 +22,7 @@ ALACRITTY="Alacritty"
 KITTY="Kitty"
 
 options="$ALACRITTY\n$KITTY"
-chosen="$(echo -e "$options" | rofi -theme "$HOME"/.config/bspwm/scripts/TermSelector.rasi -dmenu)"
+chosen="$(echo -e "$options" | rofi -theme "$HOME"/.config/bspwm/src/TermSelector.rasi -dmenu)"
 	case $chosen in
 
 			"$ALACRITTY")

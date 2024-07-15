@@ -224,20 +224,43 @@ set_jgmenu_colors() {
 
 # Set Rofi launcher config
 set_launcher_config () {
-	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e 's/\(background: \).*/\1#dcd5b8;/' \
-		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
-		-e 's/\(background-alt: \).*/\1#dcd5b8E0;/' \
-		-e 's/\(foreground: \).*/\1#0c0e1a;/' \
-		-e 's/\(selected: \).*/\1#db9fcc;/' \
-		-e 's/[^/]*-rofi/sd-rofi/'
+	cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
+// Rofi colors for Siduru
+* {
+    font: "IDroid 8";
+    background: #dcd5b8;
+    background-alt: #dcd5b8E0;
+    foreground: #0c0e1a;
+    selected: #db9fcc;
+    active: #337073;
+    urgent: #3e111a;
+    img-background: url("~/.config/bspwm/rices/siduru/rofi.webp", width);
+    main-bg: #dcd5b8E0;
+    main-fg: #0c0e1a;
+    main-fg-alt: #dcd5b8E0;
+    select-bg: #db9fcc;
+    select-fg: #dcd5b8;
+}
+EOF
 
-	# WallSelect menu colors	
-	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
-		-e 's/\(main-bg: \).*/\1#dcd5b8E0;/' \
-		-e 's/\(main-fg: \).*/\1#0c0e1a;/' \
-		-e 's/\(select-bg: \).*/\1#db9fcc;/' \
-		-e 's/\(select-fg: \).*/\1#dcd5b8;/'
+sed -i "$HOME/.config/bspwm/src/rofi-themes/Window.rasi" \
+    -e '17s|\(font:\s*\).*|\1"IDroid 8";|' \
+    -e 's|\(font-weight:\s*\).*|\1bold;|' \
+    -e 's|\(background:\s*\).*|\1#dcd5b8;|' \
+    -e 's|\(background-alt:\s*\).*|\1#dcd5b8E0;|' \
+    -e 's|\(foreground:\s*\).*|\1#0c0e1a;|' \
+    -e 's|\(selected:\s*\).*|\1#3d6a99;|' \
+    -e 's|\(highlight:\s*\).*|\1#ECDDC1;|' \
+    -e 's|\(urgent:\s*\).*|\1#e57569;|' \
+    -e 's|\(window-format:\s*\).*|\1" {c}  [{w}]  {t}";|' \
+    -e '25s|\(on:\s*\).*|\1#ff927a;|' \
+    -e '26s|\(off:\s*\).*|\1#e57569;|' \
+    -e '60s|\(background-color:\s*\).*|\1@background-alt;|' \
+    -e '61s|\(text-color:\s*\).*|\1@foreground;|' \
+    -e '67s|\(background-color:\s*\).*|\1@background-alt;|' \
+    -e '68s|\(text-color:\s*\).*|\1@foreground;|' \
+    -e '72s|\(border-color:\s*\).*|\1@background-alt;|' \
+    -e 's|\(background-image:.*rices/\)[^/]*|\1siduru|'
 }
 
 # Set color cava #bak-e "78s/gradient_color_1 = .*/gradient_color_1 = '#3d6a99'/g"

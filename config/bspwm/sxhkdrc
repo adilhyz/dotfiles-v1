@@ -18,7 +18,7 @@ super + Escape
 
 # Picom Toggle
 ctrl + alt + p
-    sh ~/.config/bspwm/scripts/picom-toggle
+    sh ~/.config/bspwm/src/picom-toggle
 
 #|||----- Applications -----|||#
 
@@ -32,12 +32,12 @@ super + {_,alt + } Return
 
 # Right click
 ~button3
-  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/scripts/menu.txt --config-file=~/.config/bspwm/jgmenurc
+  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/src/jgmenu/menu.txt --config-file=~/.config/bspwm/jgmenurc
 
 # Emoji, Windows, Theme Selector, & Menu App
 super + {period,w,v,d}
-	{sh ~/.config/bspwm/scripts/Emoji, \
-	sh ~/.config/bspwm/scripts/Windows, \
+	{sh ~/.config/bspwm/src/Emoji, \
+	sh ~/.config/bspwm/src/Windows, \
 	RiceSelector, \
 	OpenApps --menu}
 
@@ -59,7 +59,7 @@ super + {o,i}
 
 # Lockscreen
 super + {l} 
-	{physlock -d} #~/.config/bspwm/scripts/lock
+	{physlock -d} #~/.config/bspwm/src/lock
 
 # Set the window state
 super + {t,shift + t,s}

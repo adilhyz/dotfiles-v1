@@ -5,7 +5,7 @@
 
 read -r RICETHEME < "$HOME"/.config/bspwm/.rice
 export RICETHEME
-PATH="$HOME/.config/bspwm/scripts:$PATH"
+PATH="$HOME/.config/bspwm/src:$PATH"
 rice_dir="$HOME/.config/bspwm/rices/$RICETHEME"
 export XDG_CURRENT_DESKTOP='bspwm'
 
@@ -80,7 +80,7 @@ workspaces
 #  ┣┻┓┗━┓┣━┛┃╻┃┃┃┃   ┃  ┃ ┃┃┗┫┣╸ ┃┃╺┓
 #  ┗━┛┗━┛╹  ┗┻┛╹ ╹   ┗━╸┗━┛╹ ╹╹  ╹┗━┛
 
-#bspc config external_rules_command $HOME/.config/bspwm/scripts/ExternalRules
+#bspc config external_rules_command $HOME/.config/bspwm/src/ExternalRules
 
 bspc config window_gap                  6
 bspc config split_ratio                 0.51

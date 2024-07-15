@@ -4,8 +4,6 @@ configuration {
     modi:                        "drun";
     show-icons:                  true;
     drun-display-format:         "{name}";
-    font:                        "JetBrainsMono NF Bold 11";
-    
     //hover-select:				 true;
 	//me-select-entry:			 "";
 	//me-accept-entry:			 "MousePrimary";
@@ -13,13 +11,7 @@ configuration {
 
 //----- Global Properties -----//
 
-* {
-main-bg: #161a22E0;
-main-fg: #cadee7;
-main-fg-alt: #55535c;
-select-bg: #E3C4BA;
-select-fg: #161a22;
-}
+@import "shared.rasi"
 
 //----- Main Window -----//
 

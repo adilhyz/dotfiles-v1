@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SFILE="$HOME/.config/bspwm/scripts/.sys"
+SFILE="$HOME/.config/bspwm/src/.sys"
 
 function get_values() {
 
@@ -27,16 +27,16 @@ function get_values() {
 function set_values() {
 
     if [[ "$DEFNETWORK" ]]; then
-        sed -i -e "s/sys_network_interface = .*/sys_network_interface = $DEFNETWORK/g" "$HOME"/.config/bspwm/scripts/system.ini
+        sed -i -e "s/sys_network_interface = .*/sys_network_interface = $DEFNETWORK/g" "$HOME"/.config/bspwm/src/system.ini
     fi
     if [[ "$ADAPTER" ]]; then
-        sed -i -e "s/sys_adapter = .*/sys_adapter = $ADAPTER/g" "$HOME"/.config/bspwm/scripts/system.ini
+        sed -i -e "s/sys_adapter = .*/sys_adapter = $ADAPTER/g" "$HOME"/.config/bspwm/src/system.ini
     fi
     if [[ "$BATTERY" ]]; then
-        sed -i -e "s/sys_battery = .*/sys_battery = $BATTERY/g" "$HOME"/.config/bspwm/scripts/system.ini
+        sed -i -e "s/sys_battery = .*/sys_battery = $BATTERY/g" "$HOME"/.config/bspwm/src/system.ini
     fi
     if [[ "$CARD" ]]; then
-        sed -i -e "s/sys_graphics_card = .*/sys_graphics_card = $CARD/g" "$HOME"/.config/bspwm/scripts/system.ini
+        sed -i -e "s/sys_graphics_card = .*/sys_graphics_card = $CARD/g" "$HOME"/.config/bspwm/src/system.ini
     fi
 
 }

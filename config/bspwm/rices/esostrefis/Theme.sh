@@ -229,20 +229,43 @@ set_jgmenu_colors() {
 
 # Set Rofi launcher config
 set_launcher_config () {
-	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
-		-e 's/\(background: \).*/\1#232136;/' \
-		-e 's/\(background-alt: \).*/\1#232136E0;/' \
-		-e 's/\(foreground: \).*/\1#e0def4;/' \
-		-e 's/\(selected: \).*/\1#c3a5e6;/' \
-		-e 's/[^/]*-rofi/es-rofi/'
+	cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
+// Rofi colors for Esostrefis
+* {
+    font: "Terminess Nerd Font Mono Bold 10";
+    background: #232136;
+    background-alt: #232136E0;
+    foreground: #e0def4;
+    selected: #c3a5e6;
+    active: #9bced7;
+    urgent: #ea6f91;
+    img-background: url("~/.config/bspwm/rices/esostrefis/rofi.webp", width);
+    main-bg: #232136E6;
+    main-fg: #e0def4;
+    main-fg-alt: #232136E0;
+    select-bg: #c3a5e6;
+    select-fg: #232136;
+}
 
-	# WallSelect menu colors	
-	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
-		-e 's/\(main-bg: \).*/\1#232136E6;/' \
-		-e 's/\(main-fg: \).*/\1#e0def4;/' \
-		-e 's/\(select-bg: \).*/\1#c3a5e6;/' \
-		-e 's/\(select-fg: \).*/\1#232136;/'
+EOF
+sed -i "$HOME/.config/bspwm/src/rofi-themes/Window.rasi" \
+    -e '17s|\(font:\s*\).*|\1"Terminess Nerd Font Mono Bold 10";|' \
+    -e 's|\(font-weight:\s*\).*|\1bold;|' \
+    -e 's|\(background:\s*\).*|\1#232136;|' \
+    -e 's|\(background-alt:\s*\).*|\1#232136E0;|' \
+    -e 's|\(foreground:\s*\).*|\1#eaeaea;|' \
+    -e 's|\(selected:\s*\).*|\1#c3a5e6;|' \
+    -e 's|\(highlight:\s*\).*|\1#9bced7;|' \
+    -e 's|\(urgent:\s*\).*|\1#ea6f91;|' \
+    -e 's|\(window-format:\s*\).*|\1" {c}  󰇙  {t}";|' \
+    -e '25s|\(on:\s*\).*|\1#34738e;|' \
+    -e '26s|\(off:\s*\).*|\1#ea6f91;|' \
+    -e '60s|\(background-color:\s*\).*|\1@selected;|' \
+    -e '61s|\(text-color:\s*\).*|\1@background-alt;|' \
+    -e '67s|\(background-color:\s*\).*|\1@selected;|' \
+    -e '68s|\(text-color:\s*\).*|\1@background-alt;|' \
+    -e '72s|\(border-color:\s*\).*|\1@selected;|' \
+    -e 's|\(background-image:.*rices/\)[^/]*|\1esostrefis|'
 }
 
 # Set color cava

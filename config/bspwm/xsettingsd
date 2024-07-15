@@ -1,9 +1,9 @@
 ## Original by (C) Aditya Shakya
 ## Modified by Adilhyz
 
-Net/ThemeName "amarena"
-Net/IconThemeName "Nordzy-pink-dark"
-Gtk/CursorThemeName "phinger-cursors"
+Net/ThemeName "Cyberpunk"
+Net/IconThemeName "Win11-Dark"
+Gtk/CursorThemeName "capitaine-cursors"
 Net/EnableEventSounds "0"
 Net/EnableInputFeedbackSounds "0"
 Xft/DPI "-1"

@@ -13,21 +13,21 @@ THEME="${TDIR##*/}"
 
 # Set bspwm configuration for aing
 set_bspwm_config() {
-	bspc config border_width 0
-	bspc config top_padding 2
-	bspc config bottom_padding 30
-	bspc config normal_border_color "#6E91BA"
-	bspc config active_border_color "#6E91BA"
-	bspc config focused_border_color "#E3C4BA"
-	bspc config presel_feedback_color "#E3C4BA"
-	bspc config left_padding 2
-	bspc config right_padding 2
-	bspc config window_gap 6
+  bspc config border_width 0
+  bspc config top_padding 2
+  bspc config bottom_padding 30
+  bspc config normal_border_color "#6E91BA"
+  bspc config active_border_color "#6E91BA"
+  bspc config focused_border_color "#E3C4BA"
+  bspc config presel_feedback_color "#E3C4BA"
+  bspc config left_padding 2
+  bspc config right_padding 2
+  bspc config window_gap 6
 }
 
 # Reload terminal colors
 set_alacritty_config() {
-	cat > "$HOME"/.config/alacritty/rice-colors.toml << EOF
+  cat > "$HOME"/.config/alacritty/rice-colors.toml << EOF
 # (Aing) Aing Rice
 
 # Default colors
@@ -136,71 +136,71 @@ killall -USR1 kitty
 
 # Set compositor configuration
 set_picom_config() {
-	sed -i "$HOME"/.config/bspwm/picom.conf \
-		-e "s/normal = .*/normal =  { fade = true; shadow = true; }/g" \
-		-e "s/inactive-opacity = .*/inactive-opacity = 1.0;/g" \
-		-e "s/active-opacity = .*/active-opacity = 1.0;/g" \
-		-e "s/shadow-color = .*/shadow-color = \"#000000\"/g" \
-		-e "s/method = .*/method = \"none\"/g" \
-		-e "s/background = .*/background = false/g" \
-		-e "s/background-frame = .*/background-frame = false/g" \
-		-e "s/background-fixed = .*/background-fixed = false/g" \
-		-e "s/corner-radius = .*/corner-radius = 6/g" \
-		-e "s/\".*:class_g = 'Alacritty'\"/\"100:class_g = 'Alacritty'\"/g" \
-		-e "s/\".*:class_g = 'FloaTerm'\"/\"100:class_g = 'FloaTerm'\"/g" \
-		-e "s/\".*:class_g = 'Updating'\"/\"100:class_g = 'Updating'\"/g" \
-		-e "s/\".*:class_g = 'MusicPlayer'\"/\"100:class_g = 'MusicPlayer'\"/g" \
-		-e "s/\".*:class_g = 'Sysfetch'\"/\"100:class_g = 'Sysfetch'\"/g" \
-		-e "s/\".*:class_g = 'scratch'\"/\"90:class_g = 'scratch'\"/g"
+  sed -i "$HOME"/.config/bspwm/picom.conf \
+    -e "s/normal = .*/normal =  { fade = true; shadow = true; }/g" \
+    -e "s/inactive-opacity = .*/inactive-opacity = 1.0;/g" \
+    -e "s/active-opacity = .*/active-opacity = 1.0;/g" \
+    -e "s/shadow-color = .*/shadow-color = \"#000000\"/g" \
+    -e "s/method = .*/method = \"none\"/g" \
+    -e "s/background = .*/background = false/g" \
+    -e "s/background-frame = .*/background-frame = false/g" \
+    -e "s/background-fixed = .*/background-fixed = false/g" \
+    -e "s/corner-radius = .*/corner-radius = 6/g" \
+    -e "s/\".*:class_g = 'Alacritty'\"/\"100:class_g = 'Alacritty'\"/g" \
+    -e "s/\".*:class_g = 'FloaTerm'\"/\"100:class_g = 'FloaTerm'\"/g" \
+    -e "s/\".*:class_g = 'Updating'\"/\"100:class_g = 'Updating'\"/g" \
+    -e "s/\".*:class_g = 'MusicPlayer'\"/\"100:class_g = 'MusicPlayer'\"/g" \
+    -e "s/\".*:class_g = 'Sysfetch'\"/\"100:class_g = 'Sysfetch'\"/g" \
+    -e "s/\".*:class_g = 'scratch'\"/\"90:class_g = 'scratch'\"/g"
 }
 
 # Set stalonetray config
 set_stalonetray_config() {
-	sed -i "$HOME"/.config/bspwm/stalonetrayrc \
-		-e "s/background .*/background \"#161a22\"/" \
-		-e "s/vertical .*/vertical true/" \
-		-e "s/geometry .*/geometry 1x1-36+705/" \
-		-e "s/grow_gravity .*/grow_gravity SE/" \
-		-e "s/icon_gravity .*/icon_gravity SE/"
+  sed -i "$HOME"/.config/bspwm/stalonetrayrc \
+    -e "s/background .*/background \"#161a22\"/" \
+    -e "s/vertical .*/vertical true/" \
+    -e "s/geometry .*/geometry 1x1-36+705/" \
+    -e "s/grow_gravity .*/grow_gravity SE/" \
+    -e "s/icon_gravity .*/icon_gravity SE/"
 }
 
 # Set dunst notification daemon config
 set_dunst_config() {
 	sed -i "$HOME"/.config/bspwm/dunstrc \
-		-e "s/transparency = .*/transparency = 0/g" \
-		-e "s/frame_color = .*/frame_color = \"#161a22\"/g" \
-		-e "s/separator_color = .*/separator_color = \"#927887\"/g" \
-		-e "s/font = .*/font = JetBrainsMono NF Medium 9/g" \
-		-e "s/foreground='.*'/foreground='#6E91BA'/g" \
-		-e "s/origin = .*/origin = bottom-right/g" \
-		-e "s/offset = .*/offset = 8x36/g" \
-		-e "s/icon_position = .*/icon_position = left/g" \
-		-e "s/max_icon_size = .*/max_icon_size = 50/g" \
-		-e "s/corner_radius = .*/corner_radius = 0/g"
+    -e "s/transparency = .*/transparency = 0/g" \
+    -e "s/frame_color = .*/frame_color = \"#161a22\"/g" \
+    -e "s/separator_color = .*/separator_color = \"#927887\"/g" \
+    -e "s/font = .*/font = JetBrainsMono NF Medium 9/g" \
+    -e "s/foreground='.*'/foreground='#6E91BA'/g" \
+    -e "s/origin = .*/origin = bottom-right/g" \
+    -e "s/offset = .*/offset = 8x36/g" \
+    -e "s/icon_position = .*/icon_position = left/g" \
+    -e "s/max_icon_size = .*/max_icon_size = 50/g" \
+    -e "s/corner_radius = .*/corner_radius = 0/g"
 
-	
-	sed -i '/urgency_low/Q' "$HOME"/.config/bspwm/dunstrc
-	cat >> "$HOME"/.config/bspwm/dunstrc <<- _EOF_
-		[urgency_low]
-		timeout = 3
-		background = "#161a22"
-		foreground = "#cadee7"
+  
+  sed -i '/urgency_low/Q' "$HOME"/.config/bspwm/dunstrc
+  cat >> "$HOME"/.config/bspwm/dunstrc <<- _EOF_
+    [urgency_low]
+    timeout = 3
+    background = "#161a22"
+    foreground = "#cadee7"
 
-		[urgency_normal]
-		timeout = 6
-		background = "#161a22"
-		foreground = "#cadee7"
+    [urgency_normal]
+    timeout = 6
+    background = "#161a22"
+    foreground = "#cadee7"
 
-		[urgency_critical]
-		timeout = 0
-		background = "#161a22"
-		foreground = "#cadee7"
+    [urgency_critical]
+    timeout = 0
+    background = "#161a22"
+    foreground = "#cadee7"
 _EOF_
 }
 
 # Set eww colors
 set_eww_colors() {
-	cat > "$HOME"/.config/bspwm/eww/colors.scss << EOF
+  cat > "$HOME"/.config/bspwm/eww/colors.scss << EOF
 // Eww colors for Aing rice
 \$bg: #161a22;
 \$bg-alt: #262c3a;
@@ -219,73 +219,96 @@ EOF
 
 # Set jgmenu colors for Aing
 set_jgmenu_colors() {
-	sed -i "$HOME"/.config/bspwm/jgmenurc \
-		-e 's/color_menu_bg = .*/color_menu_bg = #161a22/' \
-		-e 's/color_norm_fg = .*/color_norm_fg = #cadee7/' \
-		-e 's/color_sel_bg = .*/color_sel_bg = #262c3a/' \
-		-e 's/color_sel_fg = .*/color_sel_fg = #cadee7/' \
-		-e 's/color_sep_fg = .*/color_sep_fg = #1e232e/'
+  sed -i "$HOME"/.config/bspwm/jgmenurc \
+    -e 's/color_menu_bg = .*/color_menu_bg = #161a22/' \
+    -e 's/color_norm_fg = .*/color_norm_fg = #cadee7/' \
+    -e 's/color_sel_bg = .*/color_sel_bg = #262c3a/' \
+    -e 's/color_sel_fg = .*/color_sel_fg = #cadee7/' \
+    -e 's/color_sep_fg = .*/color_sep_fg = #1e232e/'
 }
 
 # Set Rofi launcher config
 set_launcher_config () {
-	sed -i "$HOME/.config/bspwm/scripts/Launcher.rasi" \
-		-e 's/\(background: \).*/\1#161a22;/' \
-		-e '22s/\(font: \).*/\1"Terminess Nerd Font Mono Bold 10";/' \
-		-e 's/\(background-alt: \).*/\1#161a22E0;/' \
-		-e 's/\(foreground: \).*/\1#cadee7;/' \
-		-e 's/\(selected: \).*/\1#E3C4BA;/' \
-		-e 's/[^/]*-rofi/ai-rofi/'
+  cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
+// Rofi colors for Aing
 
-	# WallSelect menu colors	
-	sed -i "$HOME/.config/bspwm/scripts/WallSelect.rasi" \
-		-e 's/\(main-bg: \).*/\1#161a22E0;/' \
-		-e 's/\(main-fg: \).*/\1#cadee7;/' \
-		-e 's/\(select-bg: \).*/\1#E3C4BA;/' \
-		-e 's/\(select-fg: \).*/\1#161a22;/'
+* {
+    font: "Terminess Nerd Font Mono Bold 10";
+    background: #161a22;
+    background-alt: #161a22E0;
+    foreground: #cadee7;
+    selected: #E3C4BA;
+    active: #6E91BA;
+    urgent: #927887;
+    img-background: url("~/.config/bspwm/rices/aing/rofi.webp", width);
+    main-bg: #161a22E0;
+    main-fg: #cadee7;
+    main-fg-alt: #161a22E0;
+    select-bg: #E3C4BA;
+    select-fg: #161a22;
+}
+EOF
+sed -i "$HOME/.config/bspwm/src/rofi-themes/Window.rasi" \
+    -e '17s|\(font:\s*\).*|\1"Terminess Nerd Font Mono Bold 10";|' \
+    -e 's|\(font-weight:\s*\).*|\1bold;|' \
+    -e 's|\(background:\s*\).*|\1#161a22;|' \
+    -e 's|\(background-alt:\s*\).*|\1#161a22E0;|' \
+    -e 's|\(foreground:\s*\).*|\1#cadee7;|' \
+    -e 's|\(selected:\s*\).*|\1#E3C4BA;|' \
+    -e 's|\(highlight:\s*\).*|\1#6E91BA;|' \
+    -e 's|\(urgent:\s*\).*|\1#927887;|' \
+    -e 's|\(window-format:\s*\).*|\1" {c}  󰇙  {t}";|' \
+    -e '25s|\(on:\s*\).*|\1#55535c;|' \
+    -e '26s|\(off:\s*\).*|\1#927887;|' \
+    -e '60s|\(background-color:\s*\).*|\1@selected;|' \
+    -e '61s|\(text-color:\s*\).*|\1@background-alt;|' \
+    -e '67s|\(background-color:\s*\).*|\1@selected;|' \
+    -e '68s|\(text-color:\s*\).*|\1@background-alt;|' \
+    -e '72s|\(border-color:\s*\).*|\1@selected;|' \
+    -e 's|\(background-image:.*rices/\)[^/]*|\1aing|'
 }
 
 # Set color cava #bak-e "78s/gradient_color_1 = .*/gradient_color_1 = '#D2ACA9'/g"
 set_cava() {
-	sed -i "$HOME/.config/cava/config" \
-		-e "s/foreground = .*/foreground = 'cyan'/g"
+  sed -i "$HOME/.config/cava/config" \
+    -e "s/foreground = .*/foreground = 'cyan'/g"
 }
 
 # Appearance
 set_appearance() {
-	XFILE="$BDIR/xsettingsd"
-	GTK2FILE="$HOME/.gtkrc-2.0"
-	GTK3FILE="$HOME/.config/gtk-3.0/settings.ini"
+  XFILE="$BDIR/xsettingsd"
+  GTK2FILE="$HOME/.gtkrc-2.0"
+  GTK3FILE="$HOME/.config/gtk-3.0/settings.ini"
 
-	# apply gtk theme, icons, cursor & fonts
-	if [[ `pidof xsettingsd` ]]; then
-		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"amarena\"|g" ${XFILE}
-		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Nordzy-pink-dark\"|g" ${XFILE}
-		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"phinger-cursors\"|g" ${XFILE}
-	else
-		sed -i -e "s/gtk-font-name=.*/gtk-font-name=\"Noto Sans 9\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"amarena\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Nordzy-pink-dark\"/g" ${GTK2FILE}
-		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"phinger-cursors\"/g" ${GTK2FILE}
-		
-		sed -i -e "s/gtk-font-name=.*/gtk-font-name=Noto Sans 9/g" ${GTK3FILE}
-		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=amarena/g" ${GTK3FILE}
-		sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Nordzy-pink-dark/g" ${GTK3FILE}
-		sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=phinger-cursors/g" ${GTK3FILE}
-	fi
-	
-	# inherit cursor theme
-	if [[ -f "$HOME"/.icons/default/index.theme ]]; then
-		sed -i -e "s/Inherits=.*/Inherits=phinger-cursors/g" "$HOME"/.icons/default/index.theme
-	fi	
+  # apply gtk theme, icons, cursor & fonts
+  if [[ `pidof xsettingsd` ]]; then
+    sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"amarena\"|g" ${XFILE}
+    sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"Nordzy-pink-dark\"|g" ${XFILE}
+    sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"phinger-cursors\"|g" ${XFILE}
+  else
+    sed -i -e "s/gtk-font-name=.*/gtk-font-name=\"Noto Sans 9\"/g" ${GTK2FILE}
+    sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"amarena\"/g" ${GTK2FILE}
+    sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=\"Nordzy-pink-dark\"/g" ${GTK2FILE}
+    sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=\"phinger-cursors\"/g" ${GTK2FILE}
+    
+    sed -i -e "s/gtk-font-name=.*/gtk-font-name=Noto Sans 9/g" ${GTK3FILE}
+    sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=amarena/g" ${GTK3FILE}
+    sed -i -e "s/gtk-icon-theme-name=.*/gtk-icon-theme-name=Nordzy-pink-dark/g" ${GTK3FILE}
+    sed -i -e "s/gtk-cursor-theme-name=.*/gtk-cursor-theme-name=phinger-cursors/g" ${GTK3FILE}
+  fi
+  
+  # inherit cursor theme
+  if [[ -f "$HOME"/.icons/default/index.theme ]]; then
+    sed -i -e "s/Inherits=.*/Inherits=phinger-cursors/g" "$HOME"/.icons/default/index.theme
+  fi  
 }
 
 # Launch the bar and or eww widgets
 launch_bars() {
 
-	for mon in $(polybar --list-monitors | cut -d":" -f1); do
-		MONITOR=$mon polybar -q aing-bar -c ${rice_dir}/config.ini &
-	done
+  for mon in $(polybar --list-monitors | cut -d":" -f1); do
+    MONITOR=$mon polybar -q aing-bar -c ${rice_dir}/config.ini &
+  done
 
 }
 

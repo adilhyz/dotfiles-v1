@@ -18,13 +18,7 @@ configuration {
 
 //----- Global Properties -----//
 
-* {
-font: "Terminess Nerd Font Mono Bold 10";
-background: #161a22;
-background-alt: #161a22E0;
-foreground: #cadee7;
-selected: #E3C4BA;
-}
+@import "shared.rasi"
 
 //----- Main Window -----//
 
@@ -70,7 +64,7 @@ inputbar {
     spacing:                     10px;
     padding:                     40px 40px 45px;
     background-color:            transparent;
-    background-image:            url("~/.config/bspwm/assets/ai-rofi.webp", width);
+    background-image:            var(img-background);
     text-color:                  @foreground;
     orientation:                 horizontal;
     children:                    [ "textbox-prompt-colon", "entry" ];
