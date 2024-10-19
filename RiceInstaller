@@ -325,22 +325,11 @@ else
 fi
 
 # Installing Eww
-if command -v eww >/dev/null 2>&1; then
-    printf "\n%s%sEww is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+if pacman -Qq eww-git >/dev/null 2>&1; then
+    printf "\n%s%sEww is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
 else
-    printf "\n%s%sInstalling Eww, this could take 10 mins or more.%s\n" "${BLD}" "${BRU}" "${RST}"
-    {
-        sudo pacman -S rustup --noconfirm
-        cd "$HOME" || exit
-        git clone https://github.com/elkowar/eww
-        cd eww || exit
-        cargo build --release --no-default-features --features x11
-        sudo install -m 755 "$HOME/eww/target/release/eww" -t /usr/bin/
-        cd "$HOME" || exit
-        rm -rf {paru-bin,.cargo,.rustup,eww}
-        } || {
-        printf "\n%s%sFailed to install Eww. You may need to install it manually%s\n" "${BLD}" "${MER}" "${RST}"
-    }
+    printf "\n%s%sInstalling Eww, this will take some time.. !%s\n" "${BLD}" "${CBL}" "${CNC}"
+    paru -S eww-git --skipreview --noconfirm
 fi
 
 ########## ---------- Enabling MPD service ---------- ##########
