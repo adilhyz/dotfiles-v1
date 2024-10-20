@@ -1,8 +1,8 @@
-background "#070219"
+background "#161a22"
 vertical true
-geometry 1x1-133+57
-grow_gravity NE
-icon_gravity NE
+geometry 1x1-36+705
+grow_gravity SE
+icon_gravity SE
 icon_size 18
 slot_size 27
 kludges force_icons_size

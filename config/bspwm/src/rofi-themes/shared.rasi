@@ -1,17 +1,17 @@
-// Rofi colors for Esostrefis
+// Rofi colors for Aing
+
 * {
     font: "Terminess Nerd Font Mono Bold 10";
-    background: #070219;
-    background-alt: #070219F0;
-    foreground: #c0caf5;
-    selected: #fb007af0;
-    active: #4C3A6D;
-    urgent: #fb007a;
-    img-background: url("~/.config/bspwm/rices/jan/rofi.webp", width);
-    main-bg: #070219F0;
-    main-fg: #c0caf5;
-    main-fg-alt: #070219F0;
-    select-bg: #fb007a;
-    select-fg: #070219;
+    background: #161a22;
+    background-alt: #161a22E0;
+    foreground: #cadee7;
+    selected: #E3C4BA;
+    active: #6E91BA;
+    urgent: #927887;
+    img-background: url("~/.config/bspwm/rices/aing/rofi.webp", width);
+    main-bg: #161a22E0;
+    main-fg: #cadee7;
+    main-fg-alt: #161a22E0;
+    select-bg: #E3C4BA;
+    select-fg: #161a22;
 }
-

@@ -221,7 +221,7 @@ set_jgmenu_colors() {
 # Set Rofi launcher config
 set_launcher_config () {
 cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
-// Rofi colors for Esostrefis
+// Rofi colors for Jan
 * {
     font: "Terminess Nerd Font Mono Bold 10";
     background: #070219;

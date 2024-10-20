@@ -249,7 +249,7 @@ set_appearance() {
 # Set Rofi launcher config
 set_launcher_config () {
 	cat >"$HOME"/.config/bspwm/src/rofi-themes/shared.rasi <<EOF
-// Rofi colors for Siduru
+// Rofi colors for Silvia
 * {
     font: "scientifica 12";
     background: #282828;
