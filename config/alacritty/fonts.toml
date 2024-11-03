@@ -1,6 +1,6 @@
 #  Font configuration
 [font]
-size = 10
+size = 9
 
 builtin_box_drawing = true
 

@@ -3,12 +3,14 @@
 ## ┣┻┓┗━┓┣━┛┃╻┃┃┃┃
 ## ┗━┛┗━┛╹  ┗┻┛╹ ╹ by adilhyz
 
-read -r RICETHEME < "$HOME"/.config/bspwm/.rice
+# Current rice
+read -r RICETHEME < "${HOME}"/.config/bspwm/.rice
 export RICETHEME
-PATH="$HOME/.config/bspwm/src:$PATH"
+
+# Set environment variables
+export PATH="$HOME/.config/bspwm/src:$PATH"
 rice_dir="$HOME/.config/bspwm/rices/$RICETHEME"
 export XDG_CURRENT_DESKTOP='bspwm'
-
 ## Fix java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
@@ -131,7 +133,7 @@ bspc rule -a Updating state=floating sticky=on center=on
 ## ╹ ╹┗━┛ ╹ ┗━┛┗━┛ ╹ ╹ ╹╹┗╸ ╹ 
 
 # Set system vars for polybar
-. SetSysVars
+. "$HOME"/.config/bspwm/src/SetSysVars
 
 # Terminate already running polybar, stalonetray, sxhkd and dunst instances
 processes=("sxhkd" "polybar" "dunst" "eww.*bar" "stalonetray")
@@ -142,39 +144,41 @@ for process in "${processes[@]}"; do
     fi
 done
 
-# Load bspwm conf, colors, dunst, bars and/or eww widgets
-. ${rice_dir}/Theme.sh
+# Launch sxhkd daemon
+#sxhkd -c "$HOME"/.config/bspwm/sxhkdrc &
+pidof -q sxhkd || { sxhkd -c "${HOME}"/.config/bspwm/src/config/sxhkdrc & }
 
-
-# Reload sxhkd daemon
-sxhkd -c "$HOME"/.config/bspwm/sxhkdrc &
-
-# Launch picom // If you have old hardware or encounter problems
-# uncomment the picom "--legacy-backends" line and comment the current one.
-pidof -q picom || { picom --config "$HOME"/.config/bspwm/picom.conf & }
+# Launch picom
+pidof -q picom || { picom --config "${HOME}"/.config/bspwm/src/config/picom.conf & }
+#pidof -q picom || { picom --config "$HOME"/.config/bspwm/picom.conf & }
 #pidof -q picom || { picom --legacy-backends --config "$HOME"/.config/bspwm/picom.conf & }
 
-# Launch dunst notification daemon
-dunst -config "$HOME"/.config/bspwm/dunstrc &
+# Load current theme
+. "${HOME}"/.config/bspwm/rices/"${RICETHEME}"/Theme.sh
 
-# Launch stalonetray
-stalonetray -c "$HOME"/.config/bspwm/stalonetrayrc & sleep 0.1 && xdo hide -N stalonetray && touch "/tmp/syshide.lock"
+# Lauch xsettingsd daemon
+#xsettingsd --config="$HOME"/.config/bspwm/xsettingsd &
+#pidof -q xsettings || { xsettingsd --config="${HOME}"/.config/bspwm/src/config/xsettingsd >/dev/null 2>&1 & }
+pidof -q xsettings || { xsettingsd --config="${HOME}"/.config/bspwm/xsettingsd >/dev/null 2>&1 & }
 
 # Launch eww daemon
 pidof -q eww || { eww -c "$HOME"/.config/bspwm/eww daemon & }
 
-# Set random wallpaper for actual rice
-feh -z --no-fehbg --bg-fill "${rice_dir}"/walls
+# Launch dunst notification daemon
+dunst -config "$HOME"/.config/bspwm/dunstrc &
 
 # Launch polkit
 pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & }
 
+# Launch stalonetray
+stalonetray -c "$HOME"/.config/bspwm/stalonetrayrc & sleep 0.01 && xdo hide -N stalonetray && touch "/tmp/syshide.lock"
+
+# Set random wallpaper for actual rice
+#feh -z --no-fehbg --bg-fill "${rice_dir}"/walls
+
 # Fix cursor
 xsetroot -cursor_name left_ptr
 unclutter -idle 3 &
-
-# Lauch xsettingsd daemon
-xsettingsd --config="$HOME"/.config/bspwm/xsettingsd &
 
 # Teuingg
 numlockx on &

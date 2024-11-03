@@ -5,23 +5,36 @@
 ## This file will configure the options
 ## and launch the bars corresponding to each theme.
 
+# Current Rice
+read -r RICE < "$HOME"/.config/bspwm/.rice
+
+# Terminate or reload existing processes if necessary.
+. "${HOME}"/.config/bspwm/src/Process.bash
+
+# Vars config for Jan Rice
+# Bspwm border  # Top pad  # Bottom pad   # Normal border color # Active border color  # Focused border color  # Presel border colos  # Left pad   # Right pad  # Window gap
+BORDER_WIDTH="0"  TP="-2"   BP="-2"        NORMAL_BC="#4C3A6D"   ACTIVE_BC="#4C3A6D"    FOCUSED_BC="#785DA5"   	PRESEL_BC="#070219"    LP="-2"       RP="-2"       WG="12"
+
+# Fade true|false	# Shadows true|false	# Corner radius		# Shadow color			# Animations true|false
+P_FADE="false"		P_SHADOWS="false"		P_CORNER_R="0"		SHADOW_C="#000000"		ANIMATIONS="false"
+
 ## Theme
 BDIR="$HOME/.config/bspwm"
 TDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 THEME="${TDIR##*/}"
 
-# Set bspwm configuration for Jan
+# Set bspwm configuration
 set_bspwm_config() {
-	bspc config border_width 0
-	bspc config top_padding -2
-	bspc config bottom_padding -2
-	bspc config normal_border_color "#4C3A6D"
-	bspc config active_border_color "#4C3A6D"
-	bspc config focused_border_color "#785DA5"
-	bspc config presel_feedback_color "#070219"
-	bspc config left_padding -2
-	bspc config right_padding -2
-	bspc config window_gap 12
+	bspc config border_width ${BORDER_WIDTH}
+	bspc config top_padding ${TP}
+	bspc config bottom_padding ${BP}
+	bspc config normal_border_color ${NORMAL_BC}
+	bspc config active_border_color ${ACTIVE_BC}
+	bspc config focused_border_color ${FOCUSED_BC}
+	bspc config presel_feedback_color ${PRESEL_BC}
+	bspc config left_padding ${LP}
+	bspc config right_padding ${RP}
+	bspc config window_gap ${WG}
 }
 
 # Reload terminal colors
@@ -131,18 +144,25 @@ killall -USR1 kitty
 
 # Set compositor configuration
 set_picom_config() {
-	sed -i "$HOME"/.config/bspwm/picom.conf \
-		-e "s/normal = .*/normal = { fade = true; shadow = false; }/g" \
-		-e "s/inactive-opacity = .*/inactive-opacity = 1.0;/g" \
-		-e "s/active-opacity = .*/active-opacity = 1.0;/g" \
-		-e "s/shadow-color = .*/shadow-color = \"#000000\"/g" \
-		-e "s/method = .*/method = \"none\"/g" \
-		-e "s/background = .*/background = false/g" \
-		-e "s/background-frame = .*/background-frame = false/g" \
-		-e "s/background-fixed = .*/background-fixed = false/g" \
-		-e "s/corner-radius = .*/corner-radius = 0/g" \
-		-e "s/\".*:class_g = 'Alacritty'\"/\"96:class_g = 'Alacritty'\"/g" \
-		-e "s/\".*:class_g = 'FloaTerm'\"/\"96:class_g = 'FloaTerm'\"/g"
+  picom_conf_file="$HOME/.config/bspwm/src/config/picom.conf"
+  picom_rules_file="$HOME/.config/bspwm/src/config/picom-rules.conf"
+
+  sed -i "$picom_conf_file" \
+    -e "s/shadow = .*/shadow = ${P_SHADOWS};/" \
+    -e "s/shadow-color = .*/shadow-color = \"${SHADOW_C}\"/" \
+    -e "s/fading = .*/fading = ${P_FADE};/" \
+    -e "s/corner-radius = .*/corner-radius = ${P_CORNER_R}/"
+
+  sed -i "$picom_rules_file" \
+    -e "95s/  opacity = .*/ opacity = 0.96;/"
+
+  if [[ "$ANIMATIONS" = "true" ]]; then
+    sed -i "$picom_rules_file" \
+      -e '/picom-animations/c\@include "picom-animations.conf"'
+  else
+    sed -i "$picom_rules_file" \
+      -e '/picom-animations/c\#@include "picom-animations.conf"'
+  fi
 }
 
 # Set stalonetray config

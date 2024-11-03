@@ -3,7 +3,6 @@
 #  ╩ ╩╩═╝╩ ╩╚═╝╩╚═╩ ╩  ╩  ╩   ╚═╝╚═╝╝╚╝╚  ╩╚═╝	- Modified by me
 #  General configuration
 
-[general]
 import = ["~/.config/alacritty/rice-colors.toml", "~/.config/alacritty/fonts.toml"]
 
 live_config_reload = true
