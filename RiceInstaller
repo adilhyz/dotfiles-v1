@@ -4,18 +4,18 @@
 ## ┛ ┛┛━━┛━━┛  ┛┛ ┛━━┛ ┛ ┛ ┛━━┛━━┛━━┛┛ ┛
 #	Script to install my dotfiles
 
-MER=$(tput setaf 1)
-KUN=$(tput setaf 3)
-HIJ=$(tput setaf 2)
-BRU=$(tput setaf 4)
-BLD=$(tput bold)
-RST=$(tput sgr0)
+MER=$(tput setaf 1)     # Red
+KUN=$(tput setaf 3)     # Yellow
+HIJ=$(tput setaf 2)     # Green
+BRU=$(tput setaf 4)     # Blue
+BLD=$(tput bold)        # Bold
+RST=$(tput sgr0)        # Reset colors
 
+# Global vars
 backup_folder=~/.RiceBackup
-date=$(date +%Y%m%d-%H%M%S)
+ERROR_LOG="$HOME/RiceError.log"
 
 logo () {
-	
 	local text="${1:?}"
 	echo -en "                                  
                     ***                 
@@ -39,325 +39,499 @@ logo () {
     printf ' %s [%s%s %s%s %s]%s\n\n' "${MER}" "${RST}" "${KUN}" "${text}" "${RST}" "${MER}" "${RST}"
 }
 
-########## ---------- You must not run this as root ---------- ##########
+# Handle errors
+log_error() {
+    local error_msg="$1"
+    local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 
-if [ "$(id -u)" = 0 ]; then
-    echo "This script MUST NOT be run as root user."
-    exit 1
-fi
+    echo "[${timestamp}] ERROR: ${error_msg}" >> "$ERROR_LOG"
+
+    printf "%s%sERROR:%s %s\n" "${CRE}" "${BLD}" "${CNC}" "${error_msg}" >&2
+}
 
 home_dir=$HOME
 current_dir=$(pwd)
 
-if [ "$current_dir" != "$home_dir" ]; then
-    printf "%s%sThe script must be executed from the HOME directory.%s\n" "${BLD}" "${KUN}" "${RST}"
-    exit 1
-fi
+# Verificaciones iniciales
+initial_checks() {
+    if [ "$(id -u)" = 0 ]; then
+        log_error "This script MUST NOT be run as root user."
+        exit 1
+    fi
 
-########## ---------- Welcome ---------- ##########
+    if [ "$PWD" != "$HOME" ]; then
+        log_error "The script must be executed from HOME directory."
+        exit 1
+    fi
 
-logo "Welcome!"
-printf '%s%sThis script will check if you have the necessary dependencies, and if not, it will install them. Then, it will clone the RICE in your HOME directory.\nAfter that, it will create a secure backup of your files, and then copy the new files to your computer.\n\nMy dotfiles DO NOT modify any of your system configurations.\nYou will be prompted for your root password to install missing dependencies and/or to switch to zsh shell if its not your default.\n\nThis script doesnt have the potential power to break your system, it only copies files from my repository to your HOME directory.%s\n\n' "${BLD}" "${MER}" "${RST}"
+    if ! curl -s --head http://google.com | grep "200 OK" &>/dev/null; then
+        log_error "No internet connection detected."
+        exit 1
+    fi
 
-while true; do
-    read -rp " Do you wish to continue? [y/N]: " yn
-    case $yn in
-        [Yy]* ) break ;;
-        [Nn]* ) exit ;;
-        * ) printf " Error: just write 'y' or 'n'\n\n" ;;
-    esac
-done
-clear
-
-########## ---------- Install packages & needs ---------- ##########
-
-logo "Installing needed packages.."
-
-dependencias=(alacritty base-devel bspwm bat blueberry brightnessctl dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty \
-					libwebp lxappearance-gtk3 maim mpc mpd ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
-					papirus-icon-theme physlock picom playerctl polybar polkit-gnome ranger \
-					redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux \
-					ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-joypixels ttf-terminus-nerd \
-					tumbler ueberzug unclutter webp-pixbuf-loader xautolock xclip xcolor xdg-user-dirs \
-					xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot \
-					xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
-
-is_installed() {
-  pacman -Qi "$1" &> /dev/null
-  return $?
 }
 
-printf "%s%sChecking for required packages...%s\n" "${BLD}" "${BRU}" "${RST}"
-for paquete in "${dependencias[@]}"; do
-    if ! is_installed "$paquete"; then
-        if sudo pacman -S "$paquete" --noconfirm >/dev/null 2>> RiceError.log; then
-            printf "%s%s%s %shas been installed succesfully.%s\n" "${BLD}" "${KUN}" "$paquete" "${BRU}" "${RST}"
-            sleep 1
-        else
-            printf "%s%s%s %shas not been installed correctly. See %sRiceError.log %sfor more details.%s\n" "${BLD}" "${KUN}" "$paquete" "${MER}" "${BRU}" "${MER}" "${RST}"
-            sleep 1
-        fi
-    else
-        printf '%s%s%s %sis already installed on your system!%s\n' "${BLD}" "${KUN}" "$paquete" "${HIJ}" "${RST}"
-        sleep 1
-    fi
-done
-sleep 5
-clear
+welcome() {
+    logo "Welcome $USER"
+    printf '%s%sThis script will check if you have the necessary dependencies, and if not, it will install them. Then, it will clone the RICE in your HOME directory.\nAfter that, it will create a secure backup of your files, and then copy the new files to your computer.\n\nMy dotfiles DO NOT modify any of your system configurations.\nYou will be prompted for your root password to install missing dependencies and/or to switch to zsh shell if its not your default.\n\nThis script doesnt have the potential power to break your system, it only copies files from my repository to your HOME directory.%s\n\n' "${BLD}" "${MER}" "${RST}"
 
-repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
-iconsu=("adilhyz-icons")
-themesu=("adilhyz-themes")
-cursorsu=("adilhyz-cursors")
-piles=("-1.1-1-any.pkg.tar.zst")
-
-icons=("${iconsu[@]/%/$piles}")
-themes=("${themesu[@]/%/$piles}")
-cursors=("${cursorsu[@]/%/$piles}")
-
-#cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
-
-is_needs() {
-  pacman -Qi "$iconsu" "$themesu" "$cursorsu" &>/dev/null
-  return $?
+    local yn
+    while true; do
+        read -rp " ${BLD}${CGR}Do you wish to continue?${CNC} [y/N]: " yn
+        case "${yn,,}" in
+            y|yes)
+                return 0
+                ;;
+            n|no|"")
+                echo -e "\n${BLD}${CYE}Operation cancelled${CNC}"
+                exit 0
+                ;;
+            *)
+                echo -e "\n${BLD}${CRE}Error:${CNC} Just write '${BLD}${CYE}y${CNC}' or '${BLD}${CYE}n${CNC}'\n"
+                ;;
+        esac
+    done
 }
 
-# Memeriksa apakah paket berada dalam daftar yang diizinkan
-for pkgs in "${icons[@]}" "${themes[@]}" "${cursors[@]}"; do
-  printf '%s%s Downloading and installing: %s\n' "$pkgs"
-  if ! is_needs "$pkgs"; then
-    curl -LO "$repo/$pkgs" && sudo pacman -U "$pkgs" --noconfirm
-    rm -rf "$pkgs"
-    printf "\n"
-  else
-    printf '%s%s Package %s is already installed!\n' "${HIJ}" "$pkg" "${RST}"
-    sleep 1
-  fi
-done
+install_dependencies() {
+    clear
+    logo "Installing needed packages.."
+    sleep 2
 
-sleep 2
-clear
+    # Internal verification function
+    is_installed() {
+      pacman -Qi "$1" &> /dev/null
+      return $?
+    }
 
-########## ---------- Preparing Folders ---------- ##########
+    # List of dependencies
+    local dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty \
+    					libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
+    					papirus-icon-theme physlock picom playerctl polybar polkit-gnome yazi \
+    					redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux \
+    					ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-joypixels ttf-terminus-nerd \
+    					tumbler ueberzug unclutter webp-pixbuf-loader xautolock xclip xcolor xdg-user-dirs \
+    					xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot \
+    					xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
-logo "Preparing Folders"
-if [ ! -e "$HOME/.config/user-dirs.dirs" ]; then
-    xdg-user-dirs-update
-fi
-sleep 2 
-clear
+    echo -e "${BLD}${CBL}Checking for required packages...${CNC}\n"
+    sleep 2
 
-########## ---------- Cloning the Rice! ---------- ##########
-
-logo "Downloading dotfiles"
-repo_url="https://github.com/adilhyz/dotfiles-v1"
-repo_dir="$HOME/dotfiles-v1"
-
-	if [ -d "$repo_dir" ]; then
-		printf "Removing existing dotfiles repository\n"
-		rm -rf "$repo_dir"
-	fi
-
-# Clona el repositorio
-printf "Cloning dotfiles from %s\n" "$repo_url"
-git clone --depth=1 "$repo_url" "$repo_dir"
-
-sleep 2
-clear
-
-########## ---------- Backup files ---------- ##########
-
-logo "Backup files"
-printf "Backup files will be stored in %s%s%s/.RiceBackup%s \n\n" "${BLD}" "${MER}" "$HOME" "${RST}"
-sleep 10
-
-[ ! -d "$backup_folder" ] && mkdir -p "$backup_folder"
-
-for folder in bspwm alacritty picom rofi eww sxhkd dunst kitty polybar cava ncmpcpp nvim neofetch ranger Thunar tmux zsh mpd paru; do
-    if [ -d "$HOME/.config/$folder" ]; then
-        if mv "$HOME/.config/$folder" "$backup_folder/${folder}_$date" 2>> RiceError.log; then
-            printf "%s%s%s folder backed up successfully at %s%s/%s_%s%s\n" "${BLD}" "${HIJ}" "$folder" "${BIR}" "$backup_folder" "$folder" "$date" "${RST}"
-            sleep 1
+    # Detect missing packages
+    local missing_pkgs=()
+    for pkg in "${dependencies[@]}"; do
+        if ! is_installed "$pkg"; then
+            missing_pkgs+=("$pkg")
+            echo -e " ${BLD}${CYE}${pkg} ${CRE}not installed${CNC}"
         else
-            printf "%s%sFailed to backup %s folder. See %sRiceError.log%s\n" "${BLD}" "${MER}" "$folder" "${BIR}" "${RST}"
-            sleep 1
+            echo -e "${BLD}${CGR}${pkg} ${CBL}already installed${CNC}"
+        fi
+    done
+
+    # Batch installation
+    if ((${#missing_pkgs[@]} > 0)); then
+        echo -e "\n${BLD}${CYE}Installing ${#missing_pkgs[@]} packages...${CNC}\n"
+
+        if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" >> "$ERROR_LOG" 2>&1; then
+            # Verify complete installation
+            local failed_pkgs=()
+            for pkg in "${missing_pkgs[@]}"; do
+                if ! is_installed "$pkg"; then
+                    failed_pkgs+=("$pkg")
+                    log_error "Failed to install: $pkg"
+                fi
+            done
+
+            # Show final results
+            if ((${#failed_pkgs[@]} == 0)); then
+                echo -e "${BLD}${CGR}All packages installed successfully!${CNC}\n\n"
+            else
+                echo -e "${BLD}${CRE}Failed to install ${#failed_pkgs[@]} packages:${CNC}\n"
+                echo -e "  ${BLD}${CYE}${failed_pkgs[*]}${CNC}\n\n"
+            fi
+        else
+            log_error "Critical error during batch installation"
+            echo -e "${BLD}${CRE}Installation failed! Check log for details${CNC}\n"
+            return 1
         fi
     else
-        printf "%s%s%s folder does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "$folder" "${HIJ}" "${RST}"
-        sleep 1
+        echo -e "\n${BLD}${CGR}All dependencies are already installed!${CNC}"
     fi
-done
 
-for folder in "$HOME"/.mozilla/firefox/*.default-release/chrome; do
-    if [ -d "$folder" ]; then
-        if mv "$folder" "$backup_folder"/chrome_"$date" 2>> RiceError.log; then
-            printf "%s%sChrome folder backed up successfully at %s%s/chrome_%s%s\n" "${BLD}" "${HIJ}" "${BRU}" "$backup_folder" "${date}" "${RST}"
+    sleep 3
+}
+
+add_adilhyz_dependecies() {
+    repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
+    iconsu=("adilhyz-icons")
+    themesu=("adilhyz-themes")
+    cursorsu=("adilhyz-cursors")
+    piles=("-1.1-1-any.pkg.tar.zst")
+
+    icons=("${iconsu[@]/%/$piles}")
+    themes=("${themesu[@]/%/$piles}")
+    cursors=("${cursorsu[@]/%/$piles}")
+
+    #cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
+
+    is_needs() {
+      pacman -Qi "$iconsu" "$themesu" "$cursorsu" &>/dev/null
+      return $?
+    }
+
+    # Memeriksa apakah paket berada dalam daftar yang diizinkan
+    for pkgs in "${icons[@]}" "${themes[@]}" "${cursors[@]}"; do
+      printf '%s%s Downloading and installing: %s\n' "$pkgs"
+      if ! is_needs "$pkgs"; then
+        curl -LO "$repo/$pkgs" && sudo pacman -U "$pkgs" --noconfirm
+        rm -rf "$pkgs"
+        printf "\n"
+      else
+        printf '%s%s Package %s is already installed!\n' "${HIJ}" "$pkg" "${RST}"
+        sleep 1
+      fi
+    done
+
+    sleep 2
+}
+
+clone_dotfiles() {
+    clear
+    logo "Downloading dotfiles"
+    local repo_url="https://github.com/adilhyz/dotfiles-v1"
+    local repo_dir="$HOME/dotfiles"
+    local timestamp=$(date +%Y%m%d-%H%M%S)
+    sleep 3
+
+    # Handle existing repository
+    if [[ -d "$repo_dir" ]]; then
+        local backup_dir="${repo_dir}_${timestamp}"
+        echo -en "${BLD}${CYE}Existing repository found - renaming to: ${CBL}${backup_dir}${CNC}\n"
+
+        if ! mv -v "$repo_dir" "$backup_dir" >> "$ERROR_LOG" 2>&1; then
+            log_error "Failed to rename existing repository"
+            echo -en "${BLD}${CRE}Renaming failed! Check${CYE}RiceError.log${CNC}\n"
+            return 1
+        fi
+        echo -en "${BLD}${CGR}Repository successfully renamed for backup${CNC}\n\n"
+    fi
+
+    # Clone new repository
+    echo -en "${BLD}${CYE}Cloning dotfiles from: ${CBL}${repo_url}${CNC}\n"
+    if git clone --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
+        echo -en "${BLD}${CGR}Dotfiles cloned successfully!${CNC}\n\n"
+    else
+        log_error "Repository clone failed"
+        echo -en "${BLD}${CRE}Clone failed! Check ${CYE}RiceError.log${CNC}\n"
+        return 1
+    fi
+
+    sleep 3
+}
+
+backup_existing_config() {
+    clear
+    logo "Backup files"
+    printf "Backup files will be stored in %s%s%s/.RiceBackup%s \n\n" "${BLD}" "${MER}" "$HOME" "${RST}"
+    sleep 2
+
+    # Create backup directory
+    mkdir -p "$backup_folder" 2>> "$ERROR_LOG"
+    echo -en "\n${BLD}${CYE}Backup directory: ${CBL}${backup_folder}${CNC}\n\n"
+    sleep 2
+
+    # Generic backup function
+    backup_item() {
+        local type=$1 path=$2 target=$3
+        local base_name=$(basename "$path")
+
+        if [ -$type "$path" ]; then
+            if mv "$path" "$backup_folder/${target}_${date}" 2>> "$ERROR_LOG"; then
+                echo -en "${BLD}${CGR}${base_name} ${CBL}backup successful${CNC}\n"
+            else
+                log_error "Error backup: $base_name"
+                echo -en "${BLD}${CRE}${base_name} ${CYE}backup failed${CNC}\n"
+            fi
+            sleep 0.5
         else
-            printf "%s%sFailed to backup Chrome folder. See %sRiceError.log%s\n" "${BLD}" "${MER}" "${BRU}" "${RST}"
+            echo -en "${BLD}${CYE}${base_name} ${CBL}not found${CNC}\n"
+            sleep 0.3
+        fi
+    }
+
+    # Backup of main configurations
+    local config_folders=(bspwm alacritty clipcat picom rofi eww sxhkd dunst kitty polybar geany cava ncmpcpp nvim neofetch yazi Thunar tmux zsh mpd paru)
+    for folder in "${config_folders[@]}"; do
+        backup_item d "$HOME/.config/$folder" "$folder"
+    done
+
+    # Backup of individual files
+    local single_files=("$HOME/.zshrc")
+    for item in "${single_files[@]}"; do
+        if [[ "$item" == *".icons" ]]; then
+            backup_item d "$item" ".icons"
+        else
+            backup_item f "$item" "$(basename "$item")"
+        fi
+    done
+
+    echo -en "\n${BLD}${CGR}Backup completed!${CNC}\n\n"
+    sleep 3
+}
+
+install_dotfiles() {
+    clear
+    logo "Installing dotfiles.."
+    printf "Copying files to respective directories..\n"
+
+    # Create required directories
+    local required_dirs=("$HOME/.config" "$HOME/.local/bin" "$HOME/.local/share")
+    for dir in "${required_dirs[@]}"; do
+        if [ ! -d "$dir" ]; then
+            mkdir -p "$dir" 2>> "$ERROR_LOG" && \
+            echo -en "${BLD}${CGR}Created directory: ${CBL}${dir}${CNC}\n"
+        fi
+    done
+
+    # Generic function to copy files
+    copy_files() {
+        local source="$1"
+        local target="$2"
+        local item_name=$(basename "$source")
+
+        if cp -R "$source" "$target" 2>> "$ERROR_LOG"; then
+            echo -en "${BLD}${CYE}${item_name} ${CGR}copied successfully!${CNC}\n"
+            return 0
+        else
+            log_error "Failed to copy: $item_name"
+            echo -en "${BLD}${CYE}${item_name} ${CRE}copy failed!${CNC}\n"
+            return 1
+        fi
+    }
+
+        local config_source="$HOME/dotfiles/config"
+    for config_dir in "$config_source"/*; do
+        local dir_name=$(basename "$config_dir")
+
+        # Skip neovim if the user doesn't want it
+        [[ "$dir_name" == "nvim" && "$try_nvim" != "y" ]] && continue
+
+        copy_files "$config_dir" "$HOME/.config/"
+        sleep 0.3
+    done
+
+    # Copy miscellaneous components
+    local misc_items=("applications" "asciiart" "fonts" "bin")
+    for item in "${misc_items[@]}"; do
+        local source_path="$HOME/dotfiles/misc/$item"
+        local target_path="$HOME/.local/share/"
+
+        [[ "$item" == "bin" ]] && target_path="$HOME/.local/"
+
+        copy_files "$source_path" "$target_path"
+        sleep 0.3
+    done
+
+    # Copy remaining files
+    local home_files=("$HOME/dotfiles/home/.zshrc" "$HOME/dotfiles/home/.gtkrc-2.0" "$HOME/dotfiles/home/.icons")
+    for file in "${home_files[@]}"; do
+        copy_files "$file" "$HOME/"
+    done
+
+    # Update font cache
+    if fc-cache -rv >/dev/null 2>&1; then
+        echo -en "\n${BLD}${CGR}Font cache updated successfully!${CNC}\n"
+    else
+        log_error "Failed to update font cache"
+    fi
+
+    # Generate xdg dirs
+    if [[ ! -e "$HOME/.config/user-dirs.dirs" ]]; then
+        if xdg-user-dirs-update >/dev/null 2>&1; then
+            echo -en "${BLD}${CGR}Xdg dirs generated successfully!${CNC}\n"
+        else
+            log_error "Failed to generate xdg dirs"
+        fi
+    fi
+
+    echo -en "\n${BLD}${CGR}Dotfiles installed successfully!${CNC}\n"
+    sleep 3
+}
+
+install_aur() {
+        clear
+    logo "Installing AUR dependencies."
+    sleep 2
+
+    logo "installing Yay, Paru, Eww, tdrop & xqp"
+
+    if ! command -v yay >/dev/null 2>&1; then
+        printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
+        cd
+        git clone https://aur.archlinux.org/yay.git
+        cd yay
+        makepkg -si --noconfirm
+        cd
+    else
+        printf "%s%Yay is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    fi
+
+    if ! command -v paru >/dev/null 2>&1; then
+        printf "%s%sInstalling paru%s\n" "${BLD}" "${BRU}" "${RST}"
+        cd
+        git clone https://aur.archlinux.org/paru-bin.git
+        cd paru-bin
+        makepkg -si --noconfirm
+        cd
+    else
+        printf "%s%sParu is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    fi
+
+    if ! command -v xwinwrap-0.9-bin >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling xwinwrap Animated Wallpaper Engine.%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S xwinwrap-0.9-bin --skipreview --noconfirm
+    fi
+
+    if ! command -v i3lock-color >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling xwinwrap Animated Wallpaper Engine.%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S xwinwrap-0.9-bin --skipreview --noconfirm
+    fi
+
+    # Intalling tdrop for scratchpads
+    if command -v tdrop >/dev/null 2>&1; then
+        printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    else
+        printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S tdrop-git --skipreview --noconfirm
+    fi
+
+    if ! command -v cava >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S cava --skipreview --noconfirm
+    fi
+
+    # Intalling tdrop for scratchpads
+    if command -v tdrop >/dev/null 2>&1; then
+        printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    else
+        printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S tdrop-git --skipreview --noconfirm
+    fi
+
+    # Intalling xqp
+    if command -v xqp >/dev/null 2>&1; then
+        printf "\n%s%sxqp is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    else
+        printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S xqp --skipreview --noconfirm
+    fi
+
+    # Installing Eww
+    if pacman -Qq eww-git >/dev/null 2>&1; then
+        printf "\n%s%sEww is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+    else
+        printf "\n%s%sInstalling Eww, this will take some time.. !%s\n" "${BLD}" "${CBL}" "${CNC}"
+        paru -S eww-git --skipreview --noconfirm
+    fi
+}
+
+configure_services() {
+    clear
+    logo "Configuring Services"
+    sleep 2
+
+    # MPD Service Management
+    if systemctl is-enabled --quiet mpd.service; then
+        printf "%s%sDisabling global MPD service...%s\n" "${BLD}" "${CYE}" "${CNC}"
+        if sudo systemctl disable --now mpd.service >> "$ERROR_LOG" 2>&1; then
+            echo -en "${BLD}${CGR}Global MPD service disabled successfully${CNC}"
+        else
+            log_error "Failed to disable global MPD service"
+            echo -en "${BLD}${CRE}Failed to disable global MPD service${CNC}\n\n"
+        fi
+    fi
+
+    # User-level MPD Service
+    echo -en "${BLD}${CYE}Enabling user MPD service...${CNC}\n"
+    if systemctl --user enable --now mpd.service >> "$ERROR_LOG" 2>&1; then
+        echo -en "${BLD}${CGR}User MPD service activated successfully${CNC}\n\n"
+    else
+        log_error "Failed to enable user MPD service"
+        echo -en "${BLD}${CRE}Failed to activate user MPD service${CNC}\n\n"
+    fi
+}
+
+change_default_shell() {
+    clear
+    logo "Changing default shell to zsh"
+    local zsh_path=$(which zsh)
+    sleep 3
+
+    if [[ -z "$zsh_path" ]]; then
+        log_error "Zsh binary not found"
+        echo -en "${BLD}${CRE}Zsh is not installed! Cannot change shell${CNC}\n\n"
+        return 1
+    fi
+
+    if [[ "$SHELL" != "$zsh_path" ]]; then
+        echo -en "${BLD}${CYE}Changing your shell to Zsh...${CNC}\n"
+
+        if chsh -s "$zsh_path" 2> >(tee -a "$ERROR_LOG"); then
+            echo -en "\n${BLD}${CGR}Shell changed successfully!${CNC}\n"
+        else
+            log_error "Failed to change shell to Zsh"
+            echo -en "\n${BLD}${CRE}Error changing shell! ${CYE}Check RiceError.log${CNC}\n\n"
         fi
     else
-        printf "%s%sThe folder Chrome does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "${KUN}" "${RST}"
+        echo -en "${BLD}${CGR}Zsh is already your default shell!${CNC}\n\n"
     fi
-done
 
-for file in "$HOME"/.mozilla/firefox/*.default-release/user.js; do
-    if [ -f "$file" ]; then
-        if mv "$file" "$backup_folder"/user.js_"$date" 2>> RiceError.log; then
-            printf "%s%suser.js file backed up successfully at %s%s/user.js_%s%s\n" "${BLD}" "${HIJ}" "${BRU}" "$backup_folder" "${date}" "${RST}"
-        else
-            printf "%s%sFailed to backup user.js file. See %sRiceError.log%s\n" "${BLD}" "${MER}" "${BRU}" "${RST}"
-        fi
-    else
-        printf "%s%sThe file user.js does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "${KUN}" "${RST}"
-    fi
-done
+    sleep 3
+}
 
-if [ -f ~/.zshrc ]; then
-    if mv ~/.zshrc "$backup_folder"/.zshrc_"$date" 2>> RiceError.log; then
-        printf "%s%s.zshrc file backed up successfully at %s%s/.zshrc_%s%s\n" "${BLD}" "${HIJ}" "${BRU}" "$backup_folder" "${date}" "${RST}"
-    else
-        printf "%s%sFailed to backup .zshrc file. See %sRiceError.log%s\n" "${BLD}" "${MER}" "${BRU}" "${RST}"
-    fi
-else
-    printf "%s%sThe file .zshrc does not exist, %sno backup needed%s\n" "${BLD}" "${HIJ}" "${KUN}" "${RST}"
-fi
+final_prompt() {
+    clear
+    logo "Installation Complete"
+    sleep 2
 
-printf "%s%sDone!!%s\n\n" "${BLD}" "${HIJ}" "${RST}"
-sleep 5
+    echo -en "${BLD}${CGR}Installation completed successfully!${CNC}\n"
+    echo -en "${BLD}${CRE}You ${CBL}MUST ${CRE}restart your system to apply changes${CNC}\n\n"
 
-########## ---------- Copy the Rice! ---------- ##########
+    while true; do
+        read -rp " ${BLD}${CYE}Reboot now?${CNC} [y/N]: " yn
+        case "${yn,,}" in
+            y|yes)
+                echo -en "\n${BLD}${CGR}Initiating reboot...${CNC}\n"
+                sleep 2
+                if ! sudo reboot >> "$ERROR_LOG" 2>&1; then
+                    log_error "Failed to trigger reboot"
+                    echo -en "${BLD}${CRE}Reboot failed! Execute manually${CNC}\n"
+                fi
+                exit 0
+                ;;
+            n|no|"")
+                echo -en "\n${BLD}${CYE}Remember to reboot later!${CNC}\n\n"
+                zsh
+                exit 0
+                ;;
+            *)
+                echo -en "\n${BLD}${CRE}Invalid choice - use '${CYE}y${CRE}' or '${CYE}n${CRE}'${CNC}\n\n"
+                sleep 1
+                ;;
+        esac
+    done
+}
 
-logo "Installing dotfiles.."
-printf "Copying files to respective directories..\n"
+# --- Main run --- #
+initial_checks
+welcome
+install_dependencies
+add_adilhyz_dependecies
+clone_dotfiles
 
-[ ! -d ~/.config ] && mkdir -p ~/.config
-[ ! -d ~/.local/bin ] && mkdir -p ~/.local/bin
-[ ! -d ~/.local/share ] && mkdir -p ~/.local/share
-
-for dirs in ~/dotfiles-v1/config/*; do
-    dir_name=$(basename "$dirs")
-    if cp -R "${dirs}" ~/.config/ 2>> RiceError.log; then
-        printf "%s%s%s %sconfiguration installed succesfully%s\n" "${BLD}" "${KUN}" "${dir_name}" "${HIJ}" "${RST}"
-        sleep 1
-    else
-        printf "%s%s%s %sconfiguration failed to been installed, see %sRiceError.log %sfor more details.%s\n" "${BLD}" "${KUN}" "${dir_name}" "${MER}" "${BRU}" "${MER}" "${RST}"
-        sleep 1
-    fi
-done
-
-##starto
-for folder in applications asciiart fonts; do
-    if cp -R ~/dotfiles-v1/misc/$folder ~/.local/share/ 2>> RiceError.log; then
-        printf "%s%s%s %sfolder copied succesfully!%s\n" "${BLD}" "${KUN}" "$folder" "${HIJ}" "${RST}"
-        sleep 1
-    else
-        printf "%s%s%s %sfolder failed to been copied, see %sRiceError.log %sfor more details.%s\n" "${BLD}" "${KUN}" "$folder" "${MER}" "${BRU}" "${MER}" "${RST}"
-        sleep 1
-    fi
-done
-
-if cp -R ~/dotfiles-v1/misc/bin ~/.local/ 2>> RiceError.log; then
-    printf "%s%sbin %sfolder copied succesfully!%s\n" "${BLD}" "${KUN}" "${HIJ}" "${RST}"
-    sleep 1
-else
-    printf "%s%sbin %sfolder failed to been copied, see %sRiceError.log %sfor more details.%s\n" "${BLD}" "${KUN}" "${MER}" "${BRU}" "${MER}" "${RST}"
-    sleep 1
-fi
-
-if cp -R ~/dotfiles-v1/misc/firefox/* ~/.mozilla/firefox/*.default-release/ 2>> RiceError.log; then
-    printf "%s%sFirefox theme %scopied succesfully!%s\n" "${BLD}" "${KUN}" "${HIJ}" "${RST}"
-    sleep 1
-else
-    printf "%s%sFirefox theme %sfailed to been copied, see %sRiceError.log %sfor more details.%s\n" "${BLD}" "${KUN}" "${MER}" "${BRU}" "${MER}" "${RST}"
-    sleep 1
-fi
-
-cp -f "$HOME"/dotfiles-v1/home/.zshrc "$HOME"
-fc-cache -rv >/dev/null 2>&1
-printf "%s%sFiles copied succesfully!!%s\n" "${BLD}" "${HIJ}" "${RST}"
-sleep 3
-
-########## ---------- Installing Yay, Paru, Cava & Eww from source ---------- ##########
-
-logo "installing Yay, Paru, Eww, tdrop & xqp"
-
-if ! command -v yay >/dev/null 2>&1; then
-	printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
-	cd
-	git clone https://aur.archlinux.org/yay.git
-	cd yay
-	makepkg -si --noconfirm
-	cd
-else
-	printf "%s%Yay is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
-fi
-
-if ! command -v paru >/dev/null 2>&1; then
-	printf "%s%sInstalling paru%s\n" "${BLD}" "${BRU}" "${RST}"
-	cd
-	git clone https://aur.archlinux.org/paru-bin.git
-	cd paru-bin
-	makepkg -si --noconfirm
-	cd
-else
-	printf "%s%sParu is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
-fi
-
-if ! command -v cava >/dev/null 2>&1; then 
-	printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${BRU}" "${RST}"
-	paru -S cava --skipreview --noconfirm
-fi
-
-# Intalling tdrop for scratchpads
-if command -v tdrop >/dev/null 2>&1; then
-	printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
-else
-	printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-	paru -S tdrop-git --skipreview --noconfirm
-fi
-
-# Intalling xqp
-if command -v xqp >/dev/null 2>&1; then
-	printf "\n%s%sxqp is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
-else
-	printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-	paru -S xqp --skipreview --noconfirm
-fi
-
-# Installing Eww
-if pacman -Qq eww-git >/dev/null 2>&1; then
-    printf "\n%s%sEww is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
-else
-    printf "\n%s%sInstalling Eww, this will take some time.. !%s\n" "${BLD}" "${CBL}" "${CNC}"
-    paru -S eww-git --skipreview --noconfirm
-fi
-
-########## ---------- Enabling MPD service ---------- ##########
-
-logo "Enabling mpd service"
-
-if systemctl is-enabled --quiet mpd.service; then
-    printf "\n%s%sDisabling and stopping the global mpd service%s\n" "${BLD}" "${BRU}" "${RST}"
-    sudo systemctl stop mpd.service
-    sudo systemctl disable mpd.service
-fi
-
-printf "\n%s%sEnabling and starting the user-level mpd service%s\n" "${BLD}" "${KUN}" "${RST}"
-systemctl --user enable --now mpd.service
-
-printf "%s%sDone!!%s\n\n" "${BLD}" "${HIJ}" "${RST}"
-sleep 2
-
-########## --------- Changing shell to zsh ---------- ##########
-
-logo "Changing default shell to zsh"
-
-if [[ $SHELL != "/usr/bin/zsh" ]]; then
-	printf "\n%s%sChanging your shell to zsh. Your root password is needed.%s\n\n" "${BLD}" "${KUN}" "${RST}"
-	# Cambia la shell a zsh
-	chsh -s /usr/bin/zsh
-	printf "%s%sShell changed to zsh. Please reboot.%s\n\n" "${BLD}" "${HIJ}" "${RST}"
-else
-	printf "%s%sYour shell is already zsh\nGood bye! installation finished, now reboot%s\n" "${BLD}" "${HIJ}" "${RST}"
-fi
-zsh
+backup_existing_config
+install_dotfiles
+install_aur
+configure_services
+change_default_shell
+final_prompt

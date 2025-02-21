@@ -30,8 +30,11 @@ case "$1" in
   --checkupdates)
     Term --checkupdates
     ;;
-  --ranger)
-    Term --ranger
+  --clipboard)
+    clipcat-menu
+    ;;
+  --yazi)
+    Term --yazi
     ;;
   --nvim)
     Term --nvim
@@ -67,12 +70,16 @@ case "$1" in
   --spot)
     spotify
     ;;
+  --powermenu)
+    PowerMenu
+    #eww -c "$WIDGET_DIR" open --toggle powermenu
+    ;;
+  --keyboard)
+    KeyBoardL
+    ;;
   # Eww Widgets
   --KeyHelp)
     eww -c "$WIDGET_DIR" open --toggle csheet
-    ;;
-  --powermenu)
-    eww -c "$WIDGET_DIR" open --toggle powermenu
     ;;
   --usercard)
     eww -c "$WIDGET_DIR" open --toggle launchermenu

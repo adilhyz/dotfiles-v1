@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# ┃ ┃┏━┛┃ ┃┏━ ┏━┃┏━┃┏━┃┏━   
+# ┏┛ ┏━┛━┏┛┏━┃┃ ┃┏━┃┏┏┛┃ ┃  
+# ┛ ┛━━┛ ┛ ━━ ━━┛┛ ┛┛ ┛━━   
+# by gh0stzk         ┃  ┏━┃┃ ┃┏━┃┃ ┃━┏┛
+# modified by        ┃  ┏━┃━┏┛┃ ┃┃ ┃ ┃ 
+# adilhyz            ━━┛┛ ┛ ┛ ━━┛━━┛ ┛ 
+# Main vars
+CONFIG_FILE="$HOME/.config/bspwm/.keyboard_layout"
+read -r CURRENT_LAYOUT < "$CONFIG_FILE" 2>/dev/null || CURRENT_LAYOUT="us"
+ROFI_COMMAND="rofi -dmenu -p 'Pilih Bahasa' -theme $HOME/.config/bspwm/src/rofi-themes/Keyboard.rasi"
+
+# Daftar layout
+declare -A LAYOUTS=(
+    ["US English"]="us"
+    ["CN 中国"]="cn"
+    ["DE Deutschland"]="de"
+    ["ES América Latina"]="latam"
+    ["ES España"]="es"
+    ["FR France"]="fr"
+    ["RU Россия"]="ru"
+    ["ID Indonesia"]="id"
+    ["IT Italia"]="it"
+    ["JA 日本"]="jp"
+    ["KO 한국"]="kr"
+    ["PH Pilipinas"]="ph"
+    ["PT Brasil"]="br"
+    ["TH ไทย"]="th"
+    ["VN Việt Nam"]="vn"
+)
+
+# Mencari indeks pilihan saat ini
+LAYOUT_KEYS=("${!LAYOUTS[@]}")
+SELECTED_INDEX=-1
+for i in "${!LAYOUT_KEYS[@]}"; do
+    if [[ "${LAYOUTS[${LAYOUT_KEYS[i]}]}" == "$CURRENT_LAYOUT" ]]; then
+        SELECTED_INDEX=$i
+        break
+    fi
+done
+
+# Menampilkan menu rofi dengan highlight pada pilihan aktif
+selected_layout=$(for layout in "${LAYOUT_KEYS[@]}"; do
+    printf "%s\n" "$layout"
+done | $ROFI_COMMAND -selected-row "$SELECTED_INDEX")
+
+# Jika pengguna memilih sesuatu, ubah layout
+if [[ -n "$selected_layout" && -n "${LAYOUTS[$selected_layout]}" ]]; then
+    NEW_LAYOUT="${LAYOUTS[$selected_layout]}"
+    if [[ "$NEW_LAYOUT" != "$CURRENT_LAYOUT" ]]; then
+        setxkbmap "$NEW_LAYOUT"
+        echo "$NEW_LAYOUT" > "$CONFIG_FILE"
+        notify-send "Keyboard Layout" "Changed to $selected_layout"
+    fi
+fi

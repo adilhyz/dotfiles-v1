@@ -3,43 +3,47 @@
 #  ╠╦╝║║  ║╣   ╚═╗║╣ ║  ║╣ ║   ║ ║ ║╠╦╝  - 
 #  ╩╚═╩╚═╝╚═╝  ╚═╝╚═╝╩═╝╚═╝╚═╝ ╩ ╚═╝╩╚═  - original z0mbi3
 
+# Some vars
 bspwm_dir="$HOME/.config/bspwm"
-current_rice_file="$bspwm_dir/.rice"
-rofi_command="rofi -dmenu -theme $bspwm_dir/src/rofi-themes/RiceSelector.rasi"
+read -r current_rice < "$bspwm_dir"/.rice
+rofi_command="rofi -dmenu -p RiceSelector -theme $bspwm_dir/src/rofi-themes/RiceSelector.rasi"
 
-# Variables to try to define the correct size of the images for your resolution
-monitor_res=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)
-monitor_scale=$(xdpyinfo | awk '/resolution/{print $2}' | cut -d 'x' -f1)
-monitor_res=$(( monitor_res * 17 / monitor_scale ))
-rofi_override="element-icon{size:${monitor_res}px;}"
+# Get focused monitor name
+focused_monitor=$(bspc query -M -m focused --names)
 
-# Verify if xdpyinfo is installed
-if ! command -v xdpyinfo > /dev/null 2>&1; then
-    dunstify "Missing package" "Please install the xorg-xdpyinfo package to continue" -u critical
-    exit 1
-fi
+# Get monitor width and DPI (versión reforzada contra espacios/valores rotos)
+monitor_width=$(xrandr | grep -w -- "$focused_monitor" | grep -o '[0-9]\+x[0-9]\+' | cut -d 'x' -f 1)
+screen_dpi=$(xdpyinfo | awk '/resolution/{print $2; exit}' | cut -d 'x' -f1)
+
+# Calculate icon size with protection contra division por cero
+icon_size=$(( (monitor_width * 17) / (${screen_dpi:-96} ) ))
+rofi_override="element-icon{size:${icon_size}px;}"
 
 # List rices
-options=()
-current_rice=$(< "$current_rice_file")
-selected_index=0
+mapfile -d '' -t rices < <(
+    find "$bspwm_dir/rices/" -mindepth 1 -maxdepth 1 -type d -printf '%P\0' |
+    sort -z
+)
 
-index=0
-for rice_dir in "$bspwm_dir"/rices/*/; do
-    rice_name=$(basename "$rice_dir")
-    options+=("$rice_name")
+# Find current rice
+selected_index=-1
 
-    # Check if the current rice matches the current iteration rice
-    [[ "$current_rice" == "$rice_name" ]] && selected_index=$index
-    ((index++))
+for i in "${!rices[@]}"; do
+    if [[ "${rices[i]}" == "$current_rice" ]]; then
+        selected_index=$i
+        break
+    fi
 done
 
 # Show the rofi selection menu.
-selected=$(printf "%s\n" "${options[@]}" | while read -r A ; do
-    echo -en "$A\x00icon\x1f${bspwm_dir}/rices/$A/preview.webp\n" ; done | $rofi_command -theme-str "$rofi_override" -selected-row "$selected_index")
+selected=$(
+    for rice in "${rices[@]}"; do
+        printf "%s\0icon\x1f%s/rices/%s/preview.webp\n" "$rice" "$bspwm_dir" "$rice"
+    done | $rofi_command -theme-str "$rofi_override" -selected-row "$selected_index"
+)
 
-# If a valid option was selected, write the value to the configuration file and restart BSPWM.
-[[ -n "$selected" && "$selected" != "$current_rice" ]] || exit 1
-echo "$selected" > "$current_rice_file"
-bspc wm -r
-exit 0
+# If a valid option was selected, write the value to the configuration file and change theme.
+[[ -n "$selected" && "$selected" != "$current_rice" ]] && {
+    echo "$selected" > "$bspwm_dir"/.rice
+    "${bspwm_dir}"/src/Theme.sh
+}

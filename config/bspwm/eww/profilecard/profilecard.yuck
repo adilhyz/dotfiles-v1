@@ -5,13 +5,13 @@
 (defpoll wm :interval "24h" "../eww/profilecard/scripts/fetch wm")
 
 ;; Profile
-(defvar IMAGEP "../assets/profile.png")
+(defvar IMAGEP "../src/assets/profile.png")
 (defpoll username :interval "24h" "whoami")
 (defpoll hostname :interval "24h" "cat /etc/hostname")
 (defpoll uptime :interval "30s" "uptime -p | sed -E -e 's/hour(s)?/hrs/g' -e 's/minute(s)?/min/g'")
 
 ;; Pacman
-(defpoll updates :interval "2m" "Updates --get-updates")
+(defpoll updates :interval "5m" "Updates --get-updates")
 (defpoll packages :interval "1h" "pacman -Q | wc -l")
 
 ;; Weather
@@ -26,7 +26,7 @@
 (defpoll net_icon :interval "3s" "../eww/profilecard/scripts/Network --icon")
 
 ;; Temp
-(defpoll temp :interval "1s" "../src/temp.sh")
+(defpoll temp :interval "5s" "../src/temp.sh")
 
 ;; Battery
 ;;(defpoll battery :interval "3s" "../eww/profilecard/scripts/Battery get_battery")
@@ -43,9 +43,6 @@
 
 ;; Redshift
 (defpoll redshift_status :interval "3s" "../eww/profilecard/scripts/Redshift state")
-
-;; Terminal selector
-(defpoll terminal_status :interval "2s" "cat ~/.config/bspwm/src/.term")
 
 ;; GameMode
 (defpoll game_state :interval "2s" "../eww/profilecard/scripts/GameMode --status")
@@ -72,7 +69,7 @@
   (box :orientation "h" :space-evenly "false" :halign "end"
     (eventbox :cursor "pointer"
       (button :class "min" :onclick "eww -c ~/.config/bspwm/eww open --toggle launchermenu" "󰅙")
-    )  
+    )
   )
 )
 
@@ -83,6 +80,7 @@
 		 :class "usercard"
 		 (box :space-evenly "false"
 			  :hexpand true
+			  :width 320
 			  :orientation "h"
 			  :spacing "15"
 			  (box :style "background-image: url('${IMAGEP}');"
@@ -108,13 +106,13 @@
 				   :halign "start"
 				   :hexpand false
 				   (eventbox :cursor "pointer"
-				   (button :class "btn-info" :tooltip "Lock Computer" :onclick "physlock -d" "󱅞"))
+				   (button :class "btn-info" :tooltip "Lock Computer" :onclick "ScreenLocker &" "󱅞"))
 				   (eventbox :cursor "pointer"
 				   (button :class "btn-info" :tooltip "Logout BSPWM" :onclick "bspc quit" "󰍃")))
 		)
 	)
-)	  
-                 
+)
+
 (defwidget infoarch []
           (box :orientation "h"
 	           :space-evenly "false"
@@ -130,7 +128,7 @@
 						 (button :class "pacman-updates"
 								 :halign "start"
 								 :tooltip "Click to update"
-								 :onclick "OpenApps --update" "${updates} Updates"))))
+								 :onclick "OpenApps --update &" "${updates} Updates"))))
 			   (box :orientation "h"
 					:space-evenly "false"
 					:class "fetch"
@@ -138,13 +136,13 @@
 					(label :class "arch-icon"
 						   :halign "start"
 						   :text "󰣇")
-					(box 
+					(box
 						 :space-evenly "false"
 						 (box :orientation "v"
 							  :spacing 3
 							  :halign "end"
 							  :style "margin-left: 10px;"
-							  (label :class "os-icon" 
+							  (label :class "os-icon"
 									 :halign "start"
 									 :text "󰣇")
 							  (label :class "pkgs-icon"
@@ -153,7 +151,7 @@
 							  (label :class "wm-icon"
 									 :halign "start"
 									 :text "󱪳")))
-					(box 
+					(box
 						 :space-evenly "false"
 						 (box :orientation "v"
 							  :spacing 3
@@ -167,12 +165,12 @@
 							  (label :class "wm-text"
 									 :halign "start"
 									 :text wm))))))
-									 
-(defwidget weather[] 
+
+(defwidget weather[]
   (box :orientation "h" :class "weatherboxfull" :space-evenly false
 	(box :orientation "v" :class "weatherbox" :hexpand true :space-evenly false
       (box :orientation "h" :class "weathertop" :space-evenly false
-        (box :class "weatherdesc" :style "color: ${weatherhex};" :halign "start" :hexpand true weatherdesc)
+        (box :class "weatherdesc" :style "color: ${weatherhex ?: '#adadff'};" :halign "start" :hexpand true weatherdesc)
         (box :class "weathertemp" :halign "end" "${weathertemp}°C")
       )
       (box :orientation "v" :class "weatherbot" :space-evenly false
@@ -180,12 +178,12 @@
 			 (label :limit-width 22 :text weathercity))
       )
     )
-      (box :class "weathericon" :style "color: ${weatherhex};" :halign "center" weathericon)
+      (box :class "weathericon" :style "color: ${weatherhex ?: '#adadff'};" :halign "center" weathericon)
   )
 )
 
-(defwidget system_progress [data icon css tip] 
-  (box  :class "progress" 
+(defwidget system_progress [data icon css tip]
+  (box  :class "progress"
     (circular-progress
       :class css
       :value data
@@ -193,8 +191,8 @@
       :tooltip tip
       (overlay
         :valign "center"
-        (label 
-          :class "icon" 
+        (label
+          :class "icon"
           :text icon
         )
       )
@@ -202,16 +200,16 @@
   )
 )
 
-(defwidget cpu [] 
+(defwidget cpu []
   (system_progress
     :css "cpu"
     :tip "CPU ${round(EWW_CPU.avg,0)}%"
-    :data {round(EWW_CPU.avg, 0)} 
+    :data {round(EWW_CPU.avg, 0)}
     :icon ""
   )
 )
 
-(defwidget ram [] 
+(defwidget ram []
   (system_progress
     :css "ram"
     :tip "RAM ${round(EWW_RAM.used_mem / 1048576, 2)}MB"
@@ -220,7 +218,7 @@
   )
 )
 
-(defwidget disk [] 
+(defwidget disk []
   (system_progress
     :css "disk"
     :tip "SSD ${round(EWW_DISK["/"].used_perc, 2)}%"
@@ -231,7 +229,7 @@
 
 
 (defwidget system []
-  (box 
+  (box
     :class "system"
     :spacing 8
     (cpu)
@@ -242,41 +240,34 @@
 
 
 (defwidget tools []
-  (box :orientation "v" :space-evenly "true" 
+  (box :orientation "v" :space-evenly "true"
     (box  :orientation "h" :space-evenly "true" :spacing 1
 
       (box  :class "tools-main" :orientation "v" :space-evenly "false" :spacing 2
         (eventbox :class "tools-box" :width 43 :height 43 :halign "center" :cursor "pointer" :tooltip "Wired/WiFi network connection"
           (button :class {net_status != "Offline" ? "wifi-btn" : "wifi-no-btn"}
-                  :onclick "OpenApps --netmanager" net_icon))
+                  :onclick "OpenApps --netmanager &" net_icon))
         (label :class "info-btn" :limit-width 12 :xalign 0.5 :text net_status))
 
       (box  :class "tools-main" :orientation "v" :space-evenly "false" :spacing 2
         (eventbox :class "tools-box" :width 43 :height 43 :halign "center" :cursor "pointer" :tooltip "Bluetooth"
-          (button :class {blue_name == "On" ? "bluetooth-btn" : 
+          (button :class {blue_name == "On" ? "bluetooth-btn" :
                           blue_name == "Null" ? "bluetooth-no-btn" :
                           blue_name == "Off" ? "bluetooth-no-btn" : "bluetooth-btn"}
-                  :onclick "../eww/profilecard/scripts/Bluetooth --toggle" blue_icon))
+                  :onclick "../eww/profilecard/scripts/Bluetooth --toggle &" blue_icon))
         (label :class "info-btn" :limit-width 12 :xalign 0.5 :text blue_name))
 
       (box  :class "tools-main" :orientation "v" :space-evenly "false" :spacing 2
         (eventbox :class "tools-box" :width 43 :height 43 :halign "center" :cursor "pointer" :tooltip "Airplane Mode"
-          (button :class {airplane_status == "On" ? "airplane-btn" : "airplane-no-btn"} :onclick "../eww/profilecard/scripts/Airplane --toggle" airplane_icon))
+          (button :class {airplane_status == "On" ? "airplane-btn" : "airplane-no-btn"} :onclick "../eww/profilecard/scripts/Airplane --toggle &" airplane_icon))
         (label :class "info-btn" :limit-width 12 :xalign 0.5 :text airplane_status)))
 
 
     (box  :orientation "h" :space-evenly "true" :spacing 1
       (box  :class "tools-main" :orientation "v" :space-evenly "false" :spacing 2
         (eventbox :class "tools-box" :width 43 :height 43 :halign "center" :cursor "pointer" :tooltip "Night Light"
-          (button :class {redshift_status == "on" ? "redshift-btn" : "redshift-no-btn"} :onclick "../eww/profilecard/scripts/Redshift toggle" {redshift_status == "on" ? "󰹐" : "󱠃"}))
+          (button :class {redshift_status == "on" ? "redshift-btn" : "redshift-no-btn"} :onclick "../eww/profilecard/scripts/Redshift toggle &" {redshift_status == "on" ? "󰹐" : "󱠃"}))
         (label :class "info-btn" :limit-width 12 :xalign 0.5 :text "Night Light"))
-
-      (box  :class "tools-main" :orientation "v" :space-evenly "false" :spacing 2
-        (eventbox :class "tools-box" :width 43 :height 43 :halign "center" :cursor "pointer" :tooltip "Change your default terminal
-for all the environment.
-Alacritty / Kitty"
-          (button :class "term-btn" :onclick {terminal_status == "alacritty" ? "echo kitty > ~/.config/bspwm/src/.term" : "echo alacritty > ~/.config/bspwm/src/.term"} "󰆍"))
-        (label :class "info-btn" :limit-width 12 :xalign 0.5 :text terminal_status))
 
       (box  :class "tools-main" :orientation "v" :space-evenly "false" :spacing 2
         (eventbox :class "tools-box" :width 43 :height 43 :halign "center" :cursor "pointer"
@@ -291,11 +282,6 @@ Alacritty / Kitty"
     (box :orientation "h"
       (label :class "temp" :text "")
       (label :class "info-btn" :text temp))
-
-    ;;(box :orientation "h" :style "border: 1px solid green;"
-    ;;(label :class "" :text "icon")
-    ;;(label :class "" :text "42°"))
-    
   )
 )
 

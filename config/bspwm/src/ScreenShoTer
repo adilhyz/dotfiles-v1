@@ -21,28 +21,49 @@ show_notification() {
 }
 
 take_screenshot() {
-    maim -u "$@" "$filename"
-    xclip -selection clipboard -t image/png -i "$filename"
-    show_notification
+    local mode="$1"
+    local all_monitors="$2"
+    local geometry=""
+    local cmd="maim -u"
+
+    case "$mode" in
+        "full")
+            if [[ "$all_monitors" != "true" ]]; then
+                geometry=$(get_current_monitor)
+                [[ -n "$geometry" ]] && cmd="$cmd -g $geometry"
+            fi
+            ;;
+        "select")
+            cmd="$cmd -s -o -b 2"
+            ;;
+    esac
+
+    $cmd "$filename"
+
+    if [[ $? -eq 0 ]]; then
+        paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga &>/dev/null
+        copy_screenshot
+        show_notification
+    fi
 }
 
 countdown() {
-	for sec in $(seq "$1" -1 1); do
-		dunstify -t 1000 --replace=699 -i  ~/.config/bspwm/assets/screenshot.svg "Taking shot in : $sec"
-		sleep 1
-	done
+    for sec in $(seq "$1" -1 1); do
+        dunstify -t 1000 -i ~/.config/bspwm/src/assets/screenshot.png "Taking shot in : $sec"
+        sleep 1
+    done
 }
 
 case $1 in
 	--now)
 		take_screenshot;;
-	--in10)
-		countdown 10 && take_screenshot ;;
+	--in5)
+		countdown 5 && take_screenshot ;;
 	--sel)
 		maim -u -o -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$filename"
 		xclip -selection clipboard -t image/png -i "$filename"
 		show_notification "$filename" "Screenshot of the selected area saved and copied to clipboard"
-		take_screenshot -s -o;;
+		take_screenshot "select" false ;;
 	--active)
 		take_screenshot -i "$(xdotool getactivewindow)" ;;
 	*)

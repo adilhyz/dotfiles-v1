@@ -5,11 +5,11 @@
 
 # Current rice
 read -r RICETHEME < "${HOME}"/.config/bspwm/.rice
+rice_dir="$HOME/.config/bspwm/rices/$RICETHEME"
 export RICETHEME
 
 # Set environment variables
 export PATH="$HOME/.config/bspwm/src:$PATH"
-rice_dir="$HOME/.config/bspwm/rices/$RICETHEME"
 export XDG_CURRENT_DESKTOP='bspwm'
 ## Fix java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -19,64 +19,7 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 #  ┃╻┃┃ ┃┣┳┛┣┻┓┗━┓┣━┛┣━┫┃  ┣╸ ┗━┓
 #  ┗┻┛┗━┛╹┗╸╹ ╹┗━┛╹  ╹ ╹┗━╸┗━╸┗━┛
 
-## Default 1 monitor with 6 workspaces
-#for monitor in "$(xrandr -q | grep -w 'connected' | cut -d' ' -f1)"; do
-#	bspc monitor "$monitor" -d '1' '2' '3' '4' '5' '6'
-#	#bspc monitor "$monitor" -d '' '' '' '' '' ''
-#done
-
-## Other
-#INTERNAL_MONITOR="eDP1"
-#EXTERNAL_MONITOR="HDMI-1"
-
-#if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-#	#bspc monitor "$EXTERNAL_MONITOR" -d '' '' '' '
-#	#bspc monitor "$INTERNAL_MONITOR" -d '' '' '' '''
-#	bspc monitor "$EXTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-#	bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-#	bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
-#else
-#	bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-#fi
-
-#if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-#    xrandr --output "$INTERNAL_MONITOR" --same-as "$EXTERNAL_MONITOR"
-#    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'   
-#    bspc wm -O "$INTERNAL_MONITOR"
-#else
-#    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-#fi
-
-# Presentations, both on my screen & projector (Mirror).
-EXTERNAL_MONITOR=""
-INTERNAL_MONITOR=""
-
-# Menggunakan perulangan for untuk mencari monitor internal dan eksternal
-for output in $(xrandr -q | grep -w 'connected' | cut -d' ' -f1); do
-    if [ "$output" != "connected" ]; then
-        INTERNAL_MONITOR="$output"
-    else
-        EXTERNAL_MONITOR="$output"
-    fi
-done
-
-# Konfigurasi layar
-if [ -n "$EXTERNAL_MONITOR" ]; then
-    xrandr --output "$INTERNAL_MONITOR" --auto --output "$EXTERNAL_MONITOR" --auto --same-as "$INTERNAL_MONITOR"
-    bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
-else
-    xrandr --output "$INTERNAL_MONITOR" --auto
-fi
-
-# Set workspace sesuai dengan preferensi Anda
-if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-    bspc monitor "$EXTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-else
-    bspc monitor "$INTERNAL_MONITOR" -d '1' '2' '3' '4' '5' '6'
-fi
-
-workspaces
+MonitorSetup
 
 #  ┏┓ ┏━┓┏━┓╻ ╻┏┳┓   ┏━╸┏━┓┏┓╻┏━╸╻┏━╸
 #  ┣┻┓┗━┓┣━┛┃╻┃┃┃┃   ┃  ┃ ┃┃┗┫┣╸ ┃┃╺┓
@@ -97,6 +40,10 @@ bspc config pointer_modifier            mod4
 bspc config pointer_action1             move 
 bspc config pointer_action2             resize_side 
 bspc config pointer_action3             resize_corner
+
+#  ┏━┓╻ ╻╻  ┏━╸┏━┓
+#  ┣┳┛┃ ┃┃  ┣╸ ┗━┓
+#  ╹┗╸┗━┛┗━╸┗━╸┗━┛
 
 # remove all rules first
 bspc rule -r *:*
@@ -127,6 +74,8 @@ bspc rule -a Screenkey manage=off
 bspc rule -a Sysfetch state=floating center=on rectangle=370x700+0+0
 bspc rule -a FloaTerm state=floating center=on 
 bspc rule -a Updating state=floating sticky=on center=on
+bspc rule -a mpv state=floating layer=below
+bspc rule -a xwinwrap state=floating layer=below
 
 ## ┏━┓╻ ╻╺┳╸┏━┓┏━┓╺┳╸┏━┓┏━┓╺┳╸
 ## ┣━┫┃ ┃ ┃ ┃ ┃┗━┓ ┃ ┣━┫┣┳┛ ┃ 
@@ -145,40 +94,31 @@ for process in "${processes[@]}"; do
 done
 
 # Launch sxhkd daemon
-#sxhkd -c "$HOME"/.config/bspwm/sxhkdrc &
 pidof -q sxhkd || { sxhkd -c "${HOME}"/.config/bspwm/src/config/sxhkdrc & }
 
 # Launch picom
 pidof -q picom || { picom --config "${HOME}"/.config/bspwm/src/config/picom.conf & }
-#pidof -q picom || { picom --config "$HOME"/.config/bspwm/picom.conf & }
-#pidof -q picom || { picom --legacy-backends --config "$HOME"/.config/bspwm/picom.conf & }
 
 # Load current theme
-. "${HOME}"/.config/bspwm/rices/"${RICETHEME}"/Theme.sh
+"${HOME}"/.config/bspwm/src/Theme.sh
 
 # Lauch xsettingsd daemon
-#xsettingsd --config="$HOME"/.config/bspwm/xsettingsd &
-#pidof -q xsettings || { xsettingsd --config="${HOME}"/.config/bspwm/src/config/xsettingsd >/dev/null 2>&1 & }
-pidof -q xsettings || { xsettingsd --config="${HOME}"/.config/bspwm/xsettingsd >/dev/null 2>&1 & }
+pidof -q xsettings || { xsettingsd --config="${HOME}"/.config/bspwm/src/config/xsettingsd >/dev/null 2>&1 & }
 
 # Launch eww daemon
 pidof -q eww || { eww -c "$HOME"/.config/bspwm/eww daemon & }
 
-# Launch dunst notification daemon
-dunst -config "$HOME"/.config/bspwm/dunstrc &
+# Launch clipboard daemon
+pidof -q clipcatd || { clipcatd & }
 
 # Launch polkit
 pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & }
 
+# Launch dunst notification daemon
+dunst -config "$HOME"/.config/bspwm/src/config/dunstrc &
+
 # Launch stalonetray
-stalonetray -c "$HOME"/.config/bspwm/stalonetrayrc & sleep 0.01 && xdo hide -N stalonetray && touch "/tmp/syshide.lock"
-
-# Set random wallpaper for actual rice
-#feh -z --no-fehbg --bg-fill "${rice_dir}"/walls
-
-# Fix cursor
-xsetroot -cursor_name left_ptr
-unclutter -idle 3 &
+stalonetray -c "$HOME"/.config/bspwm/src/config/stalonetrayrc & sleep 0.01 && xdo hide -N stalonetray && touch "/tmp/syshide.lock"
 
 # Teuingg
 numlockx on &
@@ -190,38 +130,9 @@ nm-applet &
 blueberry-tray &
 
 # Auto Lock
-xautolock -detectsleep -time 5 -locker physlock &
+xautolock -detectsleep -time 5 -locker ScreenLocker &
 
 # Typing repeat speed
-xset r rate 375 45 &
+#xset r rate 375 45 &
 
-# Update
-#pamac-tray &
-
-#Night filter
-#redshift -c ~/.config/redshift.conf & 
-
-# rs=$HOME/.cache/$(whoami)/redshift_state
-
-# if [[ $rs == "on" ]]; then
-#     redshift -x >/dev/null 2>&1
-#     redshift -O 3350 >/dev/null 2>&1
-#     # saving new state
-#     echo on >"$rs"
-# else
-#     redshift -x >/dev/null 2>&1
-#     # saving state
-#     echo off >"$rs"
-# fi
-
-# get_state() {
-#     # check if redshift is running
-#     cat "$rs"
-# }
-
-# if [ ! -d "$(dirname "$rs")" ]; then
-#         mkdir -p "$(dirname "$rs")"
-#     fi
-#     if [ ! -f "$rs" ]; then
-#         echo off >"$rs"
-#     fi
+# End one time code

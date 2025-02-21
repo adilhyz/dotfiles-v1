@@ -30,15 +30,16 @@ ctrl + shift + Escape
 super + {_,alt + } Return 
 	OpenApps --{terminal,floating}
 
-# Right click
+# jgmenu
 ~button3
-  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/src/jgmenu/menu.txt --config-file=~/.config/bspwm/jgmenurc
+  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/src/config/jgmenu.txt --config-file=~/.config/bspwm/src/config/jgmenurc
 
 # Emoji, Windows, Theme Selector, & Menu App
-super + {period,w,v,d}
+super + {period,w,v,comma,d}
 	{sh ~/.config/bspwm/src/Emoji, \
 	sh ~/.config/bspwm/src/Windows, \
 	RiceSelector, \
+	OpenApps --clipboard, \
 	OpenApps --menu}
 
 # Scratchpad
@@ -59,7 +60,7 @@ super + {o,i}
 
 # Lockscreen
 super + {l} 
-	{physlock -d} #~/.config/bspwm/src/lock
+	{ScreenLocker} #~/.config/bspwm/src/lock
 
 # Set the window state
 super + {t,shift + t,s}
@@ -76,8 +77,12 @@ super {z,e,p,x,h,r,m}
 	 ColorPicker, \
 	 OpenApps --powermenu, \
 	 OpenApps --htop, \
-	 OpenApps --ranger, \
+	 OpenApps --yazi, \
 	 OpenApps --spot||--music}
+
+#Terminal Selector
+super + alt + t
+	Term --selecterm
 
 # Change transparency on focused window
 ctrl + alt {plus,minus,t}
@@ -91,9 +96,9 @@ Print
 super + Print
 	ScreenShoTer --sel
 
-# Screenshot in 10s
+# Screenshot in 5s
 alt + Print
-	ScreenShoTer --in10
+	ScreenShoTer --in5
 
 # Screenshot active window
 shift + Print

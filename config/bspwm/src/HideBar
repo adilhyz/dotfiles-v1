@@ -3,61 +3,66 @@
 ## ┣━┫┃ ┃┃┣╸    ┣┻┓┣━┫┣┳┛
 ## ╹ ╹╹╺┻┛┗━╸   ┗━┛╹ ╹╹┗╸ by adilhyz
 
-function hide() {
-	
-case "${RICETHEME}" in
-    jan|silvia|pamela)
-        polybar-msg cmd hide | bspc config top_padding 2
-        ;;
-    aing|esostrefis)
-        polybar-msg cmd hide | bspc config bottom_padding 2
-        ;;
-    siduru)
-        polybar-msg cmd hide | bspc config top_padding 2 && bspc config bottom_padding 2
-        ;;
-    *)
-        echo "Error: Something fails dud.."
-        ;;
-esac
-	
+# Configuration
+read -r current_rice <"$HOME"/.config/bspwm/.rice
+THEME_CONFIG="$HOME/.config/bspwm/rices/$current_rice/theme-config.bash"
+eww_bar_path="$HOME/.config/bspwm/rices/$current_rice/bar"
+
+# Get padding value from theme-config.bash
+get_paddings() {
+    awk -F'"' '
+        /^TOP_PADDING/    { top = $2 }
+        /^BOTTOM_PADDING/ { bottom = $2 }
+        /^LEFT_PADDING/   { left = $2 }
+        /^RIGHT_PADDING/  { right = $2 }
+        END { print top, bottom, left, right }
+    ' "$THEME_CONFIG"
 }
 
-function unhide() {
-	
-case "${RICETHEME}" in
-	aing)
-		polybar-msg cmd show | bspc config bottom_padding 30
-		;;
-	esostrefis)
-		polybar-msg cmd show | bspc config top_padding 0
-		;;
-	jan)
-		polybar-msg cmd show | bspc config top_padding 12
-		;;
-	pamela)
-		polybar-msg cmd show | bspc config top_padding 0
-		;;
-	siduru)
-		polybar-msg cmd show | bspc config top_padding 40 && bspc config bottom_padding 33
-		;;
-	silvia)
-		polybar-msg cmd show | bspc config top_padding 52
-		;;
-	*)
-		echo "Error: Something fails dud.."
-		;;
-esac
-
+set_padding() {
+    bspc config top_padding "$1"
+    bspc config bottom_padding "$2"
+    bspc config left_padding "$3"
+    bspc config right_padding "$4"
 }
 
-case $1 in
-	-h | --hide | hide)
-		hide
-		exit;;
-	-u | --unhide | unhide)
-		unhide
-		exit;;
-	*) # Invalid option
-		echo "Error: Invalid option"
-		exit;;
+is_eww_theme() {
+    [[ "$current_rice" == "z0mbi3" || "$current_rice" == "andrea" ]]
+}
+
+toggle_bar() {
+    local action=$1
+
+    if is_eww_theme; then
+
+        if [ "$action" = "hide" ]; then
+            eww -c "$eww_bar_path" close-all
+        else
+            local monitors=($(xrandr --listmonitors | awk 'NR>1 {print $4}'))
+            local count=0
+            for m in "${monitors[@]}"; do
+                eww -c "$eww_bar_path" open bar --id "$m" --arg monitor="$m" --screen $count
+                ((count++))
+            done
+        fi
+    else
+        polybar-msg cmd "$action"
+    fi
+}
+
+toggle_bars() {
+    if [ "$1" = "hide" ]; then
+        set_padding 2 2 2 2
+        toggle_bar hide
+    else
+        local paddings=($(get_paddings))
+        set_padding "${paddings[@]}"
+        toggle_bar show
+    fi
+}
+
+case "$1" in
+    -h|--hide)   toggle_bars hide ;;
+    -u|--unhide) toggle_bars unhide ;;
+    *)	echo "Uso: $0 [-h|--hide] [-u|--unhide]" ;;
 esac

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# ┌─┐┌─┐┌┐┌┌─┐┬┌─┐┬ ┬┬─┐┌─┐┌┬┐┬┌─┐┌┐┌┌─┐
-# │  │ ││││├┤ ││ ┬│ │├┬┘├─┤ │ ││ ││││└─┐
-# └─┘└─┘┘└┘└  ┴└─┘└─┘┴└─┴ ┴ ┴ ┴└─┘┘└┘└─┘
+# ┏┳┓┏━╸╺┳┓╻┏━┓   ┏━╸┏━┓┏┓╻╺┳╸┏━┓┏━┓╻  
+# ┃┃┃┣╸  ┃┃┃┣━┫   ┃  ┃ ┃┃┗┫ ┃ ┣┳┛┃ ┃┃  
+# ╹ ╹┗━╸╺┻┛╹╹ ╹   ┗━╸┗━┛╹ ╹ ╹ ╹┗╸┗━┛┗━╸
 #	Author	 :	gh0stzk
-# Modified :  adilhyz
+#   Modified :  adilhyz
 #	Url		   :	https://github.com/adilhyz/dotfiles-v1
 #	Info	   :	This script uses playerctl and mpc to control the multimedia playback
 #				"stop, pause, play, next, previous" of different players like
