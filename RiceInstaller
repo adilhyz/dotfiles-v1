@@ -46,7 +46,7 @@ log_error() {
 
     echo "[${timestamp}] ERROR: ${error_msg}" >> "$ERROR_LOG"
 
-    printf "%s%sERROR:%s %s\n" "${CRE}" "${BLD}" "${CNC}" "${error_msg}" >&2
+    printf "%s%sERROR:%s %s\n" "${MER}" "${BLD}" "${RST}" "${error_msg}" >&2
 }
 
 home_dir=$HOME
@@ -64,7 +64,7 @@ initial_checks() {
         exit 1
     fi
 
-    if ! curl -s --head http://google.com | grep "200 OK" &>/dev/null; then
+    if ! ping -q -c 1 -W 1 8.8.8.8 &>/dev/null; then
         log_error "No internet connection detected."
         exit 1
     fi
@@ -77,17 +77,17 @@ welcome() {
 
     local yn
     while true; do
-        read -rp " ${BLD}${CGR}Do you wish to continue?${CNC} [y/N]: " yn
+        read -rp " ${BLD}${HIJ}Do you wish to continue?${RST} [y/N]: " yn
         case "${yn,,}" in
             y|yes)
                 return 0
                 ;;
             n|no|"")
-                echo -e "\n${BLD}${CYE}Operation cancelled${CNC}"
+                echo -e "\n${BLD}${KUN}Operation cancelled${RST}"
                 exit 0
                 ;;
             *)
-                echo -e "\n${BLD}${CRE}Error:${CNC} Just write '${BLD}${CYE}y${CNC}' or '${BLD}${CYE}n${CNC}'\n"
+                echo -e "\n${BLD}${MER}Error:${RST} Just write '${BLD}${KUN}y${RST}' or '${BLD}${KUN}n${RST}'\n"
                 ;;
         esac
     done
@@ -114,7 +114,7 @@ install_dependencies() {
     					xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot \
     					xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
-    echo -e "${BLD}${CBL}Checking for required packages...${CNC}\n"
+    echo -e "${BLD}${BRU}Checking for required packages...${RST}\n"
     sleep 2
 
     # Detect missing packages
@@ -122,15 +122,15 @@ install_dependencies() {
     for pkg in "${dependencies[@]}"; do
         if ! is_installed "$pkg"; then
             missing_pkgs+=("$pkg")
-            echo -e " ${BLD}${CYE}${pkg} ${CRE}not installed${CNC}"
+            echo -e " ${BLD}${KUN}${pkg} ${MER}not installed${RST}"
         else
-            echo -e "${BLD}${CGR}${pkg} ${CBL}already installed${CNC}"
+            echo -e "${BLD}${HIJ}${pkg} ${BRU}already installed${RST}"
         fi
     done
 
     # Batch installation
     if ((${#missing_pkgs[@]} > 0)); then
-        echo -e "\n${BLD}${CYE}Installing ${#missing_pkgs[@]} packages...${CNC}\n"
+        echo -e "\n${BLD}${KUN}Installing ${#missing_pkgs[@]} packages...${RST}\n"
 
         if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" >> "$ERROR_LOG" 2>&1; then
             # Verify complete installation
@@ -144,18 +144,18 @@ install_dependencies() {
 
             # Show final results
             if ((${#failed_pkgs[@]} == 0)); then
-                echo -e "${BLD}${CGR}All packages installed successfully!${CNC}\n\n"
+                echo -e "${BLD}${HIJ}All packages installed successfully!${RST}\n\n"
             else
-                echo -e "${BLD}${CRE}Failed to install ${#failed_pkgs[@]} packages:${CNC}\n"
-                echo -e "  ${BLD}${CYE}${failed_pkgs[*]}${CNC}\n\n"
+                echo -e "${BLD}${MER}Failed to install ${#failed_pkgs[@]} packages:${RST}\n"
+                echo -e "  ${BLD}${KUN}${failed_pkgs[*]}${RST}\n\n"
             fi
         else
             log_error "Critical error during batch installation"
-            echo -e "${BLD}${CRE}Installation failed! Check log for details${CNC}\n"
+            echo -e "${BLD}${MER}Installation failed! Check log for details${RST}\n"
             return 1
         fi
     else
-        echo -e "\n${BLD}${CGR}All dependencies are already installed!${CNC}"
+        echo -e "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
     fi
 
     sleep 3
@@ -206,23 +206,23 @@ clone_dotfiles() {
     # Handle existing repository
     if [[ -d "$repo_dir" ]]; then
         local backup_dir="${repo_dir}_${timestamp}"
-        echo -en "${BLD}${CYE}Existing repository found - renaming to: ${CBL}${backup_dir}${CNC}\n"
+        echo -en "${BLD}${KUN}Existing repository found - renaming to: ${BRU}${backup_dir}${RST}\n"
 
         if ! mv -v "$repo_dir" "$backup_dir" >> "$ERROR_LOG" 2>&1; then
             log_error "Failed to rename existing repository"
-            echo -en "${BLD}${CRE}Renaming failed! Check${CYE}RiceError.log${CNC}\n"
+            echo -en "${BLD}${MER}Renaming failed! Check${KUN}RiceError.log${RST}\n"
             return 1
         fi
-        echo -en "${BLD}${CGR}Repository successfully renamed for backup${CNC}\n\n"
+        echo -en "${BLD}${HIJ}Repository successfully renamed for backup${RST}\n\n"
     fi
 
     # Clone new repository
-    echo -en "${BLD}${CYE}Cloning dotfiles from: ${CBL}${repo_url}${CNC}\n"
+    echo -en "${BLD}${KUN}Cloning dotfiles from: ${BRU}${repo_url}${RST}\n"
     if git clone --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
-        echo -en "${BLD}${CGR}Dotfiles cloned successfully!${CNC}\n\n"
+        echo -en "${BLD}${HIJ}Dotfiles cloned successfully!${RST}\n\n"
     else
         log_error "Repository clone failed"
-        echo -en "${BLD}${CRE}Clone failed! Check ${CYE}RiceError.log${CNC}\n"
+        echo -en "${BLD}${MER}Clone failed! Check ${KUN}RiceError.log${RST}\n"
         return 1
     fi
 
@@ -237,7 +237,7 @@ backup_existing_config() {
 
     # Create backup directory
     mkdir -p "$backup_folder" 2>> "$ERROR_LOG"
-    echo -en "\n${BLD}${CYE}Backup directory: ${CBL}${backup_folder}${CNC}\n\n"
+    echo -en "\n${BLD}${KUN}Backup directory: ${BRU}${backup_folder}${RST}\n\n"
     sleep 2
 
     # Generic backup function
@@ -247,14 +247,14 @@ backup_existing_config() {
 
         if [ -$type "$path" ]; then
             if mv "$path" "$backup_folder/${target}_${date}" 2>> "$ERROR_LOG"; then
-                echo -en "${BLD}${CGR}${base_name} ${CBL}backup successful${CNC}\n"
+                echo -en "${BLD}${HIJ}${base_name} ${BRU}backup successful${RST}\n"
             else
                 log_error "Error backup: $base_name"
-                echo -en "${BLD}${CRE}${base_name} ${CYE}backup failed${CNC}\n"
+                echo -en "${BLD}${MER}${base_name} ${KUN}backup failed${RST}\n"
             fi
             sleep 0.5
         else
-            echo -en "${BLD}${CYE}${base_name} ${CBL}not found${CNC}\n"
+            echo -en "${BLD}${KUN}${base_name} ${BRU}not found${RST}\n"
             sleep 0.3
         fi
     }
@@ -268,14 +268,14 @@ backup_existing_config() {
     # Backup of individual files
     local single_files=("$HOME/.zshrc")
     for item in "${single_files[@]}"; do
-        if [[ "$item" == *".icons" ]]; then
-            backup_item d "$item" ".icons"
+        if [[ "$item" == *".zshrc" ]]; then
+            backup_item d "$item" ".zshrc"
         else
             backup_item f "$item" "$(basename "$item")"
         fi
     done
 
-    echo -en "\n${BLD}${CGR}Backup completed!${CNC}\n\n"
+    echo -en "\n${BLD}${HIJ}Backup completed!${RST}\n\n"
     sleep 3
 }
 
@@ -289,7 +289,7 @@ install_dotfiles() {
     for dir in "${required_dirs[@]}"; do
         if [ ! -d "$dir" ]; then
             mkdir -p "$dir" 2>> "$ERROR_LOG" && \
-            echo -en "${BLD}${CGR}Created directory: ${CBL}${dir}${CNC}\n"
+            echo -en "${BLD}${HIJ}Created directory: ${BRU}${dir}${RST}\n"
         fi
     done
 
@@ -300,11 +300,11 @@ install_dotfiles() {
         local item_name=$(basename "$source")
 
         if cp -R "$source" "$target" 2>> "$ERROR_LOG"; then
-            echo -en "${BLD}${CYE}${item_name} ${CGR}copied successfully!${CNC}\n"
+            echo -en "${BLD}${KUN}${item_name} ${HIJ}copied successfully!${RST}\n"
             return 0
         else
             log_error "Failed to copy: $item_name"
-            echo -en "${BLD}${CYE}${item_name} ${CRE}copy failed!${CNC}\n"
+            echo -en "${BLD}${KUN}${item_name} ${MER}copy failed!${RST}\n"
             return 1
         fi
     }
@@ -333,14 +333,14 @@ install_dotfiles() {
     done
 
     # Copy remaining files
-    local home_files=("$HOME/dotfiles/home/.zshrc" "$HOME/dotfiles/home/.gtkrc-2.0" "$HOME/dotfiles/home/.icons")
+    local home_files=("$HOME/dotfiles/home/.zshrc")
     for file in "${home_files[@]}"; do
         copy_files "$file" "$HOME/"
     done
 
     # Update font cache
     if fc-cache -rv >/dev/null 2>&1; then
-        echo -en "\n${BLD}${CGR}Font cache updated successfully!${CNC}\n"
+        echo -en "\n${BLD}${HIJ}Font cache updated successfully!${RST}\n"
     else
         log_error "Failed to update font cache"
     fi
@@ -348,18 +348,18 @@ install_dotfiles() {
     # Generate xdg dirs
     if [[ ! -e "$HOME/.config/user-dirs.dirs" ]]; then
         if xdg-user-dirs-update >/dev/null 2>&1; then
-            echo -en "${BLD}${CGR}Xdg dirs generated successfully!${CNC}\n"
+            echo -en "${BLD}${HIJ}Xdg dirs generated successfully!${RST}\n"
         else
             log_error "Failed to generate xdg dirs"
         fi
     fi
 
-    echo -en "\n${BLD}${CGR}Dotfiles installed successfully!${CNC}\n"
+    echo -en "\n${BLD}${HIJ}Dotfiles installed successfully!${RST}\n"
     sleep 3
 }
 
 install_aur() {
-        clear
+    clear
     logo "Installing AUR dependencies."
     sleep 2
 
@@ -373,7 +373,7 @@ install_aur() {
         makepkg -si --noconfirm
         cd
     else
-        printf "%s%Yay is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+        printf "%s%sYay is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     fi
 
     if ! command -v paru >/dev/null 2>&1; then
@@ -389,12 +389,12 @@ install_aur() {
 
     if ! command -v xwinwrap-0.9-bin >/dev/null 2>&1; then 
         printf "\n%s%sInstalling xwinwrap Animated Wallpaper Engine.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S xwinwrap-0.9-bin --skipreview --noconfirm
+        paru -S xwinwrap-0.9-bin --skipreview --noconfirm --needed
     fi
 
     if ! command -v i3lock-color >/dev/null 2>&1; then 
         printf "\n%s%sInstalling xwinwrap Animated Wallpaper Engine.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S xwinwrap-0.9-bin --skipreview --noconfirm
+        paru -S xwinwrap-0.9-bin --skipreview --noconfirm --needed
     fi
 
     # Intalling tdrop for scratchpads
@@ -402,12 +402,12 @@ install_aur() {
         printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S tdrop-git --skipreview --noconfirm
+        paru -S tdrop-git --skipreview --noconfirm --needed
     fi
 
     if ! command -v cava >/dev/null 2>&1; then 
         printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S cava --skipreview --noconfirm
+        paru -S cava --skipreview --noconfirm --needed
     fi
 
     # Intalling tdrop for scratchpads
@@ -415,7 +415,7 @@ install_aur() {
         printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S tdrop-git --skipreview --noconfirm
+        paru -S tdrop-git --skipreview --noconfirm --needed
     fi
 
     # Intalling xqp
@@ -423,15 +423,15 @@ install_aur() {
         printf "\n%s%sxqp is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S xqp --skipreview --noconfirm
+        paru -S xqp --skipreview --noconfirm --needed
     fi
 
     # Installing Eww
     if pacman -Qq eww-git >/dev/null 2>&1; then
-        printf "\n%s%sEww is already installed%s\n" "${BLD}" "${CGR}" "${CNC}"
+        printf "\n%s%sEww is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
-        printf "\n%s%sInstalling Eww, this will take some time.. !%s\n" "${BLD}" "${CBL}" "${CNC}"
-        paru -S eww-git --skipreview --noconfirm
+        printf "\n%s%sInstalling Eww, this will take some time.. !%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S eww-git --skipreview --noconfirm --needed
     fi
 }
 
@@ -442,22 +442,22 @@ configure_services() {
 
     # MPD Service Management
     if systemctl is-enabled --quiet mpd.service; then
-        printf "%s%sDisabling global MPD service...%s\n" "${BLD}" "${CYE}" "${CNC}"
+        printf "%s%sDisabling global MPD service...%s\n" "${BLD}" "${KUN}" "${RST}"
         if sudo systemctl disable --now mpd.service >> "$ERROR_LOG" 2>&1; then
-            echo -en "${BLD}${CGR}Global MPD service disabled successfully${CNC}"
+            echo -en "${BLD}${HIJ}Global MPD service disabled successfully${RST}"
         else
             log_error "Failed to disable global MPD service"
-            echo -en "${BLD}${CRE}Failed to disable global MPD service${CNC}\n\n"
+            echo -en "${BLD}${MER}Failed to disable global MPD service${RST}\n\n"
         fi
     fi
 
     # User-level MPD Service
-    echo -en "${BLD}${CYE}Enabling user MPD service...${CNC}\n"
+    echo -en "${BLD}${KUN}Enabling user MPD service...${RST}\n"
     if systemctl --user enable --now mpd.service >> "$ERROR_LOG" 2>&1; then
-        echo -en "${BLD}${CGR}User MPD service activated successfully${CNC}\n\n"
+        echo -en "${BLD}${HIJ}User MPD service activated successfully${RST}\n\n"
     else
         log_error "Failed to enable user MPD service"
-        echo -en "${BLD}${CRE}Failed to activate user MPD service${CNC}\n\n"
+        echo -en "${BLD}${MER}Failed to activate user MPD service${RST}\n\n"
     fi
 }
 
@@ -469,21 +469,21 @@ change_default_shell() {
 
     if [[ -z "$zsh_path" ]]; then
         log_error "Zsh binary not found"
-        echo -en "${BLD}${CRE}Zsh is not installed! Cannot change shell${CNC}\n\n"
+        echo -en "${BLD}${MER}Zsh is not installed! Cannot change shell${RST}\n\n"
         return 1
     fi
 
     if [[ "$SHELL" != "$zsh_path" ]]; then
-        echo -en "${BLD}${CYE}Changing your shell to Zsh...${CNC}\n"
+        echo -en "${BLD}${KUN}Changing your shell to Zsh...${RST}\n"
 
         if chsh -s "$zsh_path" 2> >(tee -a "$ERROR_LOG"); then
-            echo -en "\n${BLD}${CGR}Shell changed successfully!${CNC}\n"
+            echo -en "\n${BLD}${HIJ}Shell changed successfully!${RST}\n"
         else
             log_error "Failed to change shell to Zsh"
-            echo -en "\n${BLD}${CRE}Error changing shell! ${CYE}Check RiceError.log${CNC}\n\n"
+            echo -en "\n${BLD}${MER}Error changing shell! ${KUN}Check RiceError.log${RST}\n\n"
         fi
     else
-        echo -en "${BLD}${CGR}Zsh is already your default shell!${CNC}\n\n"
+        echo -en "${BLD}${HIJ}Zsh is already your default shell!${RST}\n\n"
     fi
 
     sleep 3
@@ -494,28 +494,28 @@ final_prompt() {
     logo "Installation Complete"
     sleep 2
 
-    echo -en "${BLD}${CGR}Installation completed successfully!${CNC}\n"
-    echo -en "${BLD}${CRE}You ${CBL}MUST ${CRE}restart your system to apply changes${CNC}\n\n"
+    echo -en "${BLD}${HIJ}Installation completed successfully!${RST}\n"
+    echo -en "${BLD}${MER}You ${BRU}MUST ${MER}restart your system to apply changes${RST}\n\n"
 
     while true; do
-        read -rp " ${BLD}${CYE}Reboot now?${CNC} [y/N]: " yn
+        read -rp " ${BLD}${KUN}Reboot now?${RST} [y/N]: " yn
         case "${yn,,}" in
             y|yes)
-                echo -en "\n${BLD}${CGR}Initiating reboot...${CNC}\n"
+                echo -en "\n${BLD}${HIJ}Initiating reboot...${RST}\n"
                 sleep 2
                 if ! sudo reboot >> "$ERROR_LOG" 2>&1; then
                     log_error "Failed to trigger reboot"
-                    echo -en "${BLD}${CRE}Reboot failed! Execute manually${CNC}\n"
+                    echo -en "${BLD}${MER}Reboot failed! Execute manually${RST}\n"
                 fi
                 exit 0
                 ;;
             n|no|"")
-                echo -en "\n${BLD}${CYE}Remember to reboot later!${CNC}\n\n"
+                echo -en "\n${BLD}${KUN}Remember to reboot later!${RST}\n\n"
                 zsh
                 exit 0
                 ;;
             *)
-                echo -en "\n${BLD}${CRE}Invalid choice - use '${CYE}y${CRE}' or '${CYE}n${CRE}'${CNC}\n\n"
+                echo -en "\n${BLD}${MER}Invalid choice - use '${KUN}y${MER}' or '${KUN}n${MER}'${RST}\n\n"
                 sleep 1
                 ;;
         esac
