@@ -110,7 +110,7 @@ install_dependencies() {
     					papirus-icon-theme physlock picom playerctl polybar polkit-gnome yazi \
     					redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux \
     					ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-joypixels ttf-terminus-nerd \
-    					tumbler ueberzug unclutter webp-pixbuf-loader xautolock xclip xcolor xdg-user-dirs \
+    					tumbler ueberzugpp unclutter webp-pixbuf-loader xautolock xclip xcolor xdg-user-dirs \
     					xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot \
     					xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
