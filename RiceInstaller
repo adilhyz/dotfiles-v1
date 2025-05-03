@@ -54,21 +54,23 @@ current_dir=$(pwd)
 
 # Verificaciones iniciales
 initial_checks() {
+    # Verificar usuario root
     if [ "$(id -u)" = 0 ]; then
         log_error "This script MUST NOT be run as root user."
         exit 1
     fi
 
+    # Verificar directorio HOME
     if [ "$PWD" != "$HOME" ]; then
         log_error "The script must be executed from HOME directory."
         exit 1
     fi
 
+    # Verificar conexión a internet
     if ! ping -q -c 1 -W 1 8.8.8.8 &>/dev/null; then
         log_error "No internet connection detected."
         exit 1
     fi
-
 }
 
 welcome() {
@@ -100,7 +102,7 @@ install_dependencies() {
 
     # Internal verification function
     is_installed() {
-      pacman -Qi "$1" &> /dev/null
+      pacman -Qq "$1" &> /dev/null
       return $?
     }
 
@@ -118,7 +120,7 @@ install_dependencies() {
     sleep 2
 
     # Detect missing packages
-    local missing_pkgs=()
+local missing_pkgs=()
     for pkg in "${dependencies[@]}"; do
         if ! is_installed "$pkg"; then
             missing_pkgs+=("$pkg")
@@ -130,7 +132,7 @@ install_dependencies() {
 
     # Batch installation
     if ((${#missing_pkgs[@]} > 0)); then
-        echo -e "\n${BLD}${KUN}Installing ${#missing_pkgs[@]} packages...${RST}\n"
+		echo -e "\n${BLD}${KUN}Installing ${#missing_pkgs[@]} packages, please wait...${RST}\n"
 
         if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" >> "$ERROR_LOG" 2>&1; then
             # Verify complete installation
@@ -175,7 +177,7 @@ add_adilhyz_dependecies() {
     #cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
 
     is_needs() {
-      pacman -Qi "$iconsu" "$themesu" "$cursorsu" &>/dev/null
+      pacman -Qq "$iconsu" "$themesu" "$cursorsu" &>/dev/null
       return $?
     }
 
