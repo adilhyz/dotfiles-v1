@@ -105,14 +105,7 @@ install_dependencies() {
     sleep 2
 
     # List of dependencies ##error packages physlock xautolock ttf-joypixels
-    local dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty \
-    					libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
-    					papirus-icon-theme picom playerctl polybar polkit-gnome yazi \
-    					redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree \
-    					ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd \
-    					tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs \
-    					xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot \
-    					xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
     echo -e "${BLD}${BRU}Checking for required packages...${RST}\n"
     sleep 2
