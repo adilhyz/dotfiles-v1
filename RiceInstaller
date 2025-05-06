@@ -49,6 +49,10 @@ log_error() {
     printf "%s%sERROR:%s %s\n" "${MER}" "${BLD}" "${RST}" "${error_msg}" >&2
 }
 
+is_installed() {
+    pacman -Qq "$1" >/dev/null 2>&1
+}
+
 home_dir=$HOME
 current_dir=$(pwd)
 
@@ -100,12 +104,6 @@ install_dependencies() {
     logo "Installing needed packages.."
     sleep 2
 
-    # Internal verification function
-    is_installed() {
-      pacman -Qq "$1" &> /dev/null
-      return $?
-    }
-
     # List of dependencies ##error packages physlock xautolock ttf-joypixels
     local dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty \
     					libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib \
@@ -120,47 +118,50 @@ install_dependencies() {
     sleep 2
 
     # Detect missing packages
-local missing_pkgs=()
-    for pkg in "${dependencies[@]}"; do
+    missing_pkgs=""
+    for pkg in $dependencies; do
         if ! is_installed "$pkg"; then
-            missing_pkgs+=("$pkg")
-            echo -e " ${BLD}${KUN}${pkg} ${MER}not installed${RST}"
+            missing_pkgs="$missing_pkgs $pkg"
+            printf "%b\n" " ${BLD}${KUN}$pkg ${MER}not installed${RST}"
         else
-            echo -e "${BLD}${HIJ}${pkg} ${BRU}already installed${RST}"
+            printf "%b\n" "${BLD}${HIJ}$pkg ${BRU}already installed${RST}"
         fi
     done
 
-    # Batch installation
-    if ((${#missing_pkgs[@]} > 0)); then
-		echo -e "\n${BLD}${KUN}Installing ${#missing_pkgs[@]} packages, please wait...${RST}\n"
+    # Batch installation if needed
+    if [ -n "$(printf "%s" "$missing_pkgs" | tr -s ' ')" ]; then
+        count=$(printf "%s" "$missing_pkgs" | wc -w)
+        printf "\n%b\n\n" "${BLD}${KUN}Installing $count packages, please wait...${RST}"
 
-        if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" >> "$ERROR_LOG" 2>&1; then
+        if sudo pacman -S --noconfirm $missing_pkgs 2>&1 | tee -a "$ERROR_LOG" >/dev/null; then
             # Verify complete installation
-            local failed_pkgs=()
-            for pkg in "${missing_pkgs[@]}"; do
+            failed_pkgs=""
+            for pkg in $missing_pkgs; do
                 if ! is_installed "$pkg"; then
-                    failed_pkgs+=("$pkg")
+                    failed_pkgs="$failed_pkgs $pkg"
                     log_error "Failed to install: $pkg"
                 fi
             done
 
             # Show final results
-            if ((${#failed_pkgs[@]} == 0)); then
-                echo -e "${BLD}${HIJ}All packages installed successfully!${RST}\n\n"
+            if [ -z "$(printf "%s" "$failed_pkgs" | tr -s ' ')" ]; then
+                printf "%b\n\n" "${BLD}${HIJ}All packages installed successfully!${RST}"
             else
-                echo -e "${BLD}${MER}Failed to install ${#failed_pkgs[@]} packages:${RST}\n"
-                echo -e "  ${BLD}${KUN}${failed_pkgs[*]}${RST}\n\n"
+                fail_count=$(printf "%s" "$failed_pkgs" | wc -w)
+                printf "%b\n" "${BLD}${MER}Failed to install $fail_count packages:${RST}"
+                printf "%b\n\n" "  ${BLD}${KUN}$(printf "%s" "$failed_pkgs")${RST}"
             fi
         else
             log_error "Critical error during batch installation"
-            echo -e "${BLD}${MER}Installation failed! Check log for details${RST}\n"
+            printf "%b\n" "${BLD}${MER}Installation failed! Check log for details${RST}"
             return 1
         fi
     else
-        echo -e "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
+        printf "%b\n" "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
     fi
 
     sleep 3
+
 }
 
 add_adilhyz_dependecies() {
