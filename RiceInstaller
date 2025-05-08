@@ -195,7 +195,7 @@ clone_dotfiles() {
     clear
     logo "Downloading dotfiles"
     local repo_url="https://github.com/adilhyz/dotfiles-v1"
-    local repo_dir="$HOME/dotfiles"
+    local repo_dir="$HOME/dotfiles-v1"
     local timestamp=$(date +%Y%m%d-%H%M%S)
     sleep 3
 
@@ -305,7 +305,7 @@ install_dotfiles() {
         fi
     }
 
-        local config_source="$HOME/dotfiles/config"
+        local config_source="$HOME/dotfiles-v1/config"
     for config_dir in "$config_source"/*; do
         local dir_name=$(basename "$config_dir")
 
@@ -319,7 +319,7 @@ install_dotfiles() {
     # Copy miscellaneous components
     local misc_items=("applications" "asciiart" "fonts" "bin")
     for item in "${misc_items[@]}"; do
-        local source_path="$HOME/dotfiles/misc/$item"
+        local source_path="$HOME/dotfiles-v1/misc/$item"
         local target_path="$HOME/.local/share/"
 
         [[ "$item" == "bin" ]] && target_path="$HOME/.local/"
@@ -329,7 +329,7 @@ install_dotfiles() {
     done
 
     # Copy remaining files
-    local home_files=("$HOME/dotfiles/home/.zshrc")
+    local home_files=("$HOME/dotfiles-v1/home/.zshrc")
     for file in "${home_files[@]}"; do
         copy_files "$file" "$HOME/"
     done
