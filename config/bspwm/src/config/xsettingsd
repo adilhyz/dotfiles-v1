@@ -4,6 +4,7 @@
 Net/ThemeName "amarena"
 Net/IconThemeName "Nordzy-pink-dark"
 Gtk/CursorThemeName "phinger-cursors"
+Gtk/FontName "Noto Sans 9"
 Net/EnableEventSounds "0"
 Net/EnableInputFeedbackSounds "0"
 Xft/DPI "-1"

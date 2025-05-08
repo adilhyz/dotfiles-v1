@@ -237,6 +237,7 @@ set_appearance() {
 		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"$gtk_theme\"|g" ${xfile}
 		sed -i -e "s|Net/IconThemeName .*|Net/IconThemeName \"$gtk_icons\"|g" ${xfile}
 		sed -i -e "s|Gtk/CursorThemeName .*|Gtk/CursorThemeName \"$gtk_cursor\"|g" ${xfile}
+		sed -i -e "s|Gtk/FontName .*|Gtk/FontName \"$gtk_font\"|g" ${xfile}
 	else
 		sed -i -e "s/gtk-font-name=.*/gtk-font-name=\""$gtk_font"\"/g" ${gtk2}
 		sed -i -e "s/gtk-theme-name=.*/gtk-theme-name=\"$gtk_theme\"/g" ${gtk2}
