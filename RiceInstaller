@@ -105,53 +105,48 @@ install_dependencies() {
     sleep 2
 
     # List of dependencies ##error packages physlock xautolock ttf-joypixels
-    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst epapirus-icon-theme eza feh ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+# Dependencies sebagai array
+dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
-    echo -e "${BLD}${BRU}Checking for required packages...${RST}\n"
-    sleep 2
+# Deteksi missing packages
+missing_pkgs=()
+for pkg in "${dependencies[@]}"; do
+    if ! is_installed "$pkg"; then
+        missing_pkgs+=("$pkg")
+        printf "%b\n" " ${BLD}${KUN}$pkg ${MER}not installed${RST}"
+    else
+        printf "%b\n" "${BLD}${HIJ}$pkg ${BRU}already installed${RST}"
+    fi
+done
 
-    # Detect missing packages
-    missing_pkgs=""
-    for pkg in $dependencies; do
-        if ! is_installed "$pkg"; then
-            missing_pkgs="$missing_pkgs $pkg"
-            printf "%b\n" " ${BLD}${KUN}$pkg ${MER}not installed${RST}"
-        else
-            printf "%b\n" "${BLD}${HIJ}$pkg ${BRU}already installed${RST}"
-        fi
-    done
+# Install jika ada yang missing
+if ((${#missing_pkgs[@]} > 0)); then
+    count=${#missing_pkgs[@]}
+    printf "\n%b\n\n" "${BLD}${KUN}Installing $count packages, please wait...${RST}"
 
-    # Batch installation if needed
-    if [ -n "$(printf "%s" "$missing_pkgs" | tr -s ' ')" ]; then
-        count=$(printf "%s" "$missing_pkgs" | wc -w)
-        printf "\n%b\n\n" "${BLD}${KUN}Installing $count packages, please wait...${RST}"
-
-        if sudo pacman -S --noconfirm $missing_pkgs 2>&1 | tee -a "$ERROR_LOG" >/dev/null; then
-            # Verify complete installation
-            failed_pkgs=""
-            for pkg in $missing_pkgs; do
-                if ! is_installed "$pkg"; then
-                    failed_pkgs="$failed_pkgs $pkg"
-                    log_error "Failed to install: $pkg"
-                fi
-            done
-
-            # Show final results
-            if [ -z "$(printf "%s" "$failed_pkgs" | tr -s ' ')" ]; then
-                printf "%b\n\n" "${BLD}${HIJ}All packages installed successfully!${RST}"
-            else
-                fail_count=$(printf "%s" "$failed_pkgs" | wc -w)
-                printf "%b\n" "${BLD}${MER}Failed to install $fail_count packages:${RST}"
-                printf "%b\n\n" "  ${BLD}${KUN}$(printf "%s" "$failed_pkgs")${RST}"
+    if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" 2>&1 | tee -a "$ERROR_LOG" >/dev/null; then
+        failed_pkgs=()
+        for pkg in "${missing_pkgs[@]}"; do
+            if ! is_installed "$pkg"; then
+                failed_pkgs+=("$pkg")
+                log_error "Failed to install: $pkg"
             fi
+        done
+
+        if [ "${#failed_pkgs[@]}" -eq 0 ]; then
+            printf "%b\n\n" "${BLD}${HIJ}All packages installed successfully!${RST}"
         else
-            log_error "Critical error during batch installation"
-            printf "%b\n" "${BLD}${MER}Installation failed! Check log for details${RST}"
-            return 1
+            printf "%b\n" "${BLD}${MER}Failed to install ${#failed_pkgs[@]} packages:${RST}"
+            printf "%b\n\n" "  ${BLD}${KUN}${failed_pkgs[*]}${RST}"
         fi
     else
-        printf "%b\n" "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
+        log_error "Critical error during batch installation"
+        printf "%b\n" "${BLD}${MER}Installation failed! Check log for details${RST}"
+        return 1
     fi
+else
+    printf "%b\n" "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
+fi
 
     sleep 3
 
