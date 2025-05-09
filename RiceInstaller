@@ -106,7 +106,7 @@ install_dependencies() {
 
     # List of dependencies ##error packages physlock xautolock ttf-joypixels
 # Dependencies sebagai array
-dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray tdrop thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
 # Deteksi missing packages
 missing_pkgs=()
@@ -386,14 +386,6 @@ install_aur() {
     if ! command -v i3lock-color >/dev/null 2>&1; then 
         printf "\n%s%sInstalling xwinwrap Animated Wallpaper Engine.%s\n" "${BLD}" "${BRU}" "${RST}"
         paru -S xwinwrap-0.9-bin --skipreview --noconfirm --needed
-    fi
-
-    # Intalling tdrop for scratchpads
-    if command -v tdrop >/dev/null 2>&1; then
-        printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
-    else
-        printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S tdrop-git --skipreview --noconfirm --needed
     fi
 
     if ! command -v cava >/dev/null 2>&1; then 

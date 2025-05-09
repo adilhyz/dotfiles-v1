@@ -13,18 +13,18 @@ filename="$dir/Screenshot-${timestamp}-${geometry}.png"
 [ -d "$dir" ] || mkdir -p "$dir"
 
 show_notification() {
-	if [[ -e "$filename" ]]; then
-		dunstify --replace=699 -i "$filename" "Screenshot" "Screenshot saved and copied to clipboard"
-	else
-		dunstify --replace=699 -i custom-trash-bin "Screenshot" "Screenshot Canceled"
-	fi
+    if [[ -e "$filename" ]]; then
+        dunstify -r 699 -i "$filename" "Screenshot" "Screenshot saved and copied to clipboard"
+    else
+        dunstify -r 699 -i user-trash "Screenshot" "Screenshot Canceled"
+    fi
 }
 
 take_screenshot() {
     local mode="$1"
     local all_monitors="$2"
     local geometry=""
-    local cmd="maim -u"
+    local cmd="maim -u -d 1"
 
     case "$mode" in
         "full")
@@ -34,7 +34,7 @@ take_screenshot() {
             fi
             ;;
         "select")
-            cmd="$cmd -s -o -b 2"
+            cmd="$cmd -s -o -c 0.467,0.239,0.863,0.15 -l"
             ;;
     esac
 
@@ -56,7 +56,7 @@ countdown() {
 
 case $1 in
 	--now)
-		take_screenshot;;
+		take_screenshot "full" false ;;
 	--in5)
 		countdown 5 && take_screenshot ;;
 	--sel)
@@ -66,6 +66,6 @@ case $1 in
 		take_screenshot "select" false ;;
 	--active)
 		take_screenshot -i "$(xdotool getactivewindow)" ;;
-	*)
-		take_screenshot;;
+	--all)
+        take_screenshot "full" true ;;
 esac

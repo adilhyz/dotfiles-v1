@@ -18,7 +18,7 @@ TDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 THEME="${TDIR##*/}"
 
 # Set bspwm configuration
-set_bspwm_config() {
+apply_bspwm_config() {
 	bspc config border_width ${BORDER_WIDTH}
 	bspc config top_padding ${TP}
 	bspc config bottom_padding ${BP}
@@ -32,7 +32,7 @@ set_bspwm_config() {
 }
 
 # Terminal colors
-set_term_config() {
+apply_term_config() {
 	# Alacritty
 	sed -i "$HOME"/.config/alacritty/fonts.toml \
 		-e "s/size = .*/size = $term_font_size/" \
@@ -77,7 +77,7 @@ set_term_config() {
 }
 
 # Set compositor configuration
-set_picom_config() {
+apply_picom_config() {
 	picom_conf_file="$HOME/.config/bspwm/src/config/picom.conf"
 	picom_animations_file="$HOME/.config/bspwm/src/config/picom-animations.conf"
 
@@ -98,7 +98,7 @@ set_picom_config() {
 }
 
 # Set dunst notification daemon config
-set_dunst_config() {
+apply_dunst_config() {
 	dunst_config_file="$HOME/.config/bspwm/src/config/dunstrc"
 
 	sed -i "$dunst_config_file" \
@@ -138,7 +138,7 @@ set_dunst_config() {
 }
 
 # Set stalonetray config
-set_stalonetray_config() {
+apply_stalonetray_config() {
 	sed -i "$HOME"/.config/bspwm/src/config/stalonetrayrc \
 		-e "s/background .*/background \"${stalonetray_bg}\"/" \
 		-e "s/vertical .*/vertical $stalonetray_vertical/" \
@@ -148,7 +148,7 @@ set_stalonetray_config() {
 }
 
 # Set eww colors
-set_eww_colors() {
+apply_eww_colors() {
 	cat >"$HOME"/.config/bspwm/eww/colors.scss <<-EOF
 		\$bg: ${bg};
 		\$bg-alt: ${accent_color};
@@ -165,7 +165,7 @@ set_eww_colors() {
 	EOF
 }
 
-set_launchers() {
+apply_menu_colors() {
 	# Jgmenu
 	sed -i "$HOME"/.config/bspwm/src/config/jgmenurc \
 		-e "s/color_menu_bg = .*/color_menu_bg = ${jg_bg}/" \
@@ -225,13 +225,13 @@ set_launchers() {
 }
 
 # Set color cava
-set_cava() {
+apply_cava() {
 	sed -i "$HOME/.config/cava/config" \
 		-e "s/foreground = .*/foreground = ${cava_fg}/g"
 }
 
 # Appearance
-set_appearance() {
+apply_gtk_appearance() {
 	# apply gtk theme, icons, cursor & fonts
 	if [[ `pidof xsettingsd` ]]; then
 		sed -i -e "s|Net/ThemeName .*|Net/ThemeName \"$gtk_theme\"|g" ${xfile}
@@ -259,20 +259,55 @@ set_appearance() {
 	unclutter -idle 3 &
 }
 
+# Apply wallpaper engine
+apply_wallpaper () {
+    if [[ -f /tmp/wall_refresh.pid ]]; then
+        kill $(cat /tmp/wall_refresh.pid) 2>/dev/null
+        rm -f /tmp/wall_refresh.pid
+    fi
+
+	case $ENGINE in
+		"Theme")
+			feh -z --no-fehbg --bg-fill "${HOME}"/.config/bspwm/rices/"${RICE}"/walls ;;
+
+		"CustomDir")
+			feh -z --no-fehbg --bg-fill "$CUSTOM_DIR" ;;
+
+		"CustomImage")
+			feh --no-fehbg --bg-fill "$CUSTOM_WALL" ;;
+
+		"CustomAnimated")
+			AnimatedWall --start "$CUSTOM_ANIMATED" ;;
+
+        "Slideshow")
+            (
+                while true; do
+                    feh -z --no-fehbg --bg-fill "${HOME}"/.config/bspwm/rices/"${RICE}"/walls
+                    sleep 900  # 900 seconds = 15 minutes
+                done
+            ) &
+            echo $! > /tmp/wall_refresh.pid  ;;
+
+		*)
+			feh -z --no-fehbg --bg-fill "${HOME}"/.config/bspwm/rices/"${RICE}"/walls ;;
+	esac
+}
+
 # Launch theme
-launch_theme() {
+apply_bar() {
 	. "$HOME"/.config/bspwm/rices/"$RICE"/Bar.bash
 }
 
 ### ---------- Apply Configurations ---------- ###
 
-set_bspwm_config
-set_term_config
-set_picom_config
-set_dunst_config
-set_stalonetray_config
-set_eww_colors
-set_launchers
-set_cava
-set_appearance
-launch_theme
+apply_bspwm_config
+apply_term_config
+apply_picom_config
+apply_dunst_config
+apply_stalonetray_config
+apply_eww_colors
+apply_menu_colors
+apply_cava
+apply_gtk_appearance
+apply_wallpaper
+apply_bar
