@@ -106,7 +106,7 @@ install_dependencies() {
 
     # List of dependencies ##error packages physlock xautolock ttf-joypixels
 # Dependencies sebagai array
-dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray tdrop thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray tdrop thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
 # Deteksi missing packages
 missing_pkgs=()
@@ -354,7 +354,7 @@ install_aur() {
     logo "Installing AUR dependencies."
     sleep 2
 
-    logo "installing Yay, Paru, Eww, tdrop & xqp"
+    logo "installing Yay, Paru, Eww, Fzf-tab, Cpuid, tdrop & xqp"
 
     if ! command -v yay >/dev/null 2>&1; then
         printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
@@ -407,6 +407,22 @@ install_aur() {
     else
         printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
         paru -S xqp --skipreview --noconfirm --needed
+    fi
+
+    # Installing Fzf-tab
+    if pacman -Qq fzf-tab-git >/dev/null 2>&1; then
+        printf "\n%s%sFzf-tab is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    else
+        printf "\n%s%sInstalling Fzf-tab, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S fzf-tab-git --skipreview --noconfirm --needed
+    fi
+
+    # Installing Cpuid
+    if pacman -Qq cpuid >/dev/null 2>&1; then
+        printf "\n%s%sCpuid is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    else
+        printf "\n%s%sInstalling Cpuid, this should be fast%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S cpuid --skipreview --noconfirm --needed
     fi
 
     # Installing Eww

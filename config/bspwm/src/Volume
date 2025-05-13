@@ -34,7 +34,7 @@ get_icon() {
 # Show notification
 show_notification() {
     get_icon
-    message="Volumen: $(get_volume)"
+    message="Volume: $(get_volume)"
     echo "$message" | grep -q "muted" || message="${message}%"
     notify -i "$icon" "$message"
 }

@@ -137,7 +137,7 @@ gtk_cursor="capitaine-cursors"
 # - CustomDir	(Set a random wallpaper from the directory you specified)
 # - CustomImage	(Sets a specific image as wallpaper)
 # - CustomAnimated (Set an animated wallpaper. "mp4, mkv, gif")
-ENGINE="CustomAnimated"
+ENGINE="Theme"
 CUSTOM_DIR="/path/to/dir"
 CUSTOM_WALL="/path/to/image"
 CUSTOM_ANIMATED="$HOME/.config/bspwm/src/assets/animated_wall-1.mp4"

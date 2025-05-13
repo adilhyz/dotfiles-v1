@@ -24,11 +24,24 @@ fi
 #  ┴─┘└─┘┴ ┴─┴┘  └─┘┘└┘└─┘┴┘└┘└─┘
 autoload -Uz compinit
 
-for dump in ~/.config/zsh/zcompdump(N.mh+24); do
-  compinit -d ~/.config/zsh/zcompdump
-done
+# for dump in ~/.config/zsh/zcompdump(N.mh+24); do
+#   compinit -d ~/.config/zsh/zcompdump
+# done
 
-compinit -C -d ~/.config/zsh/zcompdump
+# compinit -C -d ~/.config/zsh/zcompdump
+
+local zcompdump="$HOME/.config/zsh/zcompdump"
+
+if [[ -n "$zcompdump"(#qN.mh+24) ]]; then
+    compinit -i -d "$zcompdump"
+else
+    compinit -C -d "$zcompdump"
+fi
+
+if [[ ! -f "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc" ]]; then
+    zcompile -U "$zcompdump"
+fi
+
 
 autoload -Uz add-zsh-hook
 autoload -Uz vcs_info
@@ -45,6 +58,16 @@ zstyle ':completion:*' matcher-list \
 zstyle ':completion:*:warnings' format "%B%F{red}No matches for:%f %F{magenta}%d%b"
 zstyle ':completion:*:descriptions' format '%F{yellow}[-- %d --]%f'
 zstyle ':vcs_info:*' formats ' %B%s-[%F{magenta}%f %F{yellow}%b%f]-'
+zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --pointer '>' \
+                --color 'pointer:green:bold,bg+:-1:,fg+:green:bold,info:blue:bold,marker:yellow:bold,hl:gray:bold,hl+:yellow:bold' \
+                --input-label ' Search ' --color 'input-border:blue,input-label:blue:bold' \
+                --list-label ' Results ' --color 'list-border:green,list-label:green:bold' \
+                --preview-label ' Preview ' --color 'preview-border:magenta,preview-label:magenta:bold'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons=always --color=always -a $realpath'
+zstyle ':fzf-tab:complete:eza:*' fzf-preview 'eza -1 --icons=always --color=always -a $realpath'
+zstyle ':fzf-tab:complete:bat:*' fzf-preview 'bat --color=always --theme=base16 $realpath'
+zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
+zstyle ':fzf-tab:*' accept-line enter
 
 #  ┬ ┬┌─┐┬┌┬┐┬┌┐┌┌─┐  ┌┬┐┌─┐┌┬┐┌─┐
 #  │││├─┤│ │ │││││ ┬   │││ │ │ └─┐
@@ -96,14 +119,15 @@ function dir_icon {
 PS1='%B%F{blue}%f%b  %B%F{magenta}%n%f%b $(dir_icon)  %B%F{red}%~%f%b${vcs_info_msg_0_} %(?.%B%F{green}.%F{red})%f%b '
 
 # command not found
-command_not_found_handler() {
-  printf "%s%s? I don't know what is it\n" "$acc" "$0" >&2
-    return 127
-}
+# command_not_found_handler() {
+#   printf "%s%s? I don't know what is it\n" "$acc" "$0" >&2
+#     return 127
+# }
 
 #  ┌─┐┬  ┬ ┬┌─┐┬┌┐┌┌─┐
 #  ├─┘│  │ ││ ┬││││└─┐
 #  ┴  ┴─┘└─┘└─┘┴┘└┘└─┘
+source /usr/share/zsh/plugins/fzf-tab-git/fzf-tab.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -142,10 +166,15 @@ alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias grub-entry="sudo ${EDITOR} /etc/grub.d/40_custom"
 
-#fs
+#system
+alias jctl="journalctl -p 3 -xb"
+alias list="sudo pacman -Qqe"
+alias listt="sudo pacman -Qqet"
+alias listaur="sudo pacman -Qqem"
 alias fixntfs="sudo ntfsfix -d"
+alias cpu="cpuid -i | grep uarch | head -n 1"
 
-alias mantenimiento="yay -Sc && sudo pacman -Scc"
+alias cache="yay -Sc && sudo pacman -Scc"
 alias purga="sudo pacman -Rns $(pacman -Qtdq) ; sudo fstrim -av"
 alias update="paru -Syu --nocombinedupgrade"
 
@@ -167,3 +196,4 @@ alias ytv-best="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+besta
 #  ├─┤│ │ │ │ │  └─┐ │ ├─┤├┬┘ │ 
 #  ┴ ┴└─┘ ┴ └─┘  └─┘ ┴ ┴ ┴┴└─ ┴ 
 $HOME/.local/bin/colorscript -r
+#disable-fzf-tab
