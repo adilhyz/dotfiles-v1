@@ -59,11 +59,14 @@ case $1 in
 		take_screenshot "full" false ;;
 	--in5)
 		countdown 5 && take_screenshot ;;
-	--sel)
-		maim -u -o -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$filename"
-		xclip -selection clipboard -t image/png -i "$filename"
-		show_notification "$filename" "Screenshot of the selected area saved and copied to clipboard"
-		take_screenshot "select" false ;;
+    --sel)
+        if maim -u -o -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$filename"; then
+            xclip -selection clipboard -t image/png -i "$filename"
+            show_notification "$filename" "Screenshot of the selected area saved and copied to clipboard"
+        else
+            dunstify -r 699 -i user-trash "Screenshot" "Screenshot dibatalkan"
+        fi
+    ;;
 	--active)
 		take_screenshot -i "$(xdotool getactivewindow)" ;;
 	--all)

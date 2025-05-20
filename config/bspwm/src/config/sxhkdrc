@@ -14,17 +14,21 @@ alt + F1
 
 # Xkill
 super + Escape
-    xkill
+    xkill; dunstify -u low -i application-exit "Killer Mode" "Window successfully killed.";
 
-# Picom Toggle
-ctrl + alt + p
-    sh ~/.config/bspwm/src/picom-toggle
+# Hide/Show Bar (Polybar and/or eww)
+super + {y,u}
+	HideBar -{h,u}
+
+# Hide all Window
+super + h
+	bspc node -g hidden=on
+
+# Unhide all Window
+super + shift + h
+	bspc query -N -n .hidden.window | while read id; do bspc node "$id" -g hidden=off; done
 
 #|||----- Applications -----|||#
-
-# Task Manager
-ctrl + shift + Escape
-    xfce4-taskmanager
 
 # Open floating Terminal & floating 
 super + {_,alt + } Return 
@@ -35,22 +39,19 @@ super + {_,alt + } Return
   xqp 0 $(xdo id -N Bspwm -n root) && jgmenu --csv-file=~/.config/bspwm/src/config/jgmenu.txt --config-file=~/.config/bspwm/src/config/jgmenurc
 
 # Emoji, Windows, Theme Selector, & Menu App
-super + {period,w,v,comma,d}
+super + {period,w,v,comma,d,alt + k}
 	{sh ~/.config/bspwm/src/Emoji, \
 	sh ~/.config/bspwm/src/Windows, \
 	RiceSelector, \
 	OpenApps --clipboard, \
-	OpenApps --menu}
+	OpenApps --menu, \
+	OpenApps --keyboard}
 
 # Scratchpad
 super + k
 	tdrop -a -w 70% -h 35% -y 0 -x 15%  --class scratch alacritty --class=scratch
 
 #Hide polybar \ super + y \ polybar-msg cmd toggle
-
-# Hide/Show Bar (Polybar and/or eww)
-super + {y,u}
-	HideBar -{h,u}
 
 # focus the older or newer node in the focus history
 super + {o,i}
@@ -71,12 +72,11 @@ super + f
 	bspc node --state \~fullscreen
 
 # Apps
-super {z,e,p,x,h,r,m}
+super {z,e,p,x,r,m}
 	{firefox, \
 	 thunar, \
 	 ColorPicker, \
 	 OpenApps --powermenu, \
-	 OpenApps --htop, \
 	 OpenApps --yazi, \
 	 OpenApps --spot||--music}
 
@@ -87,6 +87,14 @@ super + alt + t
 # Change transparency on focused window
 ctrl + alt {plus,minus,t}
 	{picom-trans -c -o +3, picom-trans -c -o -1, picom-trans -c -d}
+
+# Picom Toggle
+ctrl + alt + p
+    sh ~/.config/bspwm/src/picom-toggle
+
+# Task Manager
+ctrl + shift + Escape
+    xfce4-taskmanager
 
 # Screenshot Now
 Print
@@ -108,127 +116,11 @@ shift + Print
 super + alt + w
 	WallSelect
 
-# Random wallpaperWW
+# Random wallpaper
 super + shift + w
 	feh -z --no-fehbg --bg-fill ~/.config/bspwm/rices/$RICETHEME/walls/
 
-## bspwm hotkeys ##
-
-# Reload BSPWM:
-super + shift + r
-	bspc wm -r; dunstify -u low -i ~/.config/bspwm/assets/screenshot.svg 'Bspwm' 'Will be reloading...'
-
-# Reload sxhkd:
-super + shift + s
-	pkill -USR1 -x sxhkd; dunstify -u low -i ~/.config/bspwm/assets/reload.svg 'sxhkd' 'The configuration file has been reloaded successfully!'
-
-# close and kill
-super + {_,shift + }q
-	bspc node -{c,k}
-
-######################
-
-# Switch workspace
-super + alt + ctrl + {Left,Right}
-	bspc desktop -f {prev,next}.local
-
-# focus or send to the given desktop
-super + {_,alt + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
-
-# Send focused Node to workspace directionally
-super + alt + {Left,Right}
-	bspc node -d {prev,next} '--follow'
-
-# focus or send to the given desktop
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
-
-# Focused desktop window gaps scroll
-super + button{4,5}
-	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
-
-# Global window gaps scroll
-super + shift + button{4,5}
-	bspc config window_gap $(( $(bspc config window_gap) {-,+} 5 ))
-
-# focus the node in the given direction
-super + {_,shift + }{Left,Down,Up,Right}
-	bspc node -{f,s} {west,south,north,east}
-
-# Circulate the leaves of the tree
-super + a
-	bspc node @/ --circulate {backward,forward}
-
-# Make split ratios equal
-super + equal
-	bspc node @/ --equalize
-
-# Make split ratios balanced
-super + minus
-	bspc node @/ --balance
-
-# alternate between the tiled and monocle layout
-super + m
-	bspc desktop -l next
-
-# swap the current node and the biggest node
-super + g
-	bspc node -s biggest
-
-# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
-super + j
-    bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
-
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
-
-# focus the next/previous node in the current desktop
-alt + {_,shift + }Tab
-	bspc node -f {next,prev}.local
-
-# focus the last node/desktop
-super + {grave,Tab}
-	bspc {node,desktop} -f last
-
-# focus the node for the given path jump
-#super + {p,b,comma,period}
-#	bspc node -f @{parent,brother,first,second}
-
-# set the node flags
-super + alt + {m,l,s,p}
-	bspc node -g {marked,locked,sticky,private}
-
-# Hide/Unhide Window
-super + alt + y
-	BspHideNode
-
-#
-# preselect
-#
-
-# preselect the direction
-super + alt + {Left,Down,Up,Right}
-	bspc node -p {west,south,north,east}
-
-# preselect the ratio
-super + alt + {1-9}
-	bspc node -o 0.{1-9}
-
-# cancel the preselection for the focused node
-super + alt + space
-	bspc node -p cancel
-
-# cancel the preselection for the focused desktop
-super + alt + shift + space
-	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
-#
-# move/resize
-#
+# ----- Environment Apps ----- #
 
 # set the window state
 super + space
@@ -265,3 +157,108 @@ XF86Audio{RaiseVolume,LowerVolume,Mute}
 # Music Control
 XF86Audio{Next,Prev,Play,Stop}
 	MediaControl {--next,--previous,--toggle,--stop}
+
+
+## bspwm hotkeys ##
+
+# Reload BSPWM:
+super + shift + r
+	bspc wm -r; dunstify -u low -i ~/.config/bspwm/src/assets/screenshot.svg 'Bspwm' 'Will be reloading...'
+
+# Reload sxhkd:
+super + shift + s
+	pkill -USR1 -x sxhkd; dunstify -u low -i ~/.config/bspwm/src/assets/reload.svg 'sxhkd' 'The configuration file has been reloaded successfully!'
+
+# close and kill
+super + q
+	bspc node -{c || k}
+
+# Close all nodes in current desktop
+super + shift + q
+	bspc query -N -d | xargs -I id -n 1 bspc node id -c
+
+######################
+
+# Switch workspace
+super + alt + ctrl + {Left,Right}
+	bspc desktop -f {prev,next}.local
+
+# focus or send to the given desktop
+super + {_,alt + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Send focused Node to workspace directionally
+super + alt + {Left,Right}
+	bspc node -d {prev,next} '--follow'
+
+# Focused desktop window gaps scroll
+super + button{4,5}
+	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
+
+# Global window gaps scroll
+super + shift + button{4,5}
+	bspc config window_gap $(( $(bspc config window_gap) {-,+} 5 ))
+
+# focus the node in the given direction
+super + {_,shift + }{Left,Down,Up,Right}
+	bspc node -{f,s} {west,south,north,east}
+
+# Circulate the leaves of the tree
+super + a
+	bspc node @/ --circulate {backward,forward}
+
+# Make split ratios equal
+super + equal
+	bspc node @/ --equalize
+
+# Make split ratios balanced
+super + minus
+	bspc node @/ --balance
+
+# alternate between the tiled and monocle layout
+super + n
+	bspc desktop -l next
+
+# swap the current node and the biggest node
+super + g
+	bspc node -s biggest
+
+# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
+super + j
+    bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
+
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off && bspc node {older,newer} -f && bspc wm -h on
+
+# focus the next/previous node in the current desktop
+alt + {_,shift + }Tab
+	bspc node -f {next,prev}.local
+
+# focus the last node/desktop
+super + {grave,Tab}
+	bspc {node,desktop} -f last
+
+# set the node flags
+super + alt + {m,l,s,p}
+	bspc node -g {marked,locked,sticky,private}
+
+# Hide/Unhide Window
+super + alt + y
+	BspHideNode
+
+# preselect the ratio
+super + shift + {1-9}
+	bspc node -o 0.{1-9}
+
+# preselect the direction
+super + shift + {Left,Down,Up,Right}
+	bspc node -p {west,south,north,east}
+
+# cancel the preselection for the focused node
+super + shift + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + shift + ctrl + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
