@@ -79,7 +79,17 @@ initial_checks() {
 
 welcome() {
     logo "Welcome $USER"
-    printf '%s%sThis script will check if you have the necessary dependencies, and if not, it will install them. Then, it will clone the RICE in your HOME directory.\nAfter that, it will create a secure backup of your files, and then copy the new files to your computer.\n\nMy dotfiles DO NOT modify any of your system configurations.\nYou will be prompted for your root password to install missing dependencies and/or to switch to zsh shell if its not your default.\n\nThis script doesnt have the potential power to break your system, it only copies files from my repository to your HOME directory.%s\n\n' "${BLD}" "${MER}" "${RST}"
+    printf "%b" "${BLD}${HIJ}This script will install my dotfiles and this is what it will do:${RST}
+
+        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Check necessary dependencies and install them
+        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Download my dotfiles in ${HOME}/dotfiles
+        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Backup of possible existing configurations (bspwm, polybar, etc...)
+        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Install my configuration
+        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Enabling MPD service (Music player daemon)
+        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Change your shell to zsh shell
+    
+    ${BLD}${HIJ}[${MER}!${HIJ}]${RST} ${BLD}${MER}My dotfiles DO NOT modify any of your system configurations${RST}
+    ${BLD}${HIJ}[${MER}!${HIJ}]${RST} ${BLD}${MER}This script does NOT have the potential power to break your system${RST}"
 
     local yn
     while true; do
@@ -105,51 +115,54 @@ install_dependencies() {
     sleep 2
 
     # List of dependencies ##error packages physlock xautolock ttf-joypixels
-# Dependencies sebagai array
-dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray tdrop thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+    # Dependencies sebagai array
+    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lxappearance-gtk3 maim mpc mpd mpv ncmpcpp ntfs-3g numlockx pamixer pacman-contrib papirus-icon-theme picom playerctl polybar polkit-gnome yazi redshift rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
-# Deteksi missing packages
-missing_pkgs=()
-for pkg in "${dependencies[@]}"; do
-    if ! is_installed "$pkg"; then
-        missing_pkgs+=("$pkg")
-        printf "%b\n" " ${BLD}${KUN}$pkg ${MER}not installed${RST}"
-    else
-        printf "%b\n" "${BLD}${HIJ}$pkg ${BRU}already installed${RST}"
-    fi
-done
+    printf "\n%b\n\n" "${BLD}${BRU}Checking for required packages...${RST}"
+    sleep 2
 
-# Install jika ada yang missing
-if ((${#missing_pkgs[@]} > 0)); then
-    count=${#missing_pkgs[@]}
-    printf "\n%b\n\n" "${BLD}${KUN}Installing $count packages, please wait...${RST}"
-
-    if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" 2>&1 | tee -a "$ERROR_LOG" >/dev/null; then
-        failed_pkgs=()
-        for pkg in "${missing_pkgs[@]}"; do
-            if ! is_installed "$pkg"; then
-                failed_pkgs+=("$pkg")
-                log_error "Failed to install: $pkg"
-            fi
-        done
-
-        if [ "${#failed_pkgs[@]}" -eq 0 ]; then
-            printf "%b\n\n" "${BLD}${HIJ}All packages installed successfully!${RST}"
+    # Detect missing packages
+    local missing_pkgs=()
+    for pkg in "${dependencies[@]}"; do
+        if ! is_installed "$pkg"; then
+            missing_pkgs+=("$pkg")
+            echo -e " ${BLD}${KUN}${pkg} ${MER}not installed${RST}"
         else
-            printf "%b\n" "${BLD}${MER}Failed to install ${#failed_pkgs[@]} packages:${RST}"
-            printf "%b\n\n" "  ${BLD}${KUN}${failed_pkgs[*]}${RST}"
+            echo -e "${BLD}${HIJ}${pkg} ${BRU}already installed${RST}"
+        fi
+    done
+
+    # Batch installation
+    if ((${#missing_pkgs[@]} > 0)); then
+        echo -e "\n${BLD}${KUN}Installing ${#missing_pkgs[@]} packages...${RST}\n"
+
+        if sudo pacman -S --noconfirm --needed "${missing_pkgs[@]}" >> "$ERROR_LOG" 2>&1; then
+            # Verify complete installation
+            local failed_pkgs=()
+            for pkg in "${missing_pkgs[@]}"; do
+                if ! is_installed "$pkg"; then
+                    failed_pkgs+=("$pkg")
+                    log_error "Failed to install: $pkg"
+                fi
+            done
+
+            # Show final results
+            if ((${#failed_pkgs[@]} == 0)); then
+                echo -e "${BLD}${HIJ}All packages installed successfully!${RST}\n\n"
+            else
+                echo -e "${BLD}${MER}Failed to install ${#failed_pkgs[@]} packages:${RST}\n"
+                echo -e "  ${BLD}${KUN}${failed_pkgs[*]}${RST}\n\n"
+            fi
+        else
+            log_error "Critical error during batch installation"
+            echo -e "${BLD}${MER}Installation failed! Check log for details${RST}\n"
+            return 1
         fi
     else
-        log_error "Critical error during batch installation"
-        printf "%b\n" "${BLD}${MER}Installation failed! Check log for details${RST}"
-        return 1
+        echo -e "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
     fi
-else
-    printf "%b\n" "\n${BLD}${HIJ}All dependencies are already installed!${RST}"
-fi
 
     sleep 3
-
 }
 
 add_adilhyz_dependecies() {
@@ -172,13 +185,13 @@ add_adilhyz_dependecies() {
 
     # Memeriksa apakah paket berada dalam daftar yang diizinkan
     for pkgs in "${icons[@]}" "${themes[@]}" "${cursors[@]}"; do
-      printf '%s%s Downloading and installing: %s\n' "$pkgs"
       if ! is_needs "$pkgs"; then
-        curl -LO "$repo/$pkgs" && sudo pacman -U "$pkgs" --noconfirm
+        sudo pacman -U "$repo/$pkgs" --noconfirm
         rm -rf "$pkgs"
+        printf "$pkgs Downloading and installing: %s\n" "${BLD}" "$pkgs"
         printf "\n"
       else
-        printf '%s%s Package %s is already installed!\n' "${HIJ}" "$pkg" "${RST}"
+        printf "$pkgs Package is already installed!\n" "${HIJ}" "$pkg" "${RST}"
         sleep 1
       fi
     done
