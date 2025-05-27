@@ -186,7 +186,7 @@ add_adilhyz_dependecies() {
     # Memeriksa apakah paket berada dalam daftar yang diizinkan
     for pkgs in "${icons[@]}" "${themes[@]}" "${cursors[@]}"; do
       if ! is_needs "$pkgs"; then
-        sudo pacman -U "$repo/$pkgs" --noconfirm
+        curl -LO "$repo/$pkgs" && sudo pacman -U "$pkgs" --noconfirm
         rm -rf "$pkgs"
         printf "$pkgs Downloading and installing: %s\n" "${BLD}" "$pkgs"
         printf "\n"
