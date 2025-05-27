@@ -1,22 +1,4 @@
 #!/bin/sh
-# =============================================================
-# by: gh0stzk
-# Script Name: Bspwm-Scratchpad
-# Description: Dynamic scratchpad manager for bspwm with adaptive positioning
-# Features:
-#   - Monitor-aware geometry calculations
-#   - Percentage-based sizing (70% width/35% height)
-#   - Multi-terminal support (Alacritty/Termite)
-#   - Auto-hide/show toggle functionality
-#   - Persistent window positioning across monitor changes
-# Dependencies:
-#   - bspwm (>= 0.9.10)
-#   - jq (JSON processing)
-#   - xdo (window operations)
-#   - xprop (window identification)
-# =============================================================
-
-
 # Main vars
 SCRATCHPAD_NAME="bspwm-scratch"
 CFG_TERM="$HOME/.config/bspwm/src/config/.term"
@@ -60,9 +42,9 @@ WINDOW_ID=$(get_scratchpad_id)
 
 if [ -n "$WINDOW_ID" ]; then
     # Get current status
-    CURRENT_STATE=$(bspc query -T -n "$WINDOW_ID" | jq -r '.client.state')
+    CURRENT_STATE=$(bspc query -T -n "$WINDOW_ID" | jq -r '.hidden')
 
-    if [ "$CURRENT_STATE" = "floating" ]; then
+    if [ "$CURRENT_STATE" = "false" ]; then
         # If already visible: hide
         bspc node "$WINDOW_ID" -g hidden
     else

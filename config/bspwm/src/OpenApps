@@ -45,6 +45,9 @@ case "$1" in
   --fetch)
     Term --fetch
     ;;
+  --scratch)
+    Bspwm-ScratchPad
+    ;;
   --htop)
     Term --htop
     ;;

@@ -5,12 +5,36 @@
 #	Original by z0mbi3/gh0stzk
 #	Modified by adilhyz https://github.com/adilhyz
 
-timestamp=$(date +%Y_%m_%d-%H"."%M"."%S)
-geometry=`xrandr | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current'`
+# Screenshot general options
+timestamp=$(date +%Y-%m-%d-%H%M%S)
 dir="$(xdg-user-dir PICTURES)/ScreenShots"
-filename="$dir/Screenshot-${timestamp}-${geometry}.png"
+filename="$dir/Shot-${timestamp}.png"
 
+# Create dir if not exists
 [ -d "$dir" ] || mkdir -p "$dir"
+
+get_current_monitor() {
+    MONITORS=$(xrandr | grep -o '[0-9]*x[0-9]*[+-][0-9]*[+-][0-9]*')
+    XMOUSE=$(xdotool getmouselocation | awk -F "[: ]" '{print $2}')
+    YMOUSE=$(xdotool getmouselocation | awk -F "[: ]" '{print $4}')
+
+    for mon in ${MONITORS}; do
+        MONW=$(echo ${mon} | awk -F "[x+]" '{print $1}')
+        MONH=$(echo ${mon} | awk -F "[x+]" '{print $2}')
+        MONX=$(echo ${mon} | awk -F "[x+]" '{print $3}')
+        MONY=$(echo ${mon} | awk -F "[x+]" '{print $4}')
+
+        if [ "$XMOUSE" -ge "$MONX" ] && \
+           [ "$XMOUSE" -le $((MONX + MONW)) ] && \
+           [ "$YMOUSE" -ge "$MONY" ] && \
+           [ "$YMOUSE" -le $((MONY + MONH)) ]; then
+                echo "${MONW}x${MONH}+${MONX}+${MONY}"
+                return 0
+        fi
+    done
+
+    return 1
+}
 
 show_notification() {
     if [[ -e "$filename" ]]; then
@@ -20,17 +44,21 @@ show_notification() {
     fi
 }
 
+copy_screenshot() {
+    xclip -selection clipboard -t image/png -i "$filename"
+}
+
 take_screenshot() {
-    local mode="$1"
-    local all_monitors="$2"
-    local geometry=""
-    local cmd="maim -u -d 1"
+    mode="$1"
+    all_monitors="$2"
+    geometry=`xrandr | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current'`
+    cmd="maim -u -d 1"
 
     case "$mode" in
         "full")
-            if [[ "$all_monitors" != "true" ]]; then
+            if [ "$all_monitors" != "true" ]; then
                 geometry=$(get_current_monitor)
-                [[ -n "$geometry" ]] && cmd="$cmd -g $geometry"
+                [ -n "$geometry" ] && cmd="$cmd -g $geometry"
             fi
             ;;
         "select")
@@ -40,16 +68,17 @@ take_screenshot() {
 
     $cmd "$filename"
 
-    if [[ $? -eq 0 ]]; then
-        paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga &>/dev/null
+    if [ "$?" -eq 0 ]; then
+        paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga > /dev/null 2>&1
         copy_screenshot
         show_notification
     fi
 }
 
+
 countdown() {
     for sec in $(seq "$1" -1 1); do
-        dunstify -t 1000 -i ~/.config/bspwm/src/assets/screenshot.png "Taking shot in : $sec"
+        dunstify -r 345 -t 1100 -i ~/.config/bspwm/src/assets/screenshot.png "Taking shot in : $sec"
         sleep 1
     done
 }
@@ -60,7 +89,7 @@ case $1 in
 	--in5)
 		countdown 5 && take_screenshot ;;
     --sel)
-        if maim -u -o -f png -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$filename"; then
+        if maim -u -o -f $(slop -f "-g %g") -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$filename"; then
             xclip -selection clipboard -t image/png -i "$filename"
             show_notification "$filename" "Screenshot of the selected area saved and copied to clipboard"
         else

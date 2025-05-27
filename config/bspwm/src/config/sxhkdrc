@@ -16,6 +16,7 @@ alt + F1
 super + Escape
     xkill; dunstify -u low -i application-exit "Killer Mode" "Window successfully killed.";
 
+#Hide polybar \ super + y \ polybar-msg cmd toggle
 # Hide/Show Bar (Polybar and/or eww)
 super + {y,u}
 	HideBar -{h,u}
@@ -49,9 +50,7 @@ super + {period,w,v,comma,d,alt + k}
 
 # Scratchpad
 super + k
-	tdrop -a -w 70% -h 35% -y 0 -x 15%  --class scratch alacritty --class=scratch
-
-#Hide polybar \ super + y \ polybar-msg cmd toggle
+	OpenApps --scratch
 
 # focus the older or newer node in the focus history
 super + {o,i}

@@ -367,7 +367,7 @@ install_aur() {
     logo "Installing AUR dependencies."
     sleep 2
 
-    logo "installing Yay, Paru, Eww, Fzf-tab, Cpuid, tdrop & xqp"
+    logo "installing Yay, Paru, Eww, Fzf-tab, Cpuid, & xqp"
 
     if ! command -v yay >/dev/null 2>&1; then
         printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
@@ -404,14 +404,6 @@ install_aur() {
     if ! command -v cava >/dev/null 2>&1; then 
         printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${BRU}" "${RST}"
         paru -S cava --skipreview --noconfirm --needed
-    fi
-
-    # Intalling tdrop for scratchpads
-    if command -v tdrop >/dev/null 2>&1; then
-        printf "\n%s%sTdrop is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
-    else
-        printf "\n%s%sInstalling tdrop, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S tdrop-git --skipreview --noconfirm --needed
     fi
 
     # Intalling xqp
