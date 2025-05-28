@@ -393,7 +393,7 @@ install_aur() {
 
     if ! command -v neofetch >/dev/null 2>&1; then 
         printf "\n%s%sInstalling Neofetch for fetch your systems.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S neofetch --skipreview --noconfirm --needed
+        paru -S neofetch-git --skipreview --noconfirm --needed
     fi
 
     if ! command -v xwinwrap-0.9-bin >/dev/null 2>&1; then 
