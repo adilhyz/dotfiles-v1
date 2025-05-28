@@ -81,15 +81,15 @@ welcome() {
     logo "Welcome $USER"
     printf "%b" "${BLD}${HIJ}This script will install my dotfiles and this is what it will do:${RST}
 
-        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Check necessary dependencies and install them
-        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Download my dotfiles in ${HOME}/dotfiles
-        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Backup of possible existing configurations (bspwm, polybar, etc...)
-        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Install my configuration
-        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Enabling MPD service (Music player daemon)
-        ${BLD}${HIJ}[${CYE}i${HIJ}]${RST} Change your shell to zsh shell
+        ${BLD}${HIJ}[${KUN}i${HIJ}]${RST} Check necessary dependencies and install them
+        ${BLD}${HIJ}[${KUN}i${HIJ}]${RST} Download my dotfiles in ${HOME}/dotfiles-v1
+        ${BLD}${HIJ}[${KUN}i${HIJ}]${RST} Backup of possible existing configurations (bspwm, polybar, etc...)
+        ${BLD}${HIJ}[${KUN}i${HIJ}]${RST} Install my configuration
+        ${BLD}${HIJ}[${KUN}i${HIJ}]${RST} Enabling MPD service (Music player daemon)
+        ${BLD}${HIJ}[${KUN}i${HIJ}]${RST} Change your shell to zsh shell
     
-    ${BLD}${HIJ}[${MER}!${HIJ}]${RST} ${BLD}${MER}My dotfiles DO NOT modify any of your system configurations${RST}
-    ${BLD}${HIJ}[${MER}!${HIJ}]${RST} ${BLD}${MER}This script does NOT have the potential power to break your system${RST}"
+${BLD}${HIJ}[${MER}!${HIJ}]${RST} ${BLD}${MER}My dotfiles DO NOT modify any of your system configurations${RST}
+${BLD}${HIJ}[${MER}!${HIJ}]${RST} ${BLD}${MER}This script does NOT have the potential power to break your system${RST}"
 
     local yn
     while true; do
@@ -107,6 +107,38 @@ welcome() {
                 ;;
         esac
     done
+}
+
+add_adilhyz_repo() {
+    clear
+    logo "Add adilhyz custom repo"
+    repo="adilhyz-repo"
+    sleep 2
+
+    # Mensaje de instalación del repositorio
+    printf "%b\n" "${BLD}${KUN}Installing ${BRU}${repo}${KUN} repository...${RST}"
+
+    # Verificar si ya existe la sección en pacman.conf
+    if ! grep -q "\[${repo}\]" /etc/pacman.conf; then
+        # Agregar repo al final del archivo
+        if printf "\n[%s]\nSigLevel = Optional TrustAll\nServer = http://adilhyz.github.io/adilhyz-repo/x86_64\n" "$repo" \
+           | sudo tee -a /etc/pacman.conf >/dev/null 2>> "$ERROR_LOG"; then
+            printf "\n%b\n" "${BLD}${KUN}${repo} ${HIJ}repository added successfully!${RST}"
+
+            # Actualizar bases de datos
+            if ! sudo pacman -Syy 2>&1 | tee -a "$ERROR_LOG" >/dev/null; then
+                log_error "Database update failed"
+                return 1
+            fi
+        else
+            log_error "Error adding repository - check permissions"
+            return 1
+        fi
+    else
+        printf "\n%b\n" "${BLD}${KUN}The repository already exists and is configured${RST}"
+        sleep 2
+        return 0
+    fi
 }
 
 install_dependencies() {
@@ -165,36 +197,59 @@ install_dependencies() {
     sleep 3
 }
 
-add_adilhyz_dependecies() {
-    repo="https://adilhyz.github.io/adilhyz-repo/x86_64/"
-    iconsu=("adilhyz-icons")
-    themesu=("adilhyz-themes")
-    cursorsu=("adilhyz-cursors")
-    piles=("-1.1-1-any.pkg.tar.zst")
+install_adilhyz_dependencies() {
+    clear
+    logo "Installing needed packages from adilhyz repository..."
+    sleep 2
 
-    icons=("${iconsu[@]/%/$piles}")
-    themes=("${themesu[@]/%/$piles}")
-    cursors=("${cursorsu[@]/%/$piles}")
+    # List of dependencies
+    adilhyz_dependencies="adilhyz-icons adilhyz-themes adilhyz-cursors"
 
-    #cekpkg=("${iconsu[@]}" "${themesu[@]}" "${cursorsu[@]}")
+    printf "%b\n\n" "${BLD}${BRU}Checking for required packages...${RST}"
+    sleep 2
 
-    is_needs() {
-      pacman -Qq "$iconsu" "$themesu" "$cursorsu" &>/dev/null
-      return $?
-    }
-
-    # Memeriksa apakah paket berada dalam daftar yang diizinkan
-    for pkgs in "${icons[@]}" "${themes[@]}" "${cursors[@]}"; do
-      if ! is_needs "$pkgs"; then
-        curl -LO "$repo/$pkgs" && sudo pacman -U "$pkgs" --noconfirm
-        rm -rf "$pkgs"
-        printf "$pkgs Downloading and installing: %s\n" "${BLD}" "$pkgs"
-        printf "\n"
-      else
-        printf "$pkgs Package is already installed!\n" "${HIJ}" "$pkg" "${RST}"
-        sleep 1
-      fi
+    # Detect missing packages
+    missing_adilhyz_repo=""
+    for pkg in $adilhyz_dependencies; do
+        if ! is_installed "$pkg"; then
+            missing_adilhyz_repo="$missing_adilhyz_repo $pkg"
+            printf "%b\n" " ${BLD}${KUN}$pkg ${MER}not installed${RST}"
+        else
+            printf "%b\n" "${BLD}${HIJ}$pkg ${BRU}already installed${RST}"
+        fi
     done
+
+    # Batch installation if needed
+    if [ -n "$(printf "%s" "$missing_adilhyz_repo" | tr -s ' ')" ]; then
+        count=$(printf "%s" "$missing_adilhyz_repo" | wc -w)
+        printf "\n%b\n\n" "${BLD}${KUN}Installing $count packages, please wait...${RST}"
+
+        if sudo pacman -S --noconfirm $missing_adilhyz_repo 2>&1 | tee -a "$ERROR_LOG" >/dev/null; then
+            # Verify complete installation
+            failed_adilhyz_repo=""
+            for pkg in $missing_adilhyz_repo; do
+                if ! is_installed "$pkg"; then
+                    failed_adilhyz_repo="$failed_adilhyz_repo $pkg"
+                    log_error "Failed to install: $pkg"
+                fi
+            done
+
+            # Show final results
+            if [ -z "$(printf "%s" "$failed_adilhyz_repo" | tr -s ' ')" ]; then
+                printf "%b\n\n" "${BLD}${HIJ}All packages installed successfully!${RST}"
+            else
+                fail_count=$(printf "%s" "$failed_adilhyz_repo" | wc -w)
+                printf "%b\n" "${BLD}${MER}Failed to install $fail_count packages:${RST}"
+                printf "%b\n\n" "  ${BLD}${KUN}$(printf "%s" "$failed_adilhyz_repo")${RST}"
+            fi
+        else
+            log_error "Critical error during batch installation"
+            printf "%b\n" "${BLD}${MER}Installation failed! Check log for details${RST}"
+            return 1
+        fi
+    else
+        printf "\n%b\n" "${BLD}${HIJ}All dependencies are already installed!${RST}"
+    fi
 
     sleep 2
 }
@@ -362,12 +417,13 @@ install_dotfiles() {
     sleep 3
 }
 
+#ngke
 install_aur() {
     clear
     logo "Installing AUR dependencies."
     sleep 2
 
-    logo "installing Yay, Paru, Neofetch, Xwinwrap, i3lock, Eww, Fzf-tab, Cpuid, & xqp"
+    logo "installing Yay, Paru, Adilhyz-repo (Needed), Neofetch, Xwinwrap, i3lock, Eww, Fzf-tab, Cpuid, & xqp"
 
     if ! command -v yay >/dev/null 2>&1; then
         printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
@@ -534,8 +590,9 @@ final_prompt() {
 # --- Main run --- #
 initial_checks
 welcome
+add_adilhyz_repo
 install_dependencies
-add_adilhyz_dependecies
+install_adilhyz_dependencies
 clone_dotfiles
 
 backup_existing_config
