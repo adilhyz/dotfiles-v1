@@ -367,7 +367,7 @@ install_aur() {
     logo "Installing AUR dependencies."
     sleep 2
 
-    logo "installing Yay, Paru, Xwinwrap, i3lock, Eww, Fzf-tab, Cpuid, & xqp"
+    logo "installing Yay, Paru, Neofetch, Xwinwrap, i3lock, Eww, Fzf-tab, Cpuid, & xqp"
 
     if ! command -v yay >/dev/null 2>&1; then
         printf "%s%sInstalling yay%s\n" "${BLD}" "${BRU}" "${RST}"
@@ -389,6 +389,11 @@ install_aur() {
         cd
     else
         printf "%s%sParu is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
+    fi
+
+    if ! command -v neofetch >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling Neofetch for fetch your systems.%s\n" "${BLD}" "${BRU}" "${RST}"
+        paru -S neofetch --skipreview --noconfirm --needed
     fi
 
     if ! command -v xwinwrap-0.9-bin >/dev/null 2>&1; then 
