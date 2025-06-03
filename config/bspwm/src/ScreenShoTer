@@ -62,7 +62,7 @@ take_screenshot() {
             fi
             ;;
         "select")
-            cmd="$cmd -s -o -c 0.467,0.239,0.863,0.15 -l"
+            cmd="$cmd -s -o -c 0.35,0.55,0.85,0.25 -l"
             ;;
     esac
 
@@ -89,13 +89,7 @@ case $1 in
 	--in5)
 		countdown 5 && take_screenshot ;;
     --sel)
-        if maim -u -o -f $(slop -f "-g %g") -s -b 2 -c 0.35,0.55,0.85,0.25 -l "$filename"; then
-            xclip -selection clipboard -t image/png -i "$filename"
-            show_notification "$filename" "Screenshot of the selected area saved and copied to clipboard"
-        else
-            dunstify -r 699 -i user-trash "Screenshot" "Screenshot dibatalkan"
-        fi
-    ;;
+        take_screenshot "select" false ;;
 	--active)
 		take_screenshot -i "$(xdotool getactivewindow)" ;;
 	--all)
