@@ -186,6 +186,10 @@ super + alt + ctrl + {Left,Right}
 super + {_,alt + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
+# focus and follow to the given desktop
+super + alt + shift + {1-9,0}
+    bspc node -d '^{1-9,10}' --follow
+
 # Send focused Node to workspace directionally
 super + alt + {Left,Right}
 	bspc node -d {prev,next} '--follow'

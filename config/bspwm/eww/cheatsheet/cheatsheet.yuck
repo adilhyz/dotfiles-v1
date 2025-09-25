@@ -109,8 +109,8 @@
         (label :class "keys" :xalign 0 :text "")
         (label :class "keys-alt" :xalign 1 :text ""))
       (box :orientation "h" :space-evenly "true"
-        (label :class "keys" :xalign 0 :text "Send to other workspace")
-        (label :class "keys-alt" :xalign 1 :text "Super + Alt + 1-9"))
+        (label :class "keys" :xalign 0 :text "Send (& Follow) to other workspace")
+        (label :class "keys-alt" :xalign 1 :text "Super + Alt + {Shift} + 1-9"))
       (box :orientation "h" :space-evenly "true"
         (label :class "keys" :xalign 0 :text "Send to other workspace & follow")
         (label :class "keys-alt" :xalign 1 :text "Super + Alt +  "))
