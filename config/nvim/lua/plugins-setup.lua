@@ -50,6 +50,15 @@ use("hrsh7th/nvim-cmp")
 -- file explorer
 use("nvim-tree/nvim-tree.lua")
 
+-- go to file
+use({
+    "nvim-telescope/telescope.nvim",
+    requires = {
+        { "nvim-lua/plenary.nvim" },
+        { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+    }
+})
+
 -- vs-code like icons
 use("nvim-tree/nvim-web-devicons")
 
@@ -63,7 +72,7 @@ use("norcalli/nvim-colorizer.lua")
 use("tpope/vim-fugitive")
 
 -- Plugin Discord Rich Presence
-use("andweeb/presence.nvim")
+use("vyfor/cord.nvim")
 
  if packer_bootstrap then
     require("packer").sync()
