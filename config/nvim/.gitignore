@@ -1,0 +1,6 @@
+plugin/
+
+lazy-lock.json
+
+# Obsidian
+.obsidian/

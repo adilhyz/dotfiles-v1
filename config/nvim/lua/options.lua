@@ -1,16 +1,21 @@
-local opt = vim.opt -- for conciseness
+local opt = vim.opt
+local g = vim.g
+local schedule = vim.schedule
 
---Start split resizable cuy
 opt.mouse = "a"
-
--- Numeracion de las lineas
+g.have_nerd_font = true
 opt.relativenumber = true
 opt.number = true
+opt.autoindent = true
+opt.wrap = true
+opt.breakindent = true
+opt.undofile = true
 
 -- tabs & indentation
+opt.expandtab = false
 opt.tabstop = 4
 opt.shiftwidth = 4
-opt.expandtab = true
+opt.softtabstop = 4
 opt.autoindent = true
 
 -- Line wrapping
@@ -32,11 +37,17 @@ opt.signcolumn = "yes"
 opt.backspace = "indent,eol,start"
 
 -- Clipboard 
-opt.clipboard:append("unnamedplus")
+schedule(function()
+  opt.clipboard = 'unnamedplus'
+end)
 
 -- Splitt Windows
 opt.splitright = true
 opt.splitbelow = true
+opt.list = true
+opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+opt.inccommand = 'split'
+opt.scrolloff = 10
 
+opt.confirm = true
 opt.iskeyword:append("-")
-

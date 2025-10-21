@@ -1,36 +1,28 @@
--- import lualine plugin safely
-local status, lualine = pcall(require, "lualine")
-if not status then
-  return
-end
-
--- get lualine nightfly theme
-local lualine_onedark = require("lualine.themes.onedark")
-
--- new colors for theme
-local new_colors = {
-  blue = "#65D1FF",
-  green = "#3EFFDC",
-  violet = "#FF61EF",
-  yellow = "#FFDA7B",
-  black = "#000000",
+return {
+	"nvim-lualine/lualine.nvim",
+	event = "VeryLazy",
+	config = function()
+		local theme = require("lualine.themes.onedark")
+		local colors = {
+			blue = "#65D1FF",
+			green = "#3EFFDC",
+			violet = "#FF61EF",
+			yellow = "#FFDA7B",
+			black = "#000000",
+		}
+		theme.normal.a.bg = colors.blue
+		theme.insert.a.bg = colors.green
+		theme.visual.a.bg = colors.violet
+		theme.command = {
+			a = { gui = "bold", bg = colors.yellow, fg = colors.black },
+		}
+		require("lualine").setup({
+			options = {
+				theme = theme,
+			},
+			sections = {
+				lualine_c = { { "filename", file_status = true, path = 1 } },
+			},
+		})
+	end,
 }
-
--- change nightlfy theme colors
-lualine_onedark.normal.a.bg = new_colors.blue
-lualine_onedark.insert.a.bg = new_colors.green
-lualine_onedark.visual.a.bg = new_colors.violet
-lualine_onedark.command = {
-  a = {
-    gui = "bold",
-    bg = new_colors.yellow,
-    fg = new_colors.black, -- black
-  },
-}
-
--- configure lualine with modified theme
-lualine.setup({
-  options = {
-    theme = lualine_onedark,
-  },
-})
