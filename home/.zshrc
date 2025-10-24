@@ -14,7 +14,11 @@ export BROWSER='firefox'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..|ncmpcpp|musik)"
 export SUDO_PROMPT="Deploying root access for %u. Password pls: "
 export BAT_THEME="base16"
-export GPG_TTY=$(tty)
+
+if [[ -t 1 ]]; then
+  export GPG_TTY=$(tty)
+  gpgconf --launch gpg-agent >/dev/null 2>&1
+fi
 
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
@@ -197,5 +201,4 @@ alias ytv-best="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+besta
 #  ├─┤│ │ │ │ │  └─┐ │ ├─┤├┬┘ │ 
 #  ┴ ┴└─┘ ┴ └─┘  └─┘ ┴ ┴ ┴┴└─ ┴ 
 $HOME/.local/bin/colorscript -r
-gpgconf --launch gpg-agent
 #disable-fzf-tab
