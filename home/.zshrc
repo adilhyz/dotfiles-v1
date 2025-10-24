@@ -14,6 +14,7 @@ export BROWSER='firefox'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..|ncmpcpp|musik)"
 export SUDO_PROMPT="Deploying root access for %u. Password pls: "
 export BAT_THEME="base16"
+export GPG_TTY=$(tty)
 
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
