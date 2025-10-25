@@ -128,7 +128,7 @@ gtk2="$HOME/.gtkrc-2.0"
 gtk3="$HOME/.config/gtk-3.0/settings.ini"
 gtk_font="Noto Sans 9"
 gtk_theme="Adapta-Eta"
-gtk_icons="Nordzy-cyan-dark--light_panel"
+gtk_icons="Nordzy-cyan-dark"
 gtk_cursor="phinger-cursors"
 
 # Wallpaper engine

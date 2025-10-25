@@ -128,7 +128,7 @@ gtk2="$HOME/.gtkrc-2.0"
 gtk3="$HOME/.config/gtk-3.0/settings.ini"
 gtk_font="Noto Sans 9"
 gtk_theme="Arc-Darkest-Plum"
-gtk_icons="ePapirus-Dark"
+gtk_icons="Papirus-Dark"
 gtk_cursor="phinger-cursors"
 
 # Wallpaper engine
