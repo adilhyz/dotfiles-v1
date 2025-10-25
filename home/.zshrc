@@ -15,7 +15,7 @@ export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..|ncmpcpp|mu
 export SUDO_PROMPT="Deploying root access for %u. Password pls: "
 export BAT_THEME="base16"
 
-if [[ -t 1 ]]; then
+if [[ -t 1 && $XDG_SESSION_TYPE != "x11" ]]; then
   export GPG_TTY=$(tty)
   gpgconf --launch gpg-agent >/dev/null 2>&1
 fi
