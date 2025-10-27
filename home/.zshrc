@@ -166,12 +166,12 @@ fi
 #  ┴ ┴┴─┘┴┴ ┴└─┘
 alias mirrors="sudo reflector --verbose --latest 5 --country Indonesia --sort rate --save /etc/pacman.d/mirrorlist"
 
-#grub
+# grub
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias grub-entry="sudo ${EDITOR} /etc/grub.d/40_custom"
 
-#system
+# system
 alias jctl="journalctl -p 3 -xb"
 alias list="sudo pacman -Qqe"
 alias listt="sudo pacman -Qqet"
@@ -190,12 +190,16 @@ alias cat="bat --theme=base16"
 alias ls='eza --icons=always --color=always -a'
 alias ll='eza --icons=always --color=always -la'
 
-#ytdl
+# ytdl
 alias yta-aac="yt-dlp --extract-audio --audio-format aac "
 alias yta-best="yt-dlp --extract-audio --audio-format best "
 alias yta-flac="yt-dlp --extract-audio --audio-format flac "
 alias yta-mp3="yta"
 alias ytv-best="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 "
+
+# neovim
+alias n="nvim"
+alias nv="nvim"
 
 #  ┌─┐┬ ┬┌┬┐┌─┐  ┌─┐┌┬┐┌─┐┬─┐┌┬┐
 #  ├─┤│ │ │ │ │  └─┐ │ ├─┤├┬┘ │ 

@@ -136,7 +136,12 @@ nm-applet &
 blueberry-tray &
 
 # Auto Lock
-xautolock -detectsleep -time 5 -locker ScreenLocker &
+# xautolock -detectsleep -time 5 -locker ScreenLocker &
+if !pidof -q xss-lock >/dev/null; then
+    xset s 300 300
+    xset +dpms
+    xss-lock --transfer-sleep-lock -- i3lock &
+fi
 
 # Typing repeat speed
 #xset r rate 375 45 &
