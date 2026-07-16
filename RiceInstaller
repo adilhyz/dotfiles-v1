@@ -147,7 +147,7 @@ install_dependencies() {
     sleep 2
 
     # List of dependencies
-    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dunst eza fd feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lazygit maim mpc mpd mpv ncmpcpp ntfs-3g numlockx nwg-look pamixer pacman-contrib pandoc-cli picom playerctl polybar polkit-gnome redshift ripgrep rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd yazi zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dbus-dinit dbus-dinit-user dunst eza fd feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lazygit maim mpc mpd mpv ncmpcpp networkmanager networkmanager-dinit network-manager-applet ntfs-3g ntp ntp-dinit numlockx nwg-look pamixer pacman-contrib pandoc-cli picom pipewire pipewire-jack pipewire-pulse wireplumber pipewire-dinit pipewire-jack-dinit pipewire-pulse-dinit playerctl polybar polkit-gnome redshift ripgrep rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux turnstile turnstile-dinit tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader wireplumber-dinit xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd yazi zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
     printf "\n%b\n\n" "${BLD}${BRU}Checking for required packages...${RST}"
     sleep 2
@@ -258,6 +258,7 @@ clone_dotfiles() {
     logo "Downloading dotfiles"
     local repo_url="https://github.com/adilhyz/dotfiles-v1"
     local repo_dir="$HOME/dotfiles-v1"
+    local repo_branch="artix"
     local timestamp=$(date +%Y%m%d-%H%M%S)
     sleep 3
 
@@ -275,8 +276,8 @@ clone_dotfiles() {
     fi
 
     # Clone new repository
-    echo -en "${BLD}${KUN}Cloning dotfiles from: ${BRU}${repo_url}${RST}\n"
-    if git clone --branch artix --recurse-submodules --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
+	echo -en "${BLD}${KUN}Cloning dotfiles from: ${BRU}${repo_url}${RST} (Artix only)\n"
+    if git clone --branch "$repo_branch" --recurse-submodules --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
         echo -en "${BLD}${HIJ}Dotfiles cloned successfully!${RST}\n\n"
     else
         log_error "Repository clone failed"
@@ -448,22 +449,22 @@ install_aur() {
 
     if ! command -v neofetch >/dev/null 2>&1; then 
         printf "\n%s%sInstalling Neofetch for fetch your systems.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S neofetch-git --skipreview --noconfirm --needed
+        yay -S neofetch-git --skipreview --noconfirm --needed
     fi
 
     if ! command -v xwinwrap-0.9-bin >/dev/null 2>&1; then 
         printf "\n%s%sInstalling xwinwrap Animated Wallpaper Engine.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S xwinwrap-0.9-bin --skipreview --noconfirm --needed
+        yay -S xwinwrap-0.9-bin --skipreview --noconfirm --needed
     fi
 
     if ! command -v i3lock-color >/dev/null 2>&1; then 
         printf "\n%s%sInstalling i3lock Lockscreen.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S i3lock-color --skipreview --noconfirm --needed
+        yay -S i3lock-color --skipreview --noconfirm --needed
     fi
 
     if ! command -v cava >/dev/null 2>&1; then 
         printf "\n%s%sInstalling cava Visualizer.%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S cava --skipreview --noconfirm --needed
+        yay -S cava --skipreview --noconfirm --needed
     fi
 
     # Intalling xqp
@@ -471,7 +472,7 @@ install_aur() {
         printf "\n%s%sxqp is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling xqp, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S xqp --skipreview --noconfirm --needed
+        yay -S xqp --skipreview --noconfirm --needed
     fi
 
     # Installing Fzf-tab
@@ -479,7 +480,7 @@ install_aur() {
         printf "\n%s%sFzf-tab is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling Fzf-tab, this should be fast!%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S fzf-tab-git --skipreview --noconfirm --needed
+        yay -S fzf-tab-git --skipreview --noconfirm --needed
     fi
 
     # Installing Cpuid
@@ -487,7 +488,7 @@ install_aur() {
         printf "\n%s%sCpuid is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling Cpuid, this should be fast%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S cpuid --skipreview --noconfirm --needed
+        yay -S cpuid --skipreview --noconfirm --needed
     fi
 
     # Installing Eww
@@ -495,7 +496,7 @@ install_aur() {
         printf "\n%s%sEww is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     else
         printf "\n%s%sInstalling Eww, this will take some time.. !%s\n" "${BLD}" "${BRU}" "${RST}"
-        paru -S eww-git --skipreview --noconfirm --needed
+        yay -S eww-git --skipreview --noconfirm --needed
     fi
 }
 
@@ -503,6 +504,29 @@ configure_services() {
     clear
     logo "Configuring Services"
     sleep 2
+
+    # System Services
+    local services=(
+        dbus
+        NetworkManager
+        turnstiled
+        pipewire
+        pipewire-pulse
+        wireplumber
+    )
+
+    echo
+
+    for service in "${services[@]}"; do
+        printf "%s%sEnabling %s service...%s\n" "${BLD}" "${KUN}" "$service" "${RST}"
+
+        if sudo dinitctl enable "$service" >> "$ERROR_LOG" 2>&1; then
+            echo -en "${BLD}${HIJ}${service} enabled successfully${RST}\n"
+        else
+            log_error "Failed to enable ${service}"
+            echo -en "${BLD}${MER}Failed to enable ${service}${RST}\n"
+        fi
+    done
 
     # MPD Service Management
     if dinitctl list | grep -q "^mpd"; then
