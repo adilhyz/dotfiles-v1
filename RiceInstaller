@@ -505,7 +505,6 @@ configure_services() {
     logo "Configuring Services"
     sleep 2
 
-    # System Services
     local services=(
         dbus
         NetworkManager
@@ -515,18 +514,17 @@ configure_services() {
         wireplumber
     )
 
-    echo
+    echo -en "${BLD}${KUN}Enabling required services...${RST}\n"
 
-    for service in "${services[@]}"; do
-        printf "%s%sEnabling %s service...%s\n" "${BLD}" "${KUN}" "$service" "${RST}"
+    if sudo dinitctl enable "${services[@]}" \
+        >>"$ERROR_LOG" 2>&1; then
 
-        if sudo dinitctl enable "$service" >> "$ERROR_LOG" 2>&1; then
-            echo -en "${BLD}${HIJ}${service} enabled successfully${RST}\n"
-        else
-            log_error "Failed to enable ${service}"
-            echo -en "${BLD}${MER}Failed to enable ${service}${RST}\n"
-        fi
-    done
+        echo -en "\n${BLD}${HIJ}Required services enabled successfully!${RST}\n"
+
+    else
+        log_error "Failed to enable one or more services"
+        echo -en "\n${BLD}${MER}Failed to enable required services!${KUN} Check RiceError.log${RST}\n"
+    fi
 
     # MPD Service Management
     if dinitctl list | grep -q "^mpd"; then
