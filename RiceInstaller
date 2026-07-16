@@ -276,7 +276,7 @@ clone_dotfiles() {
 
     # Clone new repository
     echo -en "${BLD}${KUN}Cloning dotfiles from: ${BRU}${repo_url}${RST}\n"
-    if git clone --recurse-submodules --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
+    if git clone --branch artix --recurse-submodules --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
         echo -en "${BLD}${HIJ}Dotfiles cloned successfully!${RST}\n\n"
     else
         log_error "Repository clone failed"
@@ -505,10 +505,11 @@ configure_services() {
     sleep 2
 
     # MPD Service Management
-    if systemctl is-enabled --quiet mpd.service; then
+    if dinitctl list | grep -q "^mpd"; then
         printf "%s%sDisabling global MPD service...%s\n" "${BLD}" "${KUN}" "${RST}"
-        if sudo systemctl disable --now mpd.service >> "$ERROR_LOG" 2>&1; then
-            echo -en "${BLD}${HIJ}Global MPD service disabled successfully${RST}"
+        if sudo dinitctl stop mpd >> "$ERROR_LOG" 2>&1 && \
+           sudo dinitctl disable mpd >> "$ERROR_LOG" 2>&1; then
+            echo -en "${BLD}${HIJ}Global MPD service disabled successfully${RST}\n"
         else
             log_error "Failed to disable global MPD service"
             echo -en "${BLD}${MER}Failed to disable global MPD service${RST}\n\n"
@@ -517,11 +518,12 @@ configure_services() {
 
     # User-level MPD Service
     echo -en "${BLD}${KUN}Enabling user MPD service...${RST}\n"
-    if systemctl --user enable --now mpd.service >> "$ERROR_LOG" 2>&1; then
-        echo -en "${BLD}${HIJ}User MPD service activated successfully${RST}\n\n"
+    if dinitctl enable mpd >> "$ERROR_LOG" 2>&1 && \
+       dinitctl start mpd >> "$ERROR_LOG" 2>&1; then
+        echo -en "${BLD}${HIJ}MPD service activated successfully${RST}\n\n"
     else
-        log_error "Failed to enable user MPD service"
-        echo -en "${BLD}${MER}Failed to activate user MPD service${RST}\n\n"
+        log_error "Failed to enable MPD service"
+        echo -en "${BLD}${MER}Failed to activate MPD service${RST}\n\n"
     fi
 }
 
