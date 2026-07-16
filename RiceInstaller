@@ -505,6 +505,15 @@ configure_services() {
     logo "Configuring Services"
     sleep 2
 
+    echo -en "${BLD}${KUN}Administrator privileges are required...${RST}\n"
+
+    if ! sudo -v 2> >(tee -a "$ERROR_LOG"); then
+        log_error "Failed to obtain sudo privileges"
+        echo -en "\n${BLD}${MER}Authentication failed!${KUN} Check RiceError.log${RST}\n\n"
+        sleep 3
+        return 1
+    fi
+
     local services=(
         dbus
         NetworkManager
