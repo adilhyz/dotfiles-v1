@@ -276,7 +276,7 @@ clone_dotfiles() {
 
     # Clone new repository
     echo -en "${BLD}${KUN}Cloning dotfiles from: ${BRU}${repo_url}${RST}\n"
-    if git clone --recurse-submodules --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
+    if git clone --branch artix --recurse-submodules --depth=1 "$repo_url" "$repo_dir" >> "$ERROR_LOG" 2>&1; then
         echo -en "${BLD}${HIJ}Dotfiles cloned successfully!${RST}\n\n"
     else
         log_error "Repository clone failed"
