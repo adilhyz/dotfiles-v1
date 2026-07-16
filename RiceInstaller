@@ -147,7 +147,7 @@ install_dependencies() {
     sleep 2
 
     # List of dependencies
-    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dbus-dinit dbus-dinit-user dunst eza fd feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lazygit maim mpc mpd mpv ncmpcpp networkmanager networkmanager-dinit network-manager-applet ntfs-3g ntp ntp-dinit numlockx nwg-look pamixer pacman-contrib pandoc-cli picom pipewire pipewire-jack pipewire-pulse wireplumber pipewire-dinit pipewire-jack-dinit pipewire-pulse-dinit playerctl polybar polkit-gnome redshift ripgrep rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux turnstile turnstile-dinit tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader wireplumber-dinit xclip xcolor xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd yazi zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+    dependencies=(alacritty base-devel bspwm bat blueberry brightnessctl clipcat dbus-dinit dbus-dinit-user dunst eza fd feh fzf ffmpegthumbnailer geany git jgmenu jq kitty libwebp lazygit maim mpc mpd mpv ncmpcpp networkmanager networkmanager-dinit network-manager-applet ntfs-3g ntp ntp-dinit numlockx nwg-look pamixer pacman-contrib pandoc-cli picom pipewire pipewire-jack pipewire-pulse wireplumber pipewire-dinit pipewire-pulse-dinit playerctl polybar polkit-gnome redshift ripgrep rofi rofi-emoji rustup sxhkd stalonetray thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman tmux turnstile turnstile-dinit tree ttf-inconsolata ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-terminus-nerd tumbler ueberzugpp unclutter webp-pixbuf-loader wireplumber-dinit xclip xdg-user-dirs xdo xdotool xorg-xdpyinfo xorg-xinit xorg-xkill xorg-xprop xorg-xrandr xorg-xsetroot xorg-xwininfo xsettingsd yazi zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
     printf "\n%b\n\n" "${BLD}${BRU}Checking for required packages...${RST}"
     sleep 2
@@ -447,9 +447,24 @@ install_aur() {
         printf "%s%sParu is already installed%s\n" "${BLD}" "${HIJ}" "${RST}"
     fi
 
+    if ! command -v jgmenu >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling Jgmenu for right button.%s\n" "${BLD}" "${BRU}" "${RST}"
+        yay -S jgmenu --skipreview --noconfirm --needed
+    fi
+
+    if ! command -v rofi-emoji >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling Rofi Emoji.%s\n" "${BLD}" "${BRU}" "${RST}"
+        yay -S rofi-emoji --skipreview --noconfirm --needed
+    fi
+
     if ! command -v neofetch >/dev/null 2>&1; then 
         printf "\n%s%sInstalling Neofetch for fetch your systems.%s\n" "${BLD}" "${BRU}" "${RST}"
         yay -S neofetch-git --skipreview --noconfirm --needed
+    fi
+
+    if ! command -v xcolor >/dev/null 2>&1; then 
+        printf "\n%s%sInstalling Xcolor.%s\n" "${BLD}" "${BRU}" "${RST}"
+        yay -S xcolor --skipreview --noconfirm --needed
     fi
 
     if ! command -v xwinwrap-0.9-bin >/dev/null 2>&1; then 
@@ -513,7 +528,6 @@ configure_services() {
         sleep 3
         return 1
     fi
-
     local services=(
         dbus
         NetworkManager
@@ -523,17 +537,10 @@ configure_services() {
         wireplumber
     )
 
-    echo -en "${BLD}${KUN}Enabling required services...${RST}\n"
-
-    if sudo dinitctl enable "${services[@]}" \
-        >>"$ERROR_LOG" 2>&1; then
-
-        echo -en "\n${BLD}${HIJ}Required services enabled successfully!${RST}\n"
-
-    else
-        log_error "Failed to enable one or more services"
-        echo -en "\n${BLD}${MER}Failed to enable required services!${KUN} Check RiceError.log${RST}\n"
-    fi
+    for service in "${services[@]}"; do
+        echo "Enabling $service..."
+        sudo dinitctl enable "$service"
+    done
 
     # MPD Service Management
     if dinitctl list | grep -q "^mpd"; then
